@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://4uae8d8hvvwa"]
 
 [ext_resource type="Texture2D" uid="uid://k6f5xxl8mufc" path="res://assets/buildings/Textures/colormap.png" id="1_uwoha"]
-[ext_resource type="Shader" uid="uid://deee13bqtqnaw" path="res://assets/shaders/tile.gdshader" id="2_n835h"]
+[ext_resource type="Texture2D" uid="uid://dhpowat4xtv1n" path="res://assets/buildings/blender/textures/colormap.png" id="2_n835h"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xpma6"]
 resource_name = "colormap"
@@ -45,9 +45,8 @@ shadow_mesh = SubResource("ArrayMesh_hxyjk")
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_n835h"]
 points = PackedVector3Array(0.22491637, 1.0083333, -0.041510068, -0.49997258, 0, -0.49959016, -0.50830567, 0.058442622, -0.5083333, -0.50830567, 0.058442622, 0.5083202, 0.49958277, 0.00041747978, 0.5, 0.5083333, 0.058442622, -0.5083333, -0.4251166, 0.94114, 0.4100428, -0.36399996, 0.9448858, -0.444198, 0.40869558, 0.9407566, 0.42567495, 0.4446213, 0.9446196, -0.36297864, -0.3927872, 0.41192132, 0.53807867, -0.4749683, 0.8082044, -0.2748695, 0.5, 2.2669903e-07, -0.49958992, -0.4995551, 0.00041747978, 0.5, 0.36394784, 0.94490623, -0.44421962, 0.3928149, 0.41192132, 0.53807867, 0.44412434, 0.9441226, 0.36417773, -0.36307755, 0.94375837, 0.4445803, -0.44461393, 0.9446399, -0.3629964, 0.07494819, 1.0083333, -0.25816366, 0.5083333, 0.058442622, 0.5083202, -0.4441177, 0.94414365, 0.3641938, 0.363027, 0.94378054, 0.44460124, 0.04161087, 1.0083333, -0.14153616, 0.2582537, 1.0083333, -0.058215886, 0.40995103, 0.9421106, -0.42515466, -0.4099309, 0.94211876, -0.42516297, 0.07494819, 1.0083333, -0.058215886, 0.42512417, 0.9411191, 0.41002455, -0.42568704, 0.9417319, -0.40866637, 0.42569527, 0.94171166, -0.4086465, -0.40867612, 0.9407655, 0.425683)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_hose2"]
-render_priority = 0
-shader = ExtResource("2_n835h")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hose2"]
+albedo_texture = ExtResource("2_n835h")
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_dm4wv"]
 _surfaces = [{
@@ -71,7 +70,7 @@ _surfaces = [{
 "format": 34896613399,
 "index_count": 60,
 "index_data": PackedByteArray("AAABAAIAAgADAAAABAAFAAYABgAHAAQACAAJAAoACgALAAgADAANAA4ADgAPAAwAEAARABIAEgATABAAFAAVABYAFgAXABQAGAAZABoAGgAbABgAHAAdAB4AHgAfABwAIAAhACIAIgAjACAAJAAlACYAJgAnACQA"),
-"material": SubResource("ShaderMaterial_hose2"),
+"material": SubResource("StandardMaterial3D_hose2"),
 "name": "colormap",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -160,3 +159,5 @@ mesh = SubResource("ArrayMesh_pvtah")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="pavement-fountain/pavement-fountain2/StaticBody3D" unique_id=1390913488]
 shape = SubResource("ConvexPolygonShape3D_3s8ts")
+
+[node name="building textures" type="Node3D" parent="." unique_id=322140265]
