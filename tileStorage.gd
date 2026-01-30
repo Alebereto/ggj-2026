@@ -47,12 +47,19 @@ const gridmapIntToEnum = {
 	3: TILETYPES.BUILDING
 }
 
-const enumToGridmapInt = {
-	TILETYPES.GROUND : 1,
-	TILETYPES.BUILDING  : 0,
-	TILETYPES.HOLE : -1,
-	TILETYPES.DEBRIS : 4
-}
+func tileDataToGridmapItem(tile) -> int:
+	var hp = tile.hp
+	match tile.type:
+		TILETYPES.GROUND:
+			return 1
+		TILETYPES.BUILDING:
+			if hp <= 50:
+				return 3
+			else:
+				return 0
+		TILETYPES.DEBRIS:
+			return 4
+	return -1
 
 const INT_MAX := 2147483647
 const INT_MIN := -2147483648
@@ -135,4 +142,4 @@ func set_tile(coords: Vector2i, tile: Tile):
 		print("Error, tile set not in 2D array %s" % [coords])
 		return
 	_tile_storage[coords.x][coords.y] = tile
-	_gridmap.set_cell_item(to_gridmap(coords), enumToGridmapInt[tile.type])
+	_gridmap.set_cell_item(to_gridmap(coords), tileDataToGridmapItem(tile))
