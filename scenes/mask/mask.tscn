@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://dh886bvnkfnsm"]
+
+[ext_resource type="PackedScene" uid="uid://cm4cd63nehuje" path="res://assets/mask/mask_model.tscn" id="1_5goqw"]
+[ext_resource type="Script" uid="uid://b01m3lifcr8fl" path="res://scenes/mask/mask.gd" id="1_modpb"]
+
+[node name="Mask" type="RigidBody3D" unique_id=1390113374]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+script = ExtResource("1_modpb")
+
+[node name="Model" parent="." unique_id=1559721786 instance=ExtResource("1_5goqw")]
+transform = Transform3D(2.095, 0, 0, 0, 2.095, 0, 0, 0, 2.095, 0, 0, 0)

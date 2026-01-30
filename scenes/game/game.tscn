@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://cfeq0enektf7b"]
+
+[ext_resource type="Script" uid="uid://dchi7l0tgdj7m" path="res://scenes/game/game.gd" id="1_sul5r"]
+[ext_resource type="PackedScene" uid="uid://b7yr5b2c3os7e" path="res://scenes/test_world.tscn" id="2_7h61r"]
+[ext_resource type="PackedScene" uid="uid://bykxo2lthnfm6" path="res://scenes/player/player.tscn" id="3_0sr1o"]
+[ext_resource type="Script" uid="uid://jsj0mqgstk8i" path="res://scenes/game/minion_manager.gd" id="4_lfrn8"]
+[ext_resource type="PackedScene" uid="uid://dn1q8rllncccr" path="res://scenes/minion/minion.tscn" id="5_5i0tg"]
+
+[node name="Game" type="Node3D" unique_id=1843276505]
+script = ExtResource("1_sul5r")
+
+[node name="Player" parent="." unique_id=2124622766 instance=ExtResource("3_0sr1o")]
+
+[node name="MinionManager" type="Node3D" parent="." unique_id=73815026]
+script = ExtResource("4_lfrn8")
+
+[node name="Minion2" parent="MinionManager" unique_id=1922891719 instance=ExtResource("5_5i0tg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.3365858)
+
+[node name="Minion" parent="MinionManager" unique_id=127605839 instance=ExtResource("5_5i0tg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5865848, 0, 0)
+
+[node name="TestWorld" parent="." unique_id=1190757437 instance=ExtResource("2_7h61r")]

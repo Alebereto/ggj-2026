@@ -2,8 +2,32 @@
 
 [ext_resource type="Script" uid="uid://bg4rajm3ktfie" path="res://scenes/minion/minion.gd" id="1_syvbi"]
 [ext_resource type="PackedScene" uid="uid://f2nmspntwlfx" path="res://assets/minion/minion_model.tscn" id="1_t6n5l"]
+[ext_resource type="PackedScene" uid="uid://cm4cd63nehuje" path="res://assets/mask/mask_model.tscn" id="3_ojsii"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ojsii"]
+radius = 0.228
+height = 0.62
 
 [node name="Minion" type="CharacterBody3D" unique_id=1922891719]
 script = ExtResource("1_syvbi")
 
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1263735321]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3080793, 0)
+shape = SubResource("CapsuleShape3D_ojsii")
+
 [node name="MinionModel" parent="." unique_id=1009020540 instance=ExtResource("1_t6n5l")]
+
+[node name="Mask" parent="." unique_id=1559721786 instance=ExtResource("3_ojsii")]
+transform = Transform3D(3.355, 0, 0, 0, 3.2569928, 0.80499876, 0, -0.80499876, 3.2569928, 0, 0.5383165, 0.11494282)
+visible = false
+
+[node name="Sounds" type="Node3D" parent="." unique_id=69769514]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3836214, 0)
+
+[node name="Death" type="AudioStreamPlayer3D" parent="Sounds" unique_id=1635865246]
+
+[node name="MaskWear" type="AudioStreamPlayer3D" parent="Sounds" unique_id=1133500154]
+
+[node name="Mask" type="AudioStreamPlayer3D" parent="Sounds" unique_id=651247724]
+
+[node name="AudioStreamPlayer3D4" type="AudioStreamPlayer3D" parent="Sounds" unique_id=1010773914]

@@ -1,5 +1,5 @@
 [gd_scene format=3 uid="uid://f2nmspntwlfx"]
 
-[ext_resource type="PackedScene" uid="uid://cceqlc33vj8m2" path="res://assets/prototypes/FBX format/figurine-cube.fbx" id="1_t6n5l"]
+[ext_resource type="PackedScene" uid="uid://be0fd3i1jli46" path="res://assets/kenney/figurine-cube.fbx" id="1_t6n5l"]
 
-[node name="MinionModel" unique_id=1009020540 instance=ExtResource("1_t6n5l")]
+[node name="MinionModel" unique_id=34648847 instance=ExtResource("1_t6n5l")]

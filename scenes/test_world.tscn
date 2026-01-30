@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://b7yr5b2c3os7e"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_pvdd2"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pxqpm"]
+size = Vector2(26.937, 28.124)
+
+[node name="TestWorld" type="Node3D" unique_id=1190757437]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=2094990394]
+collision_layer = 9
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=2010535079]
+shape = SubResource("WorldBoundaryShape3D_pvdd2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1733935273]
+mesh = SubResource("PlaneMesh_pxqpm")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="StaticBody3D" unique_id=2083468892]
+transform = Transform3D(0.92424643, 0.37421253, 0.07571959, 0, -0.19832452, 0.9801364, 0.3817964, -0.90588754, -0.18330073, 0, 9.882174, 0)

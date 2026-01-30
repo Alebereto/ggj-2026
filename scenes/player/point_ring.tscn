@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://cl2555x5jni72"]
+
+[ext_resource type="Script" uid="uid://6j1jjgtnt5vv" path="res://scenes/player/point_ring.gd" id="1_mf8xh"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mf8xh"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_p47bc"]
+material = SubResource("StandardMaterial3D_mf8xh")
+top_radius = 0.321
+bottom_radius = 0.0
+height = 0.539
+radial_segments = 5
+
+[sub_resource type="TorusMesh" id="TorusMesh_gmlin"]
+material = SubResource("StandardMaterial3D_mf8xh")
+inner_radius = 0.795
+outer_radius = 0.881
+rings = 11
+ring_segments = 3
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_mf8xh"]
+height = 1.341
+radius = 0.923
+
+[node name="Pointer" type="Node3D" unique_id=819706440]
+script = ExtResource("1_mf8xh")
+
+[node name="Vacuum" type="AudioStreamPlayer3D" parent="." unique_id=2072694508]
+
+[node name="Arrow" type="MeshInstance3D" parent="." unique_id=825727557]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4837556, 0)
+mesh = SubResource("CylinderMesh_p47bc")
+
+[node name="Ring" type="MeshInstance3D" parent="." unique_id=1117534957]
+mesh = SubResource("TorusMesh_gmlin")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=911851039]
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=56220501]
+shape = SubResource("CylinderShape3D_mf8xh")

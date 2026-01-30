@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c0oa1ua0pbyeg" path="res://scenes/player/player.gd" id="1_g2els"]
 [ext_resource type="PackedScene" uid="uid://duy252v3rd1st" path="res://assets/player/player_model.tscn" id="2_g2els"]
+[ext_resource type="PackedScene" uid="uid://cl2555x5jni72" path="res://scenes/player/point_ring.tscn" id="3_gmlin"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dqkch"]
 radius = 0.244
@@ -13,6 +14,9 @@ script = ExtResource("1_g2els")
 [node name="Model" parent="." unique_id=1090177635 instance=ExtResource("2_g2els")]
 transform = Transform3D(0.82, 0, 0, 0, 0.82, 0, 0, 0, 0.82, 0, 0, 0)
 
+[node name="FollowPoint" type="Node3D" parent="Model" unique_id=185161152]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5801779)
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=415359855]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.36533767, 0)
 shape = SubResource("CapsuleShape3D_dqkch")
@@ -21,4 +25,18 @@ shape = SubResource("CapsuleShape3D_dqkch")
 transform = Transform3D(1.0000001, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 0, 0, 0)
 
 [node name="Camera3D" type="Camera3D" parent="CameraRoot" unique_id=806551045]
-transform = Transform3D(0.9999999, 0, 0, 0, 0.7808122, 0.6247659, 0, -0.6247658, 0.780812, 0, 1.9986739, 1.9034116)
+transform = Transform3D(0.9999999, 0, 0, 0, 0.49497345, 0.86890817, 0, -0.86890805, 0.4949734, 0, 4.8450556, 2.6569085)
+
+[node name="RayCast3D" type="RayCast3D" parent="CameraRoot/Camera3D" unique_id=1748934587]
+collision_mask = 8
+
+[node name="PointRing" parent="." unique_id=1117534957 instance=ExtResource("3_gmlin")]
+visible = false
+
+[node name="Sounds" type="Node3D" parent="." unique_id=21676798]
+
+[node name="PickupMask" type="AudioStreamPlayer3D" parent="Sounds" unique_id=968709453]
+
+[node name="ThrowMask" type="AudioStreamPlayer3D" parent="Sounds" unique_id=42383674]
+
+[node name="Walking" type="AudioStreamPlayer3D" parent="Sounds" unique_id=1043952539]
