@@ -53,9 +53,9 @@ func set_mode_vacuum() -> void:
 	_ring.mesh.material.albedo_color = VACUUM_COLOR
 	_set_ring_radius(VACUUM_RADIUS)
 
-func get_minions_in_zone() -> Array[Minion]:
-	var res: Array[Minion] = []
+func get_objects_in_zone() -> Array:
+	var res: Array = []
 	for body in _area.get_overlapping_bodies():
-		if body is Minion:
+		if body is Minion or body is Mask:
 			res.append(body)
 	return res

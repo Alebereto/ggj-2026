@@ -19,6 +19,8 @@ var _current_mode: CONTROL_MODE = CONTROL_MODE.NONE
 
 @onready var _pointer = $Pointer
 
+@onready var _pickup_area: Area3D = $PickupArea
+
 # model nodes
 @onready var _animation_player: AnimationPlayer = $Model/AnimationPlayer
 @onready var _model: Node3D = $Model
@@ -68,6 +70,16 @@ func _set_control_mode(mode: CONTROL_MODE) -> void:
 			_pointer.set_mode_command()
 		CONTROL_MODE.VACUUM:
 			_pointer.set_mode_vacuum()
+
+func recieve_mask(mask: Mask) -> void:
+	if not mask: return
+	mask.pickable = false
+	match mask.type:
+		Mask.TYPE.BUILDER:
+			_num_build_masks += 1
+		Mask.TYPE.DESTROYER:
+			_num_destroy_masks += 1
+	mask.queue_free()
 
 
 ## ====== Inputs =============
@@ -161,6 +173,14 @@ func _get_action():
 				_command_minion(Mask.TYPE.DESTROYER)
 	# if in vacuum mode and holding click, look for minions in zone
 	if _current_mode == CONTROL_MODE.VACUUM and Input.is_action_pressed("builder_action"):
-		var minions: Array[Minion] = _pointer.get_minions_in_zone()
-		for minion in minions:
-			if minion: minion.get_sucked()
+		var bodies: Array = _pointer.get_objects_in_zone()
+		for body in bodies:
+			if body is Minion: body.get_sucked()
+			elif body is Mask: body.get_sucked(_pickup_area)
+
+# Signals ===================
+
+func _pickup_area_entered(body) -> void:
+	if body is Mask:
+		recieve_mask(body)
+

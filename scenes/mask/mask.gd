@@ -32,3 +32,6 @@ func _physics_process(delta: float) -> void:
 		_unpickable_time += delta
 		if _unpickable_time >= GRACE_PERIOD: pickable = true
 
+func get_sucked(anchor):
+	player_anchor = anchor
+
