@@ -11,18 +11,33 @@ enum TILETYPES {
 class Tile extends RefCounted:
 	var hp: float
 	var max_hp: float
+	var type: TILETYPES
 
 class Building extends Tile:
 	func _init() -> void:
+		type = TILETYPES.BUILDING
 		max_hp = 100
+		hp = 100
 
 class Ground extends Tile:
+	func _init() -> void:
+		type = TILETYPES.GROUND
+		max_hp = 100
+		hp = 100
 	pass
 
 class Hole extends Tile:
+	func _init() -> void:
+		type = TILETYPES.HOLE
+		max_hp = 0
+		hp = 0
 	pass
 
 class Debris extends Tile:
+	func _init() -> void:
+		type = TILETYPES.DEBRIS
+		max_hp = 50
+		hp = 50
 	pass
 
 
@@ -91,5 +106,18 @@ func set_tile_storage_by_cell(cell: Vector3i, tile: Tile) -> void:
 	var pos = from_gridmap(cell)
 	_tile_storage[pos.x][pos.y] = tile
 
-func get_tile(coords : Vector2i) -> Tile:
-	return _tile_storage[coords.x][coords.y]
+func get_tile(coords: Vector2i) -> Tile:
+	var offset := coords
+	var in_bounds : bool = (
+		offset.x >= 0
+		and offset.y >= 0
+		and offset.x < _tile_storage.size()
+		and offset.y < _tile_storage[0].size()
+	)
+	if in_bounds:
+		return _tile_storage[offset.x][offset.y]
+
+	print("Error, tile not in 2D array %s" % [
+		coords
+	])
+	return Tiles.Hole.new()

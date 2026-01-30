@@ -4,8 +4,16 @@ class_name TileManager
 var t_array = Globals.TILE_ARRAY
 func _ready() -> void:
 	t_array.create_tile_storage($GridMap)
+	print(t_array._tile_storage.size())
+	print(t_array._tile_storage[0].size())
 # Called every frame. 'delta' is the elapsed time since the previous frame.
+
+var time = 0.0
 func _process(_delta: float) -> void:
+	time += _delta
+	if time > 1 :
+		attack(Vector2i(6,7), 15)
+		time = 0
 	pass
 
 func attack(pos: Vector2i, damage = 1):
@@ -18,6 +26,6 @@ func repair(pos: Vector2i, damage = 1):
 	processTile(t_array.get_tile(pos))
 	pass
 
-func processTile(tile: Storage.Tile):
-	print(tile)
+func processTile(tile: Tiles.Tile):
+	print(tile.hp)
 	pass
