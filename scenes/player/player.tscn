@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://bykxo2lthnfm6"]
+
+[ext_resource type="Script" uid="uid://c0oa1ua0pbyeg" path="res://scenes/player/player.gd" id="1_g2els"]
+[ext_resource type="PackedScene" uid="uid://duy252v3rd1st" path="res://assets/player/player_model.tscn" id="2_g2els"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dqkch"]
+radius = 0.244
+height = 0.754
+
+[node name="Player" type="CharacterBody3D" unique_id=2124622766]
+script = ExtResource("1_g2els")
+
+[node name="Model" parent="." unique_id=1090177635 instance=ExtResource("2_g2els")]
+transform = Transform3D(0.82, 0, 0, 0, 0.82, 0, 0, 0, 0.82, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=415359855]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.36533767, 0)
+shape = SubResource("CapsuleShape3D_dqkch")
+
+[node name="CameraRoot" type="Node3D" parent="." unique_id=2116366999]
+transform = Transform3D(1.0000001, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CameraRoot" unique_id=806551045]
+transform = Transform3D(0.9999999, 0, 0, 0, 0.7808122, 0.6247659, 0, -0.6247658, 0.780812, 0, 1.9986739, 1.9034116)
+
+[node name="Mouse" type="Node3D" parent="." unique_id=813356532]

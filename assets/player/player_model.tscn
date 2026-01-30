@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://duy252v3rd1st"]
+
+[ext_resource type="PackedScene" uid="uid://d25l3y5bjab84" path="res://assets/platformer/FBX format/character-oopi.fbx" id="1_jj7rf"]
+
+[node name="PlayerModel" unique_id=1090177635 instance=ExtResource("1_jj7rf")]
+
+[node name="Skeleton3D" parent="character-oopi" parent_id_path=PackedInt32Array(2042355815) index="0" unique_id=561680116]
+bones/0/position = Vector3(0, 0, 0)
+bones/4/rotation = Quaternion(0, 0, -0.38268346, 0.9238795)
+bones/5/rotation = Quaternion(0, 0, 0.3826835, 0.9238796)

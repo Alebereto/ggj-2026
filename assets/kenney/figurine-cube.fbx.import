@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cceqlc33vj8m2"
-path="res://.godot/imported/figurine-cube.fbx-d52405dc2df864754a7e21afd39ceef8.scn"
+path="res://.godot/imported/figurine-cube.fbx-3f4b34cd95fed01ea0d9963bed3317c3.scn"
 
 [deps]
 
-source_file="res://assets/prototypes/FBX format/figurine-cube.fbx"
-dest_files=["res://.godot/imported/figurine-cube.fbx-d52405dc2df864754a7e21afd39ceef8.scn"]
+source_file="res://assets/kenney/figurine-cube.fbx"
+dest_files=["res://.godot/imported/figurine-cube.fbx-3f4b34cd95fed01ea0d9963bed3317c3.scn"]
 
 [params]
 
