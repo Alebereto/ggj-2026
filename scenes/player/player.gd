@@ -47,6 +47,7 @@ func _physics_process(delta: float) -> void:
 
 
 func _throw_mask(mask: Mask.TYPE):
+	#TODO: play throwing animation with sound
 	match mask:
 		Mask.TYPE.BUILDER:
 			if _num_build_masks > 0:
@@ -74,8 +75,9 @@ func _set_control_mode(mode: CONTROL_MODE) -> void:
 		CONTROL_MODE.VACUUM:
 			_pointer.set_mode_vacuum()
 
+## Player picks up mask
 func recieve_mask(mask: Mask) -> void:
-	#TODO: change
+	#TODO: play pickup sound effect
 	if not mask: return
 	mask.pickable = false
 	match mask.type:
@@ -186,5 +188,5 @@ func _get_action():
 
 func _pickup_area_entered(body) -> void:
 	if body is Mask:
-		recieve_mask(body)
+		if body.can_player_pickup(): recieve_mask(body)
 
