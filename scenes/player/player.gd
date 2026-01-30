@@ -189,4 +189,3 @@ func _get_action():
 func _pickup_area_entered(body) -> void:
 	if body is Mask:
 		if body.can_player_pickup(): recieve_mask(body)
-
