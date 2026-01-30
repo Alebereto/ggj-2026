@@ -11,7 +11,6 @@ config_version=5
 [application]
 
 config/name="ggj-2026"
-run/main_scene="uid://bdp2y2tucikvk"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -85,7 +84,7 @@ destroyer_action={
 [layer_names]
 
 3d_physics/layer_2="Minion"
-3d_physics/layer_4="Floor"
+3d_physics/layer_4="ClickFloor"
 
 [physics]
 
