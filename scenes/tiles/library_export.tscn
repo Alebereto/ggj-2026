@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://4uae8d8hvvwa"]
+
+[ext_resource type="PackedScene" uid="uid://h0vrvst3cumo" path="res://assets/buildings/building-small-d.glb" id="1_n835h"]
+[ext_resource type="PackedScene" uid="uid://cpv75mfsda1ml" path="res://assets/buildings/pavement.glb" id="2_hose2"]
+[ext_resource type="PackedScene" uid="uid://6v0t536s83vb" path="res://assets/buildings/pavement-fountain.glb" id="3_hose2"]
+
+[node name="LibraryExport" type="Node3D" unique_id=1341416380]
+
+[node name="building-small-d" parent="." unique_id=2094430140 instance=ExtResource("1_n835h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.54501474, 0, -0.46115017)
+
+[node name="pavement" parent="." unique_id=1906507717 instance=ExtResource("2_hose2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.56750274, 0, -0.4866748)
+
+[node name="pavement-fountain" parent="." unique_id=1766916188 instance=ExtResource("3_hose2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.51325256, 0, 0.6361439)
