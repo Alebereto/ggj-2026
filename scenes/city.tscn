@@ -1,8 +1,10 @@
-[gd_scene format=3 uid="uid://bunacq2ycukvo"]
+[gd_scene format=3 uid="uid://bsj4e67n4vjey"]
 
+[ext_resource type="Script" uid="uid://koa721xi0ian" path="res://scenes/city.gd" id="1_58ubr"]
 [ext_resource type="MeshLibrary" uid="uid://bd4k3ro3sneli" path="res://assets/cityLibrary.tres" id="1_bih7l"]
 
 [node name="City" type="Node3D" unique_id=1633328635]
+script = ExtResource("1_58ubr")
 
 [node name="GridMap" type="GridMap" parent="." unique_id=1592961171]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
