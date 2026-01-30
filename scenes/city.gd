@@ -8,6 +8,11 @@ enum TILETYPES {
 	DEBRIS
 }
 
+const mapToTileTypes = {
+	1: TILETYPES.GROUND,
+	0: TILETYPES.BUILDING
+}
+
 var tile_storage = []
 var min_x = INF
 var max_x = -INF
@@ -35,7 +40,7 @@ class Debris extends Tile:
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	create_tile_storage()
-	print(tile_storage)
+	
 	
 func create_tile_storage() -> void:
 	var cells = $GridMap.get_used_cells()
@@ -54,10 +59,12 @@ func create_tile_storage() -> void:
 			tile_storage[i].append(Hole.new())
 	for cell in cells:
 		var type = $GridMap.get_cell_item(cell)
-		if type == 0:
-			set_tile_storage_by_cell(cell, Building.new())
-		if type == 1:
-			set_tile_storage_by_cell(cell, Ground.new())
+		var enumtype = mapToTileTypes[type]
+		match enumtype:
+			TILETYPES.BUILDING:
+				set_tile_storage_by_cell(cell, Building.new())
+			TILETYPES.GROUND:
+				set_tile_storage_by_cell(cell, Ground.new())
 
 func cell_to_array_coords(cell: Vector3) -> Vector2:
 	return Vector2(cell.x-min_x, cell.z-min_z)
