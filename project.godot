@@ -80,3 +80,4 @@ destroyer_action={
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+environment/defaults/default_clear_color=Color(0.7693736, 0.63591474, 0, 1)

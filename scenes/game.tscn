@@ -5,22 +5,9 @@
 
 [node name="Game" type="Node3D" unique_id=389390220]
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=107702107]
-texture_filter = 1
-offset_right = 1149.0
-offset_bottom = 646.0
-stretch = true
-stretch_shrink = 8
+[node name="Player" parent="." unique_id=2124622766 instance=ExtResource("1_lnu2h")]
 
-[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=1985610416]
-handle_input_locally = false
-oversampling = false
-size = Vector2i(143, 80)
-render_target_update_mode = 4
-
-[node name="Player" parent="SubViewportContainer/SubViewport" unique_id=2124622766 instance=ExtResource("1_lnu2h")]
-
-[node name="City" parent="SubViewportContainer/SubViewport" unique_id=1633328635 instance=ExtResource("1_yqjtg")]
+[node name="City" parent="." unique_id=1633328635 instance=ExtResource("1_yqjtg")]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=467999462]
 transform = Transform3D(1, 0, 0, 0, -0.003700053, 0.99999315, 0, -0.99999315, -0.003700053, 0, 4.8726435, 0)

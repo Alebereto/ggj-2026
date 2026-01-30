@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://k6f5xxl8mufc" path="res://assets/buildings/Textures/colormap.png" id="1_uwoha"]
 [ext_resource type="Texture2D" uid="uid://dhpowat4xtv1n" path="res://assets/buildings/blender/textures/colormap.png" id="2_n835h"]
+[ext_resource type="Texture2D" uid="uid://di7jayj50dm2x" path="res://assets/buildings/floor_empty_colormap.png" id="3_hose2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xpma6"]
 resource_name = "colormap"
@@ -124,6 +125,46 @@ shadow_mesh = SubResource("ArrayMesh_vc4vp")
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_3s8ts"]
 points = PackedVector3Array(0.07254895, 0.52375495, 0.01445524, -0.4936186, 0, -0.4936186, -0.4936186, 0, 0.4936186, 0.4936186, 0, -0.4936186, 0.50793654, 0.055628523, 0.50793654, -0.05749708, 0.5215414, -0.05749708, -0.50793654, 0.055628523, 0.50793654, 0.50793654, 0.055628523, -0.50793654, -0.50793654, 0.055628523, -0.50793654, 0.4936186, 0, 0.4936186, -0.014454653, 0.52374464, 0.072546, -0.3491318, 0.26198396, 0.031721175, -0.031721175, 0.26198396, -0.3491318, -0.031721175, 0.26198396, 0.3491318, 0.3491318, 0.26198396, -0.031721175, 0.014454653, 0.52374464, -0.072546, -0.07254895, 0.52375495, 0.01445524, 0.07254895, 0.52375495, -0.01445524, 0.014454653, 0.52374464, 0.072546, 0.031721175, 0.26198396, 0.3491318, 0.031721175, 0.26198396, -0.3491318, 0.3491318, 0.26198396, 0.031721175, -0.3491318, 0.26198396, -0.031721175, -0.07254895, 0.52375495, -0.01445524, -0.014454653, 0.52374464, -0.072546, 0.05749708, 0.5215414, -0.05749708, 0.05749708, 0.5215414, 0.05749708, -0.05749708, 0.5215414, 0.05749708)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mbwkw"]
+resource_name = "colormap"
+cull_mode = 2
+albedo_texture = ExtResource("3_hose2")
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_058a2"]
+_surfaces = [{
+"aabb": AABB(-0.5, -1.7692844, -0.5, 1, 1.8192843, 1),
+"format": 34359742465,
+"index_count": 66,
+"index_data": PackedByteArray("AAABAAIAAQADAAIAAgADAAQAAgAEAAAABAADAAUAAQAFAAMABQAGAAQAAAAEAAYABwAGAAUAAAAGAAcABwAFAAEAAQAAAAcACAACAAAAAQACAAgAAAAJAAgACAAKAAEAAAAHAAsACwAJAAAACwAHAAEACAAJAAsAAQAKAAsACwAKAAgA"),
+"name": "colormap",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 12,
+"vertex_data": PackedByteArray("AAAAvwAAAAAAAAA/AAAAPwAAAAAAAAC/AAAAPwAAAAAAAAA/AAAAP+l34r8AAAA/AAAAv+l34r8AAAA/AAAAP+l34r8AAAC/AAAAv+l34r8AAAC/AAAAvwAAAAAAAAC/AAAAP83MTD0AAAA/AAAAv83MTD0AAAA/AAAAP83MTD0AAAC/AAAAv83MTD0AAAC/")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_msus2"]
+resource_name = "floor_empty_pavement"
+_surfaces = [{
+"aabb": AABB(-0.5, -1.7692844, -0.5, 1, 1.8192843, 1),
+"attribute_data": PackedByteArray("36KEPoa0WT/fooQ+hrRZP9+ihD6GtFk/36KEPoa0WT8gw2Q+lPFGP9+ihD6GtFk/36KEPoa0WT8gw2Q+lPFGPwAAYD5mZkY/AABgPmZmRj8AAGA+ZmZGPwAAYD5mZkY/IMNkPpTxRj8gw2Q+lPFGP9+ihD6GtFk/36KEPoa0WT8gw2Q+lPFGP9+ihD6GtFk/36KEPoa0WT8gw2Q+lPFGP9+ihD6GtFk/36KEPoa0WT8gw2Q+lPFGPyDDZD6U8UY/36KEPr3pcT/fooQ+velxP9+ihD696XE/36KEPr3pcT/fooQ+hrRZP9+ihD696XE/36KEPoa0WT/fooQ+velxP9+ihD6GtFk/36KEPr3pcT/fooQ+hrRZP9+ihD696XE/36KEPoa0WT/fooQ+velxP9+ihD6GtFk/36KEPr3pcT/fooQ+hrRZP9+ihD696XE/36KEPoa0WT/fooQ+velxPw=="),
+"format": 34359742487,
+"index_count": 66,
+"index_data": PackedByteArray("AAABAAIAAQAAAAMABAAFAAYABgAHAAQACAAJAAoACgALAAgADAANAA4ADgAPAAwAEAARABIAEgATABAAFAAVABYAFgAXABQAGAAZABoAGgAbABgAHAAdAB4AHAAfAB0AIAAhACIAIAAjACEAJAAlACYAJAAnACUAKAApACoAKAArACkA"),
+"material": SubResource("StandardMaterial3D_mbwkw"),
+"name": "colormap",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 44,
+"vertex_data": PackedByteArray("AAAAvwAAAAAAAAA/AAAAPwAAAAAAAAC/AAAAPwAAAAAAAAA/AAAAvwAAAAAAAAC/AAAAv83MTD0AAAC/AAAAvwAAAAAAAAC/AAAAPwAAAAAAAAC/AAAAP83MTD0AAAC/AAAAv83MTD0AAAC/AAAAP83MTD0AAAC/AAAAP83MTD0AAAA/AAAAv83MTD0AAAA/AAAAP83MTD0AAAA/AAAAP83MTD0AAAC/AAAAPwAAAAAAAAC/AAAAPwAAAAAAAAA/AAAAP83MTD0AAAA/AAAAPwAAAAAAAAA/AAAAvwAAAAAAAAA/AAAAv83MTD0AAAA/AAAAvwAAAAAAAAA/AAAAvwAAAAAAAAC/AAAAv83MTD0AAAC/AAAAv83MTD0AAAA/AAAAv+l34r8AAAA/AAAAP+l34r8AAAA/AAAAP+l34r8AAAC/AAAAv+l34r8AAAC/AAAAvwAAAAAAAAC/AAAAP+l34r8AAAC/AAAAPwAAAAAAAAC/AAAAv+l34r8AAAC/AAAAvwAAAAAAAAA/AAAAv+l34r8AAAC/AAAAvwAAAAAAAAC/AAAAv+l34r8AAAA/AAAAPwAAAAAAAAC/AAAAP+l34r8AAAA/AAAAPwAAAAAAAAA/AAAAP+l34r8AAAC/AAAAPwAAAAAAAAA/AAAAv+l34r8AAAA/AAAAvwAAAAAAAAA/AAAAP+l34r8AAAA//3///////7//f///////v/9///////+//3///////7//////////v/////////+//////////7//////////v/9///////+//3///////7//f///////v/9///////+/////f////7////9/////v////3////+/////f////7//f/9/////P/9//3////8//3//f////z//f/9/////PwAA/3////+/AAD/f////78AAP9/////vwAA/3////+//38AAP///7//fwAA////v/9/AAD///+//38AAP///7//////////v/////////+//////////7//////////vwAA/3////+/AAD/f////78AAP9/////vwAA/3////+/////f////7////9/////v////3////+/////f////7//f/9/////P/9//3////8//3//f////z//f/9/////Pw==")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_058a2")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3s8ts"]
+size = Vector3(1, 2.154541, 1)
+
 [node name="LibraryExport" type="Node3D" unique_id=1341416380]
 
 [node name="building-small-d" type="Node3D" parent="." unique_id=2094430140]
@@ -161,3 +202,15 @@ mesh = SubResource("ArrayMesh_pvtah")
 shape = SubResource("ConvexPolygonShape3D_3s8ts")
 
 [node name="building textures" type="Node3D" parent="." unique_id=322140265]
+
+[node name="floor_empty" type="Node3D" parent="." unique_id=668936393]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.56947386, 0, 0.62183726)
+
+[node name="pavement" type="MeshInstance3D" parent="floor_empty" unique_id=611114805]
+mesh = SubResource("ArrayMesh_msus2")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="floor_empty/pavement" unique_id=897837121]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="floor_empty/pavement/StaticBody3D" unique_id=1514938335]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0218506, 0)
+shape = SubResource("BoxShape3D_3s8ts")
