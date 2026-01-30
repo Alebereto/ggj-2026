@@ -64,5 +64,3 @@ func _move(delta: float) -> void:
 	if velocity.length() > 2.0:
 		_animation_player.play("walk")
 	move_and_slide()
-
-
