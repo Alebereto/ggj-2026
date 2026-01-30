@@ -1,5 +1,8 @@
 extends Node3D
 
+signal drop_mask()
+signal suck_mask()
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

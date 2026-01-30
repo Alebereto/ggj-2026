@@ -13,9 +13,14 @@ func _ready() -> void:
 	_player.throw_mask.connect(throw_mask)
 	_player.command_minion.connect(command_minion)
 
+	_minion_manager.suck_mask.connect(suck_mask)
+	_minion_manager.drop_mask.connect(drop_mask)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
+
+## signal calls ===========================
 
 func drop_mask(mask_type: Mask.TYPE, global_pos: Vector3):
 	var mask: Mask = MASK_SCENE.instantiate()
@@ -32,9 +37,6 @@ func suck_mask(mask_type: Mask.TYPE, global_pos: Vector3):
 	mask.player_anchor = _player_mask_point
 
 	_masks_root.add_child(mask)
-
-
-## signal calls ===========================
 
 func command_minion(mask_type, global_destination) -> void:
 	#TODO: convert global destination pos to coordinates
