@@ -1,8 +1,8 @@
 class_name Player extends CharacterBody3D
 
 # destination is global
-signal throw_mask(mask_type: Mask.TYPE, destination: Vector3)
-signal command_minion(mask_type: Mask.TYPE, destination: Vector3)
+signal throw_mask(mask_type: Mask.TYPE, starting_global_pos: Vector3, destination_global_pos: Vector3)
+signal command_minion(mask_type: Mask.TYPE, global_destination: Vector3)
 
 const PLAYER_SPEED = 5.0
 const CAMERA_SPEED = 2.2
@@ -24,7 +24,6 @@ var _current_mode: CONTROL_MODE = CONTROL_MODE.NONE
 # model nodes
 @onready var _animation_player: AnimationPlayer = $Model/AnimationPlayer
 @onready var _model: Node3D = $Model
-
 # camera nodes
 @onready var _camera_root: Node3D = $CameraRoot
 @onready var _camera: Camera3D = $CameraRoot/Camera3D
@@ -32,6 +31,10 @@ var _current_mode: CONTROL_MODE = CONTROL_MODE.NONE
 
 @export var _num_build_masks: int = 10
 @export var _num_destroy_masks: int = 10
+
+func _ready():
+	_pickup_area.body_entered.connect(_pickup_area_entered)
+	pass
 
 
 func _physics_process(delta: float) -> void:
@@ -47,11 +50,11 @@ func _throw_mask(mask: Mask.TYPE):
 	match mask:
 		Mask.TYPE.BUILDER:
 			if _num_build_masks > 0:
-				throw_mask.emit(mask, _pointer.global_position)
+				throw_mask.emit(mask, global_position, _pointer.global_position)
 				_num_build_masks -= 1
 		Mask.TYPE.DESTROYER:
 			if _num_destroy_masks > 0:
-				throw_mask.emit(mask, _pointer.global_position)
+				throw_mask.emit(mask, global_position, _pointer.global_position)
 				_num_destroy_masks -= 1
 
 func _command_minion(mask: Mask.TYPE):
@@ -72,6 +75,7 @@ func _set_control_mode(mode: CONTROL_MODE) -> void:
 			_pointer.set_mode_vacuum()
 
 func recieve_mask(mask: Mask) -> void:
+	#TODO: change
 	if not mask: return
 	mask.pickable = false
 	match mask.type:

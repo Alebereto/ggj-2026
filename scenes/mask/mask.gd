@@ -35,3 +35,9 @@ func _physics_process(delta: float) -> void:
 func get_sucked(anchor):
 	player_anchor = anchor
 
+func can_player_pickup() -> bool:
+	return true
+
+func can_minion_pickup() -> bool:
+	return true
+

@@ -33,7 +33,6 @@ enum STATE{
 func _ready() -> void:
 	_pickup_area.body_entered.connect(_pickup_area_entered)
 	_unset_mask()
-	_set_mask(Mask.TYPE.DESTROYER)
 
 func _physics_process(delta: float) -> void:
 	_move_randomly(delta)
