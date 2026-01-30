@@ -38,10 +38,10 @@ func _ready():
 
 
 func _physics_process(delta: float) -> void:
-
 	_move_camera(delta)
 	_move_player(delta)
 	_move_pointer(delta)
+	Globals.PLAYER_POSITION = global_position
 	_get_mode()
 	_get_action()
 
