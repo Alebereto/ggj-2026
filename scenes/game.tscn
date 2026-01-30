@@ -8,3 +8,11 @@
 [node name="Player" parent="." unique_id=2124622766 instance=ExtResource("1_lnu2h")]
 
 [node name="City" parent="." unique_id=1633328635 instance=ExtResource("1_yqjtg")]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=107702107]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=1985610416]
+oversampling = false
+size = Vector2i(256, 180)
