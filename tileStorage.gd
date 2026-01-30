@@ -102,22 +102,25 @@ func to_world(coords: Vector2i) -> Vector3:
 	#TODO: do
 	return to_gridmap(coords)
 
-func set_tile_storage_by_cell(cell: Vector3i, tile: Tile) -> void:
-	var pos = from_gridmap(cell)
-	_tile_storage[pos.x][pos.y] = tile
-
-func get_tile(coords: Vector2i) -> Tile:
-	var offset := coords
-	var in_bounds : bool = (
+func _check_bounds(offset: Vector2i) -> bool:
+	return (
 		offset.x >= 0
 		and offset.y >= 0
 		and offset.x < _tile_storage.size()
 		and offset.y < _tile_storage[0].size()
 	)
-	if in_bounds:
-		return _tile_storage[offset.x][offset.y]
+
+func get_tile(coords: Vector2i) -> Tile:
+	if _check_bounds(coords):
+		return _tile_storage[coords.x][coords.y]
 
 	print("Error, tile not in 2D array %s" % [
 		coords
 	])
 	return Tiles.Hole.new()
+	
+func set_tile(coords: Vector2i, tile: Tile):
+	if not _check_bounds(coords):
+		print("Error, tile set not in 2D array %s" % [coords])
+		return
+	_tile_storage[coords.x][coords.y] = tile

@@ -18,14 +18,21 @@ func _process(_delta: float) -> void:
 
 func attack(pos: Vector2i, damage = 1):
 	t_array.get_tile(pos).hp -= damage
-	processTile(t_array.get_tile(pos))
+	processTile(t_array.get_tile(pos), pos)
 	pass
 
 func repair(pos: Vector2i, damage = 1):
 	t_array.get_tile(pos).hp += damage
-	processTile(t_array.get_tile(pos))
+	processTile(t_array.get_tile(pos), pos)
 	pass
 
-func processTile(tile: Tiles.Tile):
-	print(tile.hp)
+func processTile(tile: Tiles.Tile, pos : Vector2i):
+	if tile.hp < 0:
+		if tile.type == Tiles.TILETYPES.GROUND:
+			t_array.set_tile(pos, Tiles.Hole.new())
+		if tile.type == Tiles.TILETYPES.BUILDING or tile.type == Tiles.TILETYPES.DEBRIS:
+			t_array.set_tile(pos, Tiles.Ground.new())
+			
+
+		
 	pass
