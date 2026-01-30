@@ -41,13 +41,22 @@ class Debris extends Tile:
 	pass
 
 
-const mapToTileTypes = {
+const gridmapIntToEnum = {
 	1: TILETYPES.GROUND,
 	0: TILETYPES.BUILDING
 }
+
+const enumToGridmapInt ={
+   TILETYPES.GROUND : 1,
+	TILETYPES.BUILDING  : 0,
+	TILETYPES.HOLE : -1,
+	TILETYPES.DEBRIS : 2
+}
+
 const INT_MAX := 2147483647
 const INT_MIN := -2147483648
 
+var _gridmap = GridMap.new()
 var _tile_storage: Array = []
 var _min_x := INT_MAX
 var _max_x := INT_MIN
@@ -55,6 +64,7 @@ var _min_z := INT_MAX
 var _max_z := INT_MIN
 
 func create_tile_storage(grid_map: GridMap) -> void:
+	_gridmap = grid_map
 	_tile_storage.clear()
 	_min_x = INT_MAX
 	_max_x = INT_MIN
@@ -81,7 +91,7 @@ func create_tile_storage(grid_map: GridMap) -> void:
 		var pos = from_gridmap(cell)
 
 		var type = grid_map.get_cell_item(cell)
-		var enumtype = mapToTileTypes.get(type, TILETYPES.HOLE)
+		var enumtype = gridmapIntToEnum.get(type, TILETYPES.HOLE)
 		match enumtype:
 			TILETYPES.BUILDING:
 				_tile_storage[pos.x][pos.y] = Building.new()
@@ -124,3 +134,4 @@ func set_tile(coords: Vector2i, tile: Tile):
 		print("Error, tile set not in 2D array %s" % [coords])
 		return
 	_tile_storage[coords.x][coords.y] = tile
+	_gridmap.set_cell_item(to_gridmap(coords), enumToGridmapInt[tile.type])

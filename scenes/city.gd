@@ -30,9 +30,9 @@ func processTile(tile: Tiles.Tile, pos : Vector2i):
 	if tile.hp < 0:
 		if tile.type == Tiles.TILETYPES.GROUND:
 			t_array.set_tile(pos, Tiles.Hole.new())
+			return
 		if tile.type == Tiles.TILETYPES.BUILDING or tile.type == Tiles.TILETYPES.DEBRIS:
 			t_array.set_tile(pos, Tiles.Ground.new())
-			
-
+			return
 		
 	pass
