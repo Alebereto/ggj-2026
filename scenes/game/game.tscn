@@ -11,6 +11,8 @@ script = ExtResource("1_sul5r")
 
 [node name="Player" parent="." unique_id=2124622766 instance=ExtResource("3_0sr1o")]
 
+[node name="MasksRoot" type="Node3D" parent="." unique_id=1449250086]
+
 [node name="MinionManager" type="Node3D" parent="." unique_id=73815026]
 script = ExtResource("4_lfrn8")
 

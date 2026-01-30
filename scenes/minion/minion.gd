@@ -20,6 +20,7 @@ var _current_mask: Mask.TYPE
 var _alive: bool = true
 
 @onready var _mask_model: Node3D = $Mask
+@onready var _pickup_area: Area3D = $PickupArea
 
 enum STATE{
 	FREE,
@@ -30,6 +31,7 @@ enum STATE{
 }
 
 func _ready() -> void:
+	_pickup_area.body_entered.connect(_pickup_area_entered)
 	_unset_mask()
 	_set_mask(Mask.TYPE.DESTROYER)
 
@@ -92,4 +94,10 @@ func get_sucked() -> void:
 	else:
 		# TODO: create mask and set it to go to the player
 		_unset_mask()
+
+# Signals ===================
+
+func _pickup_area_entered(body) -> void:
+	if body is Mask:
+		recieve_mask(body)
 

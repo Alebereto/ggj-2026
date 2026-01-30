@@ -1,5 +1,8 @@
 class_name Player extends CharacterBody3D
 
+# destination is global
+signal throw_mask(mask_type: Mask.TYPE, destination: Vector3)
+signal command_minion(mask_type: Mask.TYPE, destination: Vector3)
 
 const PLAYER_SPEED = 5.0
 const CAMERA_SPEED = 2.2
@@ -14,7 +17,7 @@ enum CONTROL_MODE {
 
 var _current_mode: CONTROL_MODE = CONTROL_MODE.NONE
 
-@onready var _point_ring = $PointRing
+@onready var _pointer = $Pointer
 
 # model nodes
 @onready var _animation_player: AnimationPlayer = $Model/AnimationPlayer
@@ -39,10 +42,18 @@ func _physics_process(delta: float) -> void:
 
 
 func _throw_mask(mask: Mask.TYPE):
-	pass
+	match mask:
+		Mask.TYPE.BUILDER:
+			if _num_build_masks > 0:
+				throw_mask.emit(mask, _pointer.global_position)
+				_num_build_masks -= 1
+		Mask.TYPE.DESTROYER:
+			if _num_destroy_masks > 0:
+				throw_mask.emit(mask, _pointer.global_position)
+				_num_destroy_masks -= 1
 
 func _command_minion(mask: Mask.TYPE):
-	pass
+	command_minion.emit(mask, _pointer.global_position)
 
 
 ## Sets player control mode
@@ -50,13 +61,14 @@ func _set_control_mode(mode: CONTROL_MODE) -> void:
 	_current_mode = mode
 	match mode:
 		CONTROL_MODE.NONE:
-			_point_ring.set_mode_none()
+			_pointer.set_mode_none()
 		CONTROL_MODE.THROW:
-			_point_ring.set_mode_throw()
+			_pointer.set_mode_throw()
 		CONTROL_MODE.COMMAND:
-			_point_ring.set_mode_command()
+			_pointer.set_mode_command()
 		CONTROL_MODE.VACUUM:
-			_point_ring.set_mode_vacuum()
+			_pointer.set_mode_vacuum()
+
 
 ## ====== Inputs =============
 
@@ -123,7 +135,7 @@ func _move_pointer(_delta: float) -> void:
 	var mouse_pos = _mouse_cast()
 
 	if mouse_pos != null:
-		_point_ring.global_position = mouse_pos
+		_pointer.global_position = mouse_pos
 
 ## Get input for player mode
 func _get_mode() -> void:
@@ -149,7 +161,6 @@ func _get_action():
 				_command_minion(Mask.TYPE.DESTROYER)
 	# if in vacuum mode and holding click, look for minions in zone
 	if _current_mode == CONTROL_MODE.VACUUM and Input.is_action_pressed("builder_action"):
-		var minions: Array[Minion] = _point_ring.get_minions_in_zone()
+		var minions: Array[Minion] = _pointer.get_minions_in_zone()
 		for minion in minions:
 			if minion: minion.get_sucked()
-

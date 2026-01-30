@@ -8,6 +8,12 @@
 radius = 0.244
 height = 0.754
 
+[sub_resource type="AudioStreamWAV" id="AudioStreamWAV_gmlin"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_gmlin"]
+height = 4.048
+radius = 0.41
+
 [node name="Player" type="CharacterBody3D" unique_id=2124622766]
 script = ExtResource("1_g2els")
 
@@ -30,13 +36,20 @@ transform = Transform3D(0.9999999, 0, 0, 0, 0.49497345, 0.86890817, 0, -0.868908
 [node name="RayCast3D" type="RayCast3D" parent="CameraRoot/Camera3D" unique_id=1748934587]
 collision_mask = 8
 
-[node name="PointRing" parent="." unique_id=1117534957 instance=ExtResource("3_gmlin")]
+[node name="Pointer" parent="." unique_id=1117534957 instance=ExtResource("3_gmlin")]
 visible = false
 
 [node name="Sounds" type="Node3D" parent="." unique_id=21676798]
 
 [node name="PickupMask" type="AudioStreamPlayer3D" parent="Sounds" unique_id=968709453]
+stream = SubResource("AudioStreamWAV_gmlin")
 
 [node name="ThrowMask" type="AudioStreamPlayer3D" parent="Sounds" unique_id=42383674]
 
 [node name="Walking" type="AudioStreamPlayer3D" parent="Sounds" unique_id=1043952539]
+
+[node name="PickupArea" type="Area3D" parent="." unique_id=552054473]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.94179547, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PickupArea" unique_id=32931069]
+shape = SubResource("CylinderShape3D_gmlin")

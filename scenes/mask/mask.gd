@@ -10,6 +10,10 @@ var type: TYPE
 ## if true, mask will float toward player
 var float_to_player: bool = false
 
+var player_anchor = null
+var throw_destination = null
+
+
 var _unpickable_time = 0
 
 enum TYPE {
