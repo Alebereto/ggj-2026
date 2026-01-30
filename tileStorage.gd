@@ -1,5 +1,5 @@
 extends RefCounted
-class_name Storage
+class_name Tiles
 
 enum TILETYPES {
 	GROUND,
@@ -8,7 +8,7 @@ enum TILETYPES {
 	DEBRIS
 }
 
-class Tile:
+class Tile extends RefCounted:
 	var hp: float
 	var max_hp: float
 
@@ -33,56 +33,63 @@ const mapToTileTypes = {
 const INT_MAX := 2147483647
 const INT_MIN := -2147483648
 
-var tile_storage: Array = []
-var min_x := INT_MAX
-var max_x := INT_MIN
-var min_z := INT_MAX
-var max_z := INT_MIN
+var _tile_storage: Array = []
+var _min_x := INT_MAX
+var _max_x := INT_MIN
+var _min_z := INT_MAX
+var _max_z := INT_MIN
 
 func create_tile_storage(grid_map: GridMap) -> void:
-	tile_storage.clear()
-	min_x = INT_MAX
-	max_x = INT_MIN
-	min_z = INT_MAX
-	max_z = INT_MIN
+	_tile_storage.clear()
+	_min_x = INT_MAX
+	_max_x = INT_MIN
+	_min_z = INT_MAX
+	_max_z = INT_MIN
 
 	var cells = grid_map.get_used_cells()
 	for cell in cells:
-		if cell.x < min_x:
-			min_x = cell.x
-		if cell.x > max_x:
-			max_x = cell.x
-		if cell.z < min_z:
-			min_z = cell.z
-		if cell.z > max_z:
-			max_z = cell.z
+		if cell.x < _min_x:
+			_min_x = cell.x
+		if cell.x > _max_x:
+			_max_x = cell.x
+		if cell.z < _min_z:
+			_min_z = cell.z
+		if cell.z > _max_z:
+			_max_z = cell.z
 
-	for i in range(max_x - min_x + 1):
-		tile_storage.append([])
-		for j in range(max_z - min_z + 1):
-			tile_storage[i].append(Hole.new())
+	for i in range(_max_x - _min_x + 1):
+		_tile_storage.append([])
+		for j in range(_max_z - _min_z + 1):
+			_tile_storage[i].append(Hole.new())
 
 	for cell in cells:
+		var pos = from_gridmap(cell)
+
 		var type = grid_map.get_cell_item(cell)
 		var enumtype = mapToTileTypes.get(type, TILETYPES.HOLE)
 		match enumtype:
 			TILETYPES.BUILDING:
-				set_tile_storage_by_cell(cell, Building.new())
+				_tile_storage[pos.x][pos.y] = Building.new()
 			TILETYPES.GROUND:
-				set_tile_storage_by_cell(cell, Ground.new())
+				_tile_storage[pos.x][pos.y] = Ground.new()
 
 func from_gridmap(cell: Vector3i) -> Vector2i:
-	return Vector2i(cell.x - min_x, cell.z - min_z)
+	return Vector2i(cell.x - _min_x, cell.z - _min_z)
 
 func to_gridmap(coords: Vector2i) -> Vector3i:
-	return Vector3i(coords.x + min_x, 0, coords.y + min_z)
+	return Vector3i(coords.x + _min_x, 0, coords.y + _min_z)
 
 func from_world(pos: Vector3) -> Vector2i:
+	# TODO: do
 	return from_gridmap(pos)
 
 func to_world(coords: Vector2i) -> Vector3:
+	#TODO: do
 	return to_gridmap(coords)
 
 func set_tile_storage_by_cell(cell: Vector3i, tile: Tile) -> void:
 	var pos = from_gridmap(cell)
-	tile_storage[pos.x][pos.y] = tile
+	_tile_storage[pos.x][pos.y] = tile
+
+func get_tile(coords : Vector2i) -> Tile:
+	return _tile_storage[coords.x][coords.y]

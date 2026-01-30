@@ -1,4 +1,4 @@
 extends Node
 
 
-var TILE_CLASS = Storage.new()
+var TILE_ARRAY = Tiles.new()
