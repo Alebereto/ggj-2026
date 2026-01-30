@@ -21,3 +21,6 @@ render_target_update_mode = 4
 [node name="Player" parent="SubViewportContainer/SubViewport" unique_id=2124622766 instance=ExtResource("1_lnu2h")]
 
 [node name="City" parent="SubViewportContainer/SubViewport" unique_id=1633328635 instance=ExtResource("1_yqjtg")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=467999462]
+transform = Transform3D(1, 0, 0, 0, -0.003700053, 0.99999315, 0, -0.99999315, -0.003700053, 0, 4.8726435, 0)
