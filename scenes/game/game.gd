@@ -17,22 +17,6 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
-
-func throw_mask(mask_type: Mask.TYPE, starting_global_pos: Vector3, destination_global_pos: Vector3):
-	var mask: Mask = MASK_SCENE.instantiate()
-	mask.type = mask_type
-	#FIX: dont need global pos????????
-	mask.position = starting_global_pos
-	mask.throw_destination = destination_global_pos
-
-	_masks_root.add_child(mask)
-	print("yipee!")
-
-func command_minion(mask_type, global_destination) -> void:
-	#TODO: convert global destination pos to coordinates
-	var grid_pos = Vector2i(0,0)
-	_minion_manager.command_minion(mask_type, grid_pos)
-
 func drop_mask(mask_type: Mask.TYPE, global_pos: Vector3):
 	var mask: Mask = MASK_SCENE.instantiate()
 	mask.type = mask_type
@@ -49,3 +33,20 @@ func suck_mask(mask_type: Mask.TYPE, global_pos: Vector3):
 
 	_masks_root.add_child(mask)
 
+
+## signal calls ===========================
+
+func command_minion(mask_type, global_destination) -> void:
+	#TODO: convert global destination pos to coordinates
+	var grid_pos = Vector2i(0,0)
+	_minion_manager.command_minion(mask_type, grid_pos)
+
+func throw_mask(mask_type: Mask.TYPE, starting_global_pos: Vector3, destination_global_pos: Vector3):
+	var mask: Mask = MASK_SCENE.instantiate()
+	mask.type = mask_type
+	#FIX: dont need global pos????????
+	mask.position = starting_global_pos
+	mask.throw_destination = destination_global_pos
+
+	_masks_root.add_child(mask)
+	print("yipee!")
