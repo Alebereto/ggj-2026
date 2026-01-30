@@ -22,5 +22,3 @@ transform = Transform3D(1.0000001, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 0, 0, 0)
 
 [node name="Camera3D" type="Camera3D" parent="CameraRoot" unique_id=806551045]
 transform = Transform3D(0.9999999, 0, 0, 0, 0.7808122, 0.6247659, 0, -0.6247658, 0.780812, 0, 1.9986739, 1.9034116)
-
-[node name="Mouse" type="Node3D" parent="." unique_id=813356532]
