@@ -43,14 +43,15 @@ class Debris extends Tile:
 
 const gridmapIntToEnum = {
 	1: TILETYPES.GROUND,
-	0: TILETYPES.BUILDING
+	0: TILETYPES.BUILDING,
+	3: TILETYPES.BUILDING
 }
 
-const enumToGridmapInt ={
-   TILETYPES.GROUND : 1,
+const enumToGridmapInt = {
+	TILETYPES.GROUND : 1,
 	TILETYPES.BUILDING  : 0,
 	TILETYPES.HOLE : -1,
-	TILETYPES.DEBRIS : 2
+	TILETYPES.DEBRIS : 4
 }
 
 const INT_MAX := 2147483647
