@@ -24,13 +24,14 @@ enum STATE{
 @export var move_to_speed = 1
 
 @export var follow_speed = 2.5
-@export var angle_random = 10
+@export var angle_random = 25
+@export var follow_lerp_strength = 0.4
 
 var _follow_waiting = true
 var _follow_angle_offset: float = 0.0
-var _free_move_timer: float = 0.0
-var _free_move_target_dir: Vector2 = Vector2(0,0)
-var _free_move_direction: Vector2 = Vector2(0,0)
+var _move_timer: float = 0.0
+var _move_target_velocity: Vector2 = Vector2(0,0)
+var _move_velocity: Vector2 = Vector2(0,0)
 
 func _ready() -> void:
 	_pickup_area.body_entered.connect(_pickup_area_entered)
@@ -44,7 +45,6 @@ func _physics_process(delta: float) -> void:
 		STATE.UNEMPLOYED:
 			_move_randomly(delta)
 		STATE.FOLLOWING:
-			
 			_move_randomly_to(delta, Globals.PLAYER_POSITION)
 		STATE.TRAVELING:
 			_move_to(delta, Vector3(0,0,0))
@@ -65,27 +65,31 @@ func _move_to(delta : float, global_pos: Vector3, speed = 2):
 
 func _move_randomly_to(delta:float, global_pos: Vector3):
 	var speed = follow_speed
-	_free_move_timer -= delta
+	_move_timer -= delta
 	# Decide if to walk or not
-	if _free_move_timer < 0:
+	if _move_timer < 0:
 		_follow_waiting = not _follow_waiting
 		if _follow_waiting:
-			_free_move_timer = rng.randf_range(0.15, 0.67)
+			_move_timer = rng.randf_range(0.15, 0.67)
 		else:
-			_free_move_timer = rng.randf_range(1, 2)
+			_move_timer = rng.randf_range(1, 2)
 			_follow_angle_offset = deg_to_rad(rng.randf_range(-angle_random, angle_random))
 		
 	
 	if _follow_waiting:
-		pass
+		_move_target_velocity = Vector2(0,0)
 	else:
 		var dir = global_pos - global_position
 		dir.y = 0
 		dir.rotated(Vector3(0,1,0), _follow_angle_offset)
-		position += dir.normalized() * delta * speed
+		dir = dir.normalized() * speed
+		_move_target_velocity = Vector2(dir.x, dir.z)
 		
-	
-		
+	var speed_factor = (1 - (_move_velocity.length() / speed))
+	speed_factor = speed_factor * speed_factor
+	_move_velocity = lerp(_move_velocity, _move_target_velocity, speed_factor * follow_lerp_strength)
+	position += delta * Vector3(_move_velocity.x, 0, _move_velocity.y)
+	rotation.y = atan2(_move_velocity.x, _move_velocity.y)
 	move_and_slide()
 	
 func _move_randomly(delta: float) -> void:
@@ -93,22 +97,22 @@ func _move_randomly(delta: float) -> void:
 	var move_time_max = 1.5
 	
 	# rotate
-	_free_move_timer -= delta
-	if _free_move_timer < 0:
+	_move_timer -= delta
+	if _move_timer < 0:
 		if rng.randf() > free_move_chance:
-			_free_move_direction = Vector2(0,0)
-			_free_move_target_dir = Vector2(0,0)
+			_move_velocity = Vector2(0,0)
+			_move_target_velocity = Vector2(0,0)
 		else: 
 			var random_angle = rng.randf() * TAU
-			_free_move_target_dir = Vector2(sin(random_angle), cos(random_angle))
+			_move_target_velocity = Vector2(sin(random_angle), cos(random_angle))
 			rotation.y = random_angle
 
-		_free_move_timer = rng.randf_range(move_time_min, move_time_max) # Technically params
+		_move_timer = rng.randf_range(move_time_min, move_time_max) # Technically params
 	
-	_free_move_direction = lerp(_free_move_direction, _free_move_target_dir, free_move_lerp_strength * delta)
+	_move_velocity = lerp(_move_velocity, _move_target_velocity, free_move_lerp_strength * delta)
 	
-	position.x += _free_move_direction.x * delta * free_move_speed
-	position.z += _free_move_direction.y * delta * free_move_speed
+	position.x += _move_velocity.x * delta * free_move_speed
+	position.z += _move_velocity.y * delta * free_move_speed
 	move_and_slide()
 
 
