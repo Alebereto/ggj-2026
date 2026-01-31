@@ -32,6 +32,5 @@ func _connect_signals():
 ## signal calls ===========================
 
 func command_minion(mask_type, global_destination) -> void:
-	#TODO: convert global destination pos to coordinates
-	var grid_pos = Vector2i(0,0)
+	var grid_pos = Globals.TILE_ARRAY.from_world(global_destination)
 	_minion_manager.command_minion(mask_type, grid_pos)

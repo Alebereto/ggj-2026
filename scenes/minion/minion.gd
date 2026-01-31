@@ -9,6 +9,9 @@ signal dropped_mask(mask_type: Mask.TYPE, global_pos: Vector3, vacuum: bool)
 var _current_state: STATE = STATE.FREE
 var _current_mask: Mask.TYPE
 
+func get_state() -> STATE:
+	return _current_state
+
 var _alive: bool = true
 
 @onready var _mask_model: Node3D = $MaskModel
@@ -180,4 +183,3 @@ func get_sucked() -> void:
 func _pickup_area_entered(body) -> void:
 	if body is Mask:
 		if body.can_minion_pickup(): recieve_mask(body)
-

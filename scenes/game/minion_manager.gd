@@ -17,6 +17,25 @@ func _process(delta: float) -> void:
 
 
 func command_minion(mask: Mask.TYPE, grid_destination: Vector2i):
+	var closest_minion = null
+	var closest_distance = INF
+	for child in get_children():
+		if child is Minion:
+			if child.get_state() == Minion.STATE.FOLLOWING:
+				var dist_sqrd = (Globals.player_position - child.global_position).length_squared()
+				if dist_sqrd <= closest_distance:
+					closest_distance = dist_sqrd
+					closest_minion = child
+	
+	if closest_minion == null:
+		print(" no followers ")
+		return
+	
+	closest_minion.die()
+	
+		
+		
+		
 	pass
 
 func create_minion(pos: Vector3):
