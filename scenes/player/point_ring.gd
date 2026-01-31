@@ -19,6 +19,9 @@ const VACUUM_RADIUS: float = 1.0
 @onready var _collision: CollisionShape3D = $Area3D/CollisionShape3D
 @onready var _area: Area3D = $Area3D
 
+@onready var _vacuum_sound: AudioStreamPlayer3D = $Vacuum
+@onready var _vacuum_particles: GPUParticles3D = $VacuumEffect
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	set_mode_none()
@@ -36,14 +39,18 @@ func _set_ring_radius(val: float) -> void:
 ## =========  Public functions ================
 
 func set_mode_none() -> void:
+	vacuum_released()
 	hide()
 
+
 func set_mode_throw() -> void:
+	vacuum_released()
 	show()
 	_ring.mesh.material.albedo_color = THROW_COLOR
 	_set_ring_radius(THROW_RADUIS)
 
 func set_mode_command() -> void:
+	vacuum_released()
 	show()
 	_ring.mesh.material.albedo_color = COMMAND_COLOR
 	_set_ring_radius(COMMAND_RADIUS)
@@ -53,7 +60,14 @@ func set_mode_vacuum() -> void:
 	_ring.mesh.material.albedo_color = VACUUM_COLOR
 	_set_ring_radius(VACUUM_RADIUS)
 
+func vacuum_released():
+	_vacuum_sound.stop()
+	_vacuum_particles.emitting = false
+
 func get_objects_in_zone() -> Array:
+	if not _vacuum_sound.playing: _vacuum_sound.play()
+	_vacuum_particles.emitting = true
+
 	var res: Array = []
 	for body in _area.get_overlapping_bodies():
 		if body is Minion or body is Mask:

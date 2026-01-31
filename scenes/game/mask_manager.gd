@@ -14,14 +14,16 @@ func _process(delta: float) -> void:
 func drop_mask(mask_type: Mask.TYPE, pos: Vector3, vacuum: bool = false):
 	var mask: Mask = MASK_SCENE.instantiate()
 	mask.type = mask_type
+	if vacuum: mask.current_state = Mask.STATE.VACUUMED
+	else: mask.current_state = Mask.STATE.DROPPED
 	mask.position = pos
-	mask.vacuumed = true
 
 	add_child(mask)
 
 func throw_mask(mask_type: Mask.TYPE, starting_global_pos: Vector3, destination_global_pos: Vector3):
 	var mask: Mask = MASK_SCENE.instantiate()
 	mask.type = mask_type
+	mask.current_state = Mask.STATE.THROWN
 	mask.position = starting_global_pos
 	mask.throw_destination = destination_global_pos
 

@@ -8,6 +8,8 @@ const PLAYER_SPEED = 5.0
 const CAMERA_SPEED = 2.2
 const JUMP_VELOCITY = 4.5
 
+const ACTION_ANIMATION_LAST_TIME = 0.4
+
 enum CONTROL_MODE {
 	NONE,
 	THROW,
@@ -28,9 +30,15 @@ var _current_mode: CONTROL_MODE = CONTROL_MODE.NONE
 @onready var _camera_root: Node3D = $CameraRoot
 @onready var _camera: Camera3D = $CameraRoot/Camera3D
 @onready var _ray_cast: RayCast3D = $CameraRoot/Camera3D/RayCast3D
+# sounds
+@onready var _throw_sound: AudioStreamPlayer3D = $Sounds/ThrowMask
 
+# Player values
 @export var _num_build_masks: int = 10
 @export var _num_destroy_masks: int = 10
+
+var _time_since_last_throw := 10000000000.0
+var _time_since_last_command := 10000000000.0
 
 func _ready():
 	_pickup_area.body_entered.connect(_pickup_area_entered)
@@ -38,6 +46,10 @@ func _ready():
 
 
 func _physics_process(delta: float) -> void:
+	# update timers
+	_time_since_last_throw += delta
+	_time_since_last_command += delta
+
 	_move_camera(delta)
 	_move_player(delta)
 	Globals.player_position = global_position
@@ -47,7 +59,19 @@ func _physics_process(delta: float) -> void:
 
 
 func _throw_mask(mask: Mask.TYPE):
-	#TODO: play throwing animation with sound and rotate character
+	_time_since_last_throw = 0.0
+
+	# get throw direction for rotating model angle
+	var direction = global_position.direction_to(_pointer.global_position)
+	_model.rotation.y = atan2(direction.x, direction.z)
+
+	# play throw animation
+	if _animation_player.is_playing(): _animation_player.stop()
+	_animation_player.play("attack-melee-right")
+
+	# play throw sound
+	_throw_sound.play()
+
 	match mask:
 		Mask.TYPE.BUILDER:
 			if _num_build_masks > 0:
@@ -59,6 +83,15 @@ func _throw_mask(mask: Mask.TYPE):
 				_num_destroy_masks -= 1
 
 func _command_minion(mask: Mask.TYPE):
+	_time_since_last_command = 0.0
+	# get throw direction for rotating model angle
+	var direction = global_position.direction_to(_pointer.global_position)
+	_model.rotation.y = atan2(direction.x, direction.z)
+
+	# play command animation
+	if _animation_player.is_playing(): _animation_player.stop()
+	_animation_player.play("interact-right")
+
 	command_minion.emit(mask, _pointer.global_position)
 
 
@@ -127,12 +160,15 @@ func _move_player(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, PLAYER_SPEED)
 		velocity.z = move_toward(velocity.z, 0, PLAYER_SPEED)
 
-	if direction:
-		var vec = Vector3(velocity.x, 0, velocity.z).normalized()
-		_model.rotation.y = atan2(vec.x, vec.z)
-	
-	if velocity.length() > 2.0:
-		_animation_player.play("walk")
+	if _time_since_last_throw > ACTION_ANIMATION_LAST_TIME and _time_since_last_command > ACTION_ANIMATION_LAST_TIME:
+
+		# rotate player model to walk direction
+		if direction:
+			_model.rotation.y = atan2(direction.x, direction.z)
+		
+		# play walk animation
+		if velocity.length() > 2.0:
+			_animation_player.play("walk")
 
 	move_and_slide()
 
@@ -177,11 +213,15 @@ func _get_action():
 			CONTROL_MODE.COMMAND:
 				_command_minion(Mask.TYPE.DESTROYER)
 	# if in vacuum mode and holding click, look for minions in zone
-	if _current_mode == CONTROL_MODE.VACUUM and Input.is_action_pressed("builder_action"):
-		var bodies: Array = _pointer.get_objects_in_zone()
-		for body in bodies:
-			if body is Minion: body.get_sucked()
-			elif body is Mask: body.get_sucked()
+	if _current_mode == CONTROL_MODE.VACUUM:
+		# if currently vacuuming
+		if Input.is_action_pressed("builder_action"):
+			var bodies: Array = _pointer.get_objects_in_zone()
+			for body in bodies:
+				if body is Minion: body.get_sucked()
+				elif body is Mask: body.get_sucked()
+		if Input.is_action_just_released("builder_action"):
+			_pointer.vacuum_released()
 
 # Signals ===================
 

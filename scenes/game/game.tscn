@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bykxo2lthnfm6" path="res://scenes/player/player.tscn" id="3_0sr1o"]
 [ext_resource type="Script" uid="uid://jsj0mqgstk8i" path="res://scenes/game/minion_manager.gd" id="4_lfrn8"]
 [ext_resource type="PackedScene" uid="uid://bsj4e67n4vjey" path="res://scenes/game/city.tscn" id="5_lfrn8"]
-[ext_resource type="Script" path="res://scenes/game/mask_manager.gd" id="6_5i0tg"]
+[ext_resource type="Script" uid="uid://jokh13rr6hp7" path="res://scenes/game/mask_manager.gd" id="6_5i0tg"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_lfrn8"]
 
@@ -20,9 +20,11 @@ script = ExtResource("4_lfrn8")
 script = ExtResource("6_5i0tg")
 
 [node name="City" parent="." unique_id=1633328635 instance=ExtResource("5_lfrn8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.12194216, 0)
+asteroid_timeout = 3.0
 
 [node name="ClickFloor" type="StaticBody3D" parent="City" unique_id=856651387]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.058, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.21841714, 0)
 collision_layer = 8
 collision_mask = 0
 
