@@ -5,6 +5,7 @@
 
 [node name="City" type="Node3D" unique_id=1633328635]
 script = ExtResource("1_58ubr")
+asteroid_timeout = null
 
 [node name="GridMap" type="GridMap" parent="." unique_id=1592961171]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
