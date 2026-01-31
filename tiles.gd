@@ -146,15 +146,19 @@ func get_debris_coords() -> Array:
 func get_ground_coords() -> Array:
 	return _coords[TILETYPES.GROUND].duplicate(true)
 
+## gets gridmap coords, returns array coords
 func from_gridmap(cell: Vector3i) -> Vector2i:
 	return Vector2i(cell.x - _min_x, cell.z - _min_z)
 
+## gets array coords, returns grid map coords
 func to_gridmap(coords: Vector2i) -> Vector3i:
 	return Vector3i(coords.x + _min_x, 0, coords.y + _min_z)
 
+## gets pos in wrold coordinates, returns coords in array
 func from_world(pos: Vector3) -> Vector2i:
 	return from_gridmap(_gridmap.local_to_map(_gridmap.to_local(pos)))
 
+## gets coords in array, returns world coordinates
 func to_world(coords: Vector2i) -> Vector3:
 	return _gridmap.to_global(_gridmap.map_to_local(to_gridmap(coords)))
 
@@ -184,3 +188,4 @@ func set_tile(coords: Vector2i, tile: Tile):
 	_tile_storage[coords.x][coords.y] = tile
 	_coords[tile.type].append(coords)
 	_gridmap.set_cell_item(to_gridmap(coords), tileDataToGridmapItem(tile))
+
