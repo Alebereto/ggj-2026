@@ -12,7 +12,7 @@ signal building_destroyed
 @export var asteroid_timeout:float  = 1.5
 @export var building_timeout: float = 45.0
 @export var building_weight = 15
-var b_odds = 0.1
+var b_odds = 0.12
 var building_count = 0
 var t_array = Globals.TILE_ARRAY
 var rng = RandomNumberGenerator.new()
@@ -28,7 +28,7 @@ func _process(_delta: float) -> void:
 	asteroid_time += _delta
 	building_time += _delta
 	if asteroid_time >= asteroid_timeout:
-		for i in range(rng.randi_range(1,5)):
+		for i in range(rng.randi_range(2,6)):
 			summon_meteor()
 		asteroid_time = 0.0
 	if building_time >= building_timeout:
@@ -123,7 +123,7 @@ func processExcess(tile: Tiles.Tile, pos : Vector2i):
 			if new_tile.type == Tiles.TILETYPES.GROUND:
 				t_array.set_tile(new_pos, Tiles.Debris.new())
 	
-	tile.excess_hp = 0
+	tile.excess_hp = 0.5 * tile.excess_hp
 
 func processTileRepair(tile: Tiles.Tile, pos : Vector2i):
 	$GridMap.set_cell_item(t_array.to_gridmap(pos), t_array.tileDataToGridmapItem(tile))

@@ -708,6 +708,7 @@ mesh = SubResource("ArrayMesh_62rcq")
 [node name="StaticBody3D" type="StaticBody3D" parent="debris_0/pavement" unique_id=1944878899]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="debris_0/pavement/StaticBody3D" unique_id=455119594]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8951817, 0)
 shape = SubResource("ConvexPolygonShape3D_t7v3m")
 
 [node name="pavement dip2" type="Node3D" parent="." unique_id=2096412575]
