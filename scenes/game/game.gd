@@ -14,7 +14,7 @@ const MAX_STRIKES = 3
 var timer = 0.0
 var current_strikes: int = 0
 
-const START_CUTSCENE_END = 4.0
+const START_CUTSCENE_END = 3.0
 var _start_cutscene_time: float = 0.0
 
 var world_ending: bool = false
@@ -26,6 +26,10 @@ func _ready() -> void:
 
 ## Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if world_ending:
+		_start_cutscene_time += delta
+		if _start_cutscene_time > START_CUTSCENE_END: _game_over()
+		return
 	if _player.position.y <= -1 and not Globals.during_cutscene:
 		_player.position.y = 2
 	if not Globals.during_cutscene:
@@ -57,7 +61,12 @@ func _connect_signals():
 
 ## called when the game has ended
 func _game_over():
-	world_ending = true
+	Globals.during_cutscene = true
+	$Cutscene/CutsceneCamera.current = true
+	_ui.hide()
+	#TODO: switch music
+	$Music.stop()
+	_cutscene_player.play("game_end")
 
 ## signal calls ===========================
 
@@ -66,7 +75,7 @@ func on_building_destroyed():
 	current_strikes += 1
 	_ui.set_strike_count(current_strikes)
 	#TODO: play sound?
-	if current_strikes >= MAX_STRIKES: _game_over()
+	if current_strikes >= MAX_STRIKES: world_ending = true
 
 func command_minion(mask_type, global_destination) -> void:
 	var grid_pos = Globals.TILE_ARRAY.from_world(global_destination)
@@ -75,3 +84,5 @@ func command_minion(mask_type, global_destination) -> void:
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "starting_cutscene":
 		_cutscene_start_end()
+	if anim_name == "game_end":
+		get_tree().quit()
