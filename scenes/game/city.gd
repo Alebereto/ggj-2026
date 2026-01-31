@@ -28,7 +28,8 @@ func _process(_delta: float) -> void:
 	asteroid_time += _delta
 	building_time += _delta
 	if asteroid_time >= asteroid_timeout:
-		summon_meteor()
+		for i in range(rng.randi_range(1,5)):
+			summon_meteor()
 		asteroid_time = 0.0
 	if building_time >= building_timeout:
 		summon_building()
