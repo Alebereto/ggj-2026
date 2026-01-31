@@ -51,7 +51,7 @@ func _physics_process(delta: float) -> void:
 		STATE.UNEMPLOYED:
 			_move_randomly(delta)
 		STATE.FOLLOWING:
-			_move_randomly_to(delta, Globals.PLAYER_POSITION)
+			_move_randomly_to(delta, Globals.player_position)
 		STATE.TRAVELING:
 			_move_to(delta, Vector3(0,0,0))
 			
