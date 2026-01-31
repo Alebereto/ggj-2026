@@ -38,7 +38,6 @@ func _ready():
 
 
 func _physics_process(delta: float) -> void:
-
 	_move_camera(delta)
 	_move_player(delta)
 	Globals.player_position = global_position
