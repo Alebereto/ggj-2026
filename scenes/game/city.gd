@@ -10,7 +10,7 @@ const METEOR_SCENE: PackedScene = preload("res://scenes/meteor/meteor.tscn")
 signal building_destroyed
 
 @export var asteroid_timeout:float  = 1.5
-@export var building_timeout: float = 30.0
+@export var building_timeout: float = 45.0
 @export var building_weight = 15
 var b_odds = 0.1
 var building_count = 0
@@ -102,7 +102,7 @@ func processTile(tile: Tiles.Tile, pos : Vector2i):
 			if rng.randi_range(0,2) == 0:
 				mask_type= Mask.TYPE.DESTROYER
 
-			if rng.randi_range(0,4) == 0:
+			if rng.randi_range(0,3) == 0:
 				mask_manager_ref.drop_mask(mask_type, t_array.to_world(pos))
 			t_array.set_tile(pos, Tiles.Ground.new())
 			return
