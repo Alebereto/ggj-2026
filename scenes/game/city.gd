@@ -94,6 +94,9 @@ func processTile(tile: Tiles.Tile, pos : Vector2i):
 	$GridMap.set_cell_item(t_array.to_gridmap(pos), t_array.tileDataToGridmapItem(tile))
 	if tile.hp < 0:
 		if tile.type == Tiles.TILETYPES.GROUND:
+			t_array.set_tile(pos, Tiles.Dip.new())
+			return
+		if tile.type == Tiles.TILETYPES.DIP:
 			t_array.set_tile(pos, Tiles.Hole.new())
 			return
 		if tile.type == Tiles.TILETYPES.BUILDING or tile.type == Tiles.TILETYPES.DEBRIS:

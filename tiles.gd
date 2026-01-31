@@ -25,8 +25,8 @@ class Building extends Tile:
 class Ground extends Tile:
 	func _init() -> void:
 		type = TILETYPES.GROUND
-		max_hp = 100
-		hp = 100
+		max_hp = 30
+		hp = 30
 	pass
 
 class Hole extends Tile:
@@ -46,8 +46,8 @@ class Debris extends Tile:
 class Dip extends Tile:
 	func _init() -> void:
 		type = TILETYPES.DIP
-		max_hp = 50
-		hp = 50
+		max_hp = 60
+		hp = 60
 	pass
 	
 class Fountain extends Tile:
