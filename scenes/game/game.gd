@@ -55,7 +55,12 @@ func _connect_signals():
 
 ## called when the game has ended
 func _game_over():
+	Globals.during_cutscene = true
+	$Cutscene/CutsceneCamera.current = true
+	_ui.hide()
+	#TODO: switch music
 	world_ending = true
+	_cutscene_player.play("game_end")
 
 ## signal calls ===========================
 
@@ -73,3 +78,5 @@ func command_minion(mask_type, global_destination) -> void:
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "starting_cutscene":
 		_cutscene_start_end()
+	if anim_name == "game_end":
+		get_tree().quit()
