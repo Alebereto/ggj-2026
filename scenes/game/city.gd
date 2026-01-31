@@ -139,5 +139,8 @@ func processTileRepair(tile: Tiles.Tile, pos : Vector2i):
 		if tile.type == Tiles.TILETYPES.HOLE:
 			t_array.set_tile(pos, Tiles.Dip.new())
 			return
+			
+	if tile.type == Tiles.TILETYPES.GROUND and tile.excess_hp > 50:
+			t_array.set_tile(pos, Tiles.Debris.new())
 		
 	pass
