@@ -55,6 +55,7 @@ func _ready():
 
 
 func _physics_process(delta: float) -> void:
+	if Globals.during_cutscene: return
 	# update timers
 	_time_since_last_throw += delta
 	_time_since_last_command += delta

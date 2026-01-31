@@ -15,7 +15,6 @@ var timer = 0.0
 var current_strikes: int = 0
 
 const START_CUTSCENE_END = 4.0
-var _during_cutscene: bool = true
 var _start_cutscene_time: float = 0.0
 
 var world_ending: bool = false
@@ -27,7 +26,7 @@ func _ready() -> void:
 
 ## Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if not _during_cutscene:
+	if not Globals.during_cutscene:
 		timer += delta
 	if not world_ending:
 		_ui.set_time_label(timer)
@@ -38,12 +37,12 @@ func _process(delta: float) -> void:
 ## Called when the game begins
 func _game_begin():
 	# Play starting cutscene
-	_during_cutscene = true
+	Globals.during_cutscene = true
 	_ui.hide()
 	_cutscene_player.play("starting_cutscene")
 
 func _cutscene_start_end():
-	_during_cutscene = false
+	Globals.during_cutscene = false
 	$Cutscene/CutsceneCamera.current = false
 	_ui.show()
 
