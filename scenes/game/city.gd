@@ -127,7 +127,10 @@ func processExcess(tile: Tiles.Tile, pos : Vector2i):
 
 func processTileRepair(tile: Tiles.Tile, pos : Vector2i):
 	$GridMap.set_cell_item(t_array.to_gridmap(pos), t_array.tileDataToGridmapItem(tile))
-	if tile.hp > tile.max_hp:
+	if tile.type == Tiles.TILETYPES.DIP:
+		print(tile.hp)
+	
+	if tile.hp >= tile.max_hp:
 
 		if tile.type == Tiles.TILETYPES.DIP:
 			t_array.set_tile(pos, Tiles.Ground.new())
