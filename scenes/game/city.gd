@@ -44,13 +44,17 @@ func summon_meteor():
 
 func attack(pos: Vector2i, damage = 1):
 	t_array.get_tile(pos).hp -= damage
-	print(t_array.get_tile(pos).hp)
 	processTile(t_array.get_tile(pos), pos)
 	pass
 
 func repair(pos: Vector2i, damage = 1):
-	t_array.get_tile(pos).hp += damage
-	processTile(t_array.get_tile(pos), pos)
+	var max_hp = t_array.get_tile(pos).max_hp
+	var tile = t_array.get_tile(pos)
+	tile.hp += damage
+	if tile.hp > max_hp:
+		tile.excess_hp += tile.hp-max_hp
+		tile.hp = max_hp
+	processTile(tile, pos)
 	pass
 
 func processTile(tile: Tiles.Tile, pos : Vector2i):
