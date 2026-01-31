@@ -47,6 +47,7 @@ transform = Transform3D(1.0000001, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 0, 0, 0)
 
 [node name="Camera3D" type="Camera3D" parent="CameraRoot" unique_id=806551045]
 transform = Transform3D(0.9999999, 0, 0, 0, 0.49497345, 0.86890817, 0, -0.86890805, 0.4949734, 0, 4.8450556, 2.6569085)
+cull_mask = 1047555
 current = true
 
 [node name="RayCast3D" type="RayCast3D" parent="CameraRoot/Camera3D" unique_id=1748934587]
