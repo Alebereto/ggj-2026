@@ -51,9 +51,9 @@ enum STATE {
 @export var follow_lerp_strength = 0.4
 
 @export var working_damage_cooldown = 1.5
-@export var working_repair_cooldown = 1.1
+@export var working_repair_cooldown = 0.3
 @export var working_damage = 5
-@export var working_repair_damage = 4
+@export var working_repair_damage = 1
 
 
 var _work_timer = 0.0
@@ -125,10 +125,17 @@ func working_loop(delta : float):
 func do_work():
 	if _current_mask == Mask.TYPE.BUILDER:
 		repair.emit(_current_task_2d, working_repair_damage)
-		_animation_player.play("interact-left")
+		_animation_player.stop()
+		if Globals.rng.randi_range(0,1) == 0:
+			_animation_player.play("interact-right")
+		else:
+			_animation_player.play("interact-left")
+		_animation_player.advance(0)
 	elif _current_mask == Mask.TYPE.DESTROYER:
 		attack.emit(_current_task_2d, working_damage)
+		_animation_player.stop()
 		_animation_player.play("attack-melee-right")
+		_animation_player.advance(0)
 	
 	
 	

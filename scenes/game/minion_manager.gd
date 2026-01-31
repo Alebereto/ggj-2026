@@ -17,6 +17,9 @@ func _process(delta: float) -> void:
 
 
 func command_minion(mask: Mask.TYPE, grid_destination: Vector2i):
+	var target_tile = Globals.TILE_ARRAY.get_tile(grid_destination)
+	if target_tile.type == Tiles.TILETYPES.GROUND:
+		return
 	var closest_minion = null
 	var closest_distance = INF
 	for child in get_children():
