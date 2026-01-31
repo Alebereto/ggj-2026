@@ -69,7 +69,9 @@ const gridmapIntToEnum = {
 	7: TILETYPES.DEBRIS,
 	8: TILETYPES.DEBRIS,
 	9: TILETYPES.BUILDING,
-	10: TILETYPES.DIP
+	10: TILETYPES.DIP,
+	11: TILETYPES.BUILDING,
+	12: TILETYPES.BUILDING
 }
 
 func tileDataToGridmapItem(tile) -> int:
@@ -79,6 +81,12 @@ func tileDataToGridmapItem(tile) -> int:
 		TILETYPES.GROUND:
 			return 1
 		TILETYPES.BUILDING:
+			
+			
+			if hp >= 80 and excess_hp >= 60:
+				return 12
+			if hp >= 80 and excess_hp >= 30:
+				return 11
 			if hp >= 80 and excess_hp >= 10:
 				return 9
 			if hp <= 33:

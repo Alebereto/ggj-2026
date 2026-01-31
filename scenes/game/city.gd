@@ -95,8 +95,13 @@ func processTile(tile: Tiles.Tile, pos : Vector2i):
 		if tile.type == Tiles.TILETYPES.DIP:
 			t_array.set_tile(pos, Tiles.Hole.new())
 			return
-		if tile.type == Tiles.TILETYPES.BUILDING or tile.type == Tiles.TILETYPES.DEBRIS:
-			if tile.type == Tiles.TILETYPES.BUILDING: on_building_destroyed.emit()
+			
+		if tile.type == Tiles.TILETYPES.BUILDING:
+			on_building_destroyed.emit()
+			t_array.set_tile(pos, Tiles.Dip.new())
+			
+			
+		if tile.type == Tiles.TILETYPES.DEBRIS:
 			t_array.set_tile(pos, Tiles.Ground.new())
 			return
 		
