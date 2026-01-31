@@ -47,6 +47,11 @@ enum STATE {
 @export var angle_random = 25
 @export var follow_lerp_strength = 0.4
 
+@export var working_cooldown = 1.1
+@export var working_damage = 3
+
+var _work_timer = 0.0
+
 var _follow_waiting = true
 var _follow_angle_offset: float = 0.0
 var _move_timer: float = 0.0
@@ -57,6 +62,7 @@ var _move_velocity: Vector2 = Vector2(0,0)
 var _time_to_death = 15000.0 # TODO: random 100 - 200
 # time corpse remains
 var _corpse_time = 3.0
+
 
 func _ready() -> void:
 	_pickup_area.body_entered.connect(_pickup_area_entered)
@@ -81,6 +87,7 @@ func _physics_process(delta: float) -> void:
 				attempt_start_working()
 			STATE.WORKING:
 				velocity = Vector3(0,0,0)
+				working_loop(delta)
 				pass
 		_walk_animation()
 	else:
@@ -93,6 +100,16 @@ func attempt_start_working():
 	var error := -(global_position - _current_task_3d)
 	if error.length_squared() < 3:
 		_current_state = STATE.WORKING
+
+
+func working_loop(delta : float):
+	_work_timer -= delta
+	if _work_timer <= 0:
+		do_work()
+
+func do_work():
+	
+
 
 ## if minion is fast enough, play walk animaiton
 func _walk_animation() -> void:
