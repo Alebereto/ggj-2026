@@ -10,7 +10,7 @@ const BUILDING_DESTROYED_ICON = preload("res://assets/mask/happy.png")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	_set_strike_count(0)
 
 func set_time_label(time_elapsed) -> void:
 	var minutes = int(time_elapsed/60)

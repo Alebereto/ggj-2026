@@ -38,8 +38,14 @@ var _current_mode: CONTROL_MODE = CONTROL_MODE.NONE
 @onready var _pickup_sound: AudioStreamPlayer3D = $Sounds/PickupMask
 
 # Player values
-@export var _num_build_masks: int = 10
-@export var _num_destroy_masks: int = 10
+var _num_build_masks: int = 5
+var _num_destroy_masks: int = 5
+func _set_build_masks(count: int) -> void:
+	_num_build_masks = count
+	new_masks_count.emit(_num_build_masks, _num_destroy_masks)
+func _set_destroy_masks(count: int) -> void:
+	_num_destroy_masks = count
+	new_masks_count.emit(_num_build_masks, _num_destroy_masks)
 
 var _time_since_last_throw := 10000000000.0
 var _time_since_last_command := 10000000000.0
@@ -85,16 +91,14 @@ func _throw_mask(mask: Mask.TYPE):
 				_throw_sound.play()
 
 				throw_mask.emit(mask, source_dest , throw_dest)
-				new_masks_count.emit(_num_build_masks, _num_destroy_masks)
-				_num_build_masks -= 1
+				_set_build_masks(_num_build_masks - 1)
 		Mask.TYPE.DESTROYER:
 			if _num_destroy_masks > 0:
 				# play throw sound
 				_throw_sound.play()
 
 				throw_mask.emit(mask, source_dest , throw_dest)
-				new_masks_count.emit(_num_build_masks, _num_destroy_masks)
-				_num_destroy_masks -= 1
+				_set_destroy_masks(_num_destroy_masks - 1)
 
 func _command_minion(mask: Mask.TYPE):
 	_time_since_last_command = 0.0
@@ -128,9 +132,9 @@ func recieve_mask(mask: Mask) -> void:
 	if not mask: return
 	match mask.type:
 		Mask.TYPE.BUILDER:
-			_num_build_masks += 1
+			_set_build_masks(_num_build_masks+1)
 		Mask.TYPE.DESTROYER:
-			_num_destroy_masks += 1
+			_set_destroy_masks(_num_destroy_masks+1)
 	mask.self_destruct()
 
 
