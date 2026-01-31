@@ -4,6 +4,7 @@ class_name Minion extends CharacterBody3D
 var rng = RandomNumberGenerator.new()
 
 signal dropped_mask(mask_type: Mask.TYPE, global_pos: Vector3, vacuum: bool)
+signal attack(coords: Vector2i, damage)
 
 
 var _current_state: STATE = STATE.FREE
@@ -108,7 +109,7 @@ func working_loop(delta : float):
 		do_work()
 
 func do_work():
-	
+	attack.emit(_current_task_2d, working_damage)
 
 
 ## if minion is fast enough, play walk animaiton

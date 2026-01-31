@@ -33,14 +33,15 @@ func command_minion(mask: Mask.TYPE, grid_destination: Vector2i):
 	
 	closest_minion.do_task(grid_destination)
 	
-		
-		
-		
+	pass
+
+func minion_attack(coords: Vector2i, damage):
 	pass
 
 func create_minion(pos: Vector3):
 	var minion: Minion = MINION_SCENE.instantiate()
 	minion.dropped_mask.connect(_drop_mask)
+	minion.attack.connect(minion_attack)
 	minion.position = pos
 	add_child(minion)
 
