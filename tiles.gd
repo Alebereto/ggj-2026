@@ -66,6 +66,7 @@ const INT_MIN := -2147483648
 
 var _gridmap = GridMap.new()
 var _tile_storage: Array = []
+var _buildings_coords: Array = []
 var _min_x := INT_MAX
 var _max_x := INT_MIN
 var _min_z := INT_MAX
@@ -97,14 +98,23 @@ func create_tile_storage(grid_map: GridMap) -> void:
 
 	for cell in cells:
 		var pos = from_gridmap(cell)
-
 		var type = grid_map.get_cell_item(cell)
 		var enumtype = gridmapIntToEnum.get(type, TILETYPES.HOLE)
 		match enumtype:
 			TILETYPES.BUILDING:
 				_tile_storage[pos.x][pos.y] = Building.new()
+				_buildings_coords.append(pos)
 			TILETYPES.GROUND:
 				_tile_storage[pos.x][pos.y] = Ground.new()
+
+func get_height():
+	return _tile_storage.size()
+
+func get_width():
+	return _tile_storage[0].size()
+	
+func get_building_coords() -> Array:
+	return _buildings_coords.duplicate(true)
 
 func from_gridmap(cell: Vector3i) -> Vector2i:
 	return Vector2i(cell.x - _min_x, cell.z - _min_z)
@@ -113,12 +123,10 @@ func to_gridmap(coords: Vector2i) -> Vector3i:
 	return Vector3i(coords.x + _min_x, 0, coords.y + _min_z)
 
 func from_world(pos: Vector3) -> Vector2i:
-	# TODO: do
-	return from_gridmap(pos)
+	return from_gridmap(_gridmap.local_to_map(_gridmap.to_local(pos)))
 
 func to_world(coords: Vector2i) -> Vector3:
-	#TODO: do
-	return to_gridmap(coords)
+	return _gridmap.to_global(_gridmap.map_to_local(to_gridmap(coords)))
 
 func _check_bounds(offset: Vector2i) -> bool:
 	return (

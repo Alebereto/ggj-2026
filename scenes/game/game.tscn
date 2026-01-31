@@ -25,6 +25,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.3365858)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5865848, 0, 0)
 
 [node name="City" parent="." unique_id=1633328635 instance=ExtResource("5_lfrn8")]
+asteroid_timeout = 3.0
 
 [node name="ClickFloor" type="StaticBody3D" parent="City" unique_id=856651387]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.058, 0)
