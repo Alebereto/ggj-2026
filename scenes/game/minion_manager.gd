@@ -21,7 +21,7 @@ func command_minion(mask: Mask.TYPE, grid_destination: Vector2i):
 	var closest_distance = INF
 	for child in get_children():
 		if child is Minion:
-			if child.get_state() == Minion.STATE.FOLLOWING:
+			if child.get_state() == Minion.STATE.FOLLOWING and child._current_mask == mask:
 				var dist_sqrd = (Globals.player_position - child.global_position).length_squared()
 				if dist_sqrd <= closest_distance:
 					closest_distance = dist_sqrd
@@ -33,14 +33,21 @@ func command_minion(mask: Mask.TYPE, grid_destination: Vector2i):
 	
 	closest_minion.do_task(grid_destination)
 	
-		
-		
-		
+	pass
+
+func minion_attack(coords: Vector2i, damage):
+	$"../City".attack(coords, damage)
+	pass
+func minion_repair(coords: Vector2i, damage):
+	$"../City".repair(coords, damage)
 	pass
 
 func create_minion(pos: Vector3):
 	var minion: Minion = MINION_SCENE.instantiate()
 	minion.dropped_mask.connect(_drop_mask)
+	minion.attack.connect(minion_attack)
+	minion.repair.connect(minion_repair)
+
 	minion.position = pos
 	add_child(minion)
 

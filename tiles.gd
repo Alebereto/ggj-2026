@@ -188,4 +188,3 @@ func set_tile(coords: Vector2i, tile: Tile):
 	_tile_storage[coords.x][coords.y] = tile
 	_coords[tile.type].append(coords)
 	_gridmap.set_cell_item(to_gridmap(coords), tileDataToGridmapItem(tile))
-
