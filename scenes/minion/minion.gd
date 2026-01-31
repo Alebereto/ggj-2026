@@ -8,6 +8,12 @@ signal dropped_mask(mask_type: Mask.TYPE, global_pos: Vector3, vacuum: bool)
 
 var _current_state: STATE = STATE.FREE
 var _current_mask: Mask.TYPE
+var _current_task_2d: Vector2i
+var _current_task_3d: Vector3
+
+
+func get_state() -> STATE:
+	return _current_state
 
 var _alive: bool = true
 
@@ -48,7 +54,7 @@ var _move_target_velocity: Vector2 = Vector2(0,0)
 var _move_velocity: Vector2 = Vector2(0,0)
 
 # how much time until the minion dies :(
-var _time_to_death = 13.0
+var _time_to_death = 15000.0 # TODO: random 100 - 200
 # time corpse remains
 var _corpse_time = 3.0
 
@@ -60,7 +66,8 @@ func _physics_process(delta: float) -> void:
 	if _alive:
 		_time_to_death -= delta
 		if _time_to_death <= 0: die()
-
+		
+		# Movement
 		if not _alive: return
 		match _current_state:
 			STATE.FREE:
@@ -70,13 +77,22 @@ func _physics_process(delta: float) -> void:
 			STATE.FOLLOWING:
 				_move_randomly_to(delta, Globals.player_position)
 			STATE.TRAVELING:
-				_move_to(delta, Vector3(0,0,0))
+				_move_to(delta, _current_task_3d)
+				attempt_start_working()
+			STATE.WORKING:
+				velocity = Vector3(0,0,0)
+				pass
 		_walk_animation()
 	else:
 		_corpse_time -= delta
 		#TODO: a second before deletion call poof
 		if _corpse_time <= 0:
 			queue_free()
+
+func attempt_start_working():
+	var error := -(global_position - _current_task_3d)
+	if error.length_squared() < 3:
+		_current_state = STATE.WORKING
 
 ## if minion is fast enough, play walk animaiton
 func _walk_animation() -> void:
@@ -174,6 +190,10 @@ func _set_mask(mask: Mask.TYPE) -> void:
 			_destroyer_mask_model.show()
 	_mask_model.show()
 	
+func do_task(vec : Vector2i):
+	_current_state = STATE.TRAVELING
+	_current_task_2d = vec
+	_current_task_3d = Globals.TILE_ARRAY.to_world(vec)
 
 ## unset mask from minion
 func _unset_mask() -> void:
@@ -204,4 +224,3 @@ func get_sucked() -> void:
 func _pickup_area_entered(body) -> void:
 	if body is Mask:
 		if body.can_minion_pickup(): recieve_mask(body)
-
