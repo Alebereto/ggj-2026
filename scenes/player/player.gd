@@ -34,6 +34,7 @@ var _current_mode: CONTROL_MODE = CONTROL_MODE.NONE
 @onready var _ray_cast: RayCast3D = $CameraRoot/Camera3D/RayCast3D
 # sounds
 @onready var _throw_sound: AudioStreamPlayer3D = $Sounds/ThrowMask
+@onready var _pickup_sound: AudioStreamPlayer3D = $Sounds/PickupMask
 
 # Player values
 @export var _num_build_masks: int = 10
@@ -121,7 +122,7 @@ func _set_control_mode(mode: CONTROL_MODE) -> void:
 
 ## Player picks up mask
 func recieve_mask(mask: Mask) -> void:
-	#TODO: play pickup sound effect
+	_pickup_sound.play()
 	if not mask: return
 	match mask.type:
 		Mask.TYPE.BUILDER:

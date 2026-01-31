@@ -63,12 +63,23 @@ func _physics_process(delta: float) -> void:
 			if _thrown_time >= AIR_TIME:
 				drop()
 				return
-			if _throw_direction == Vector3.ZERO: _throw_direction = global_position.direction_to(throw_destination)
-			velocity = _throw_direction * THROW_SPEED
 			_model_root.rotate_y(ROTATE_SPEED * delta)
-			move_and_slide()
-	# _unpickable_time += delta
-	# if _unpickable_time >= GRACE_PERIOD: print("YIPEE")
+
+			# get throw direction
+			if _throw_direction == Vector3.ZERO: _throw_direction = global_position.direction_to(throw_destination)
+			# set velocity
+			velocity = _throw_direction * THROW_SPEED
+			# become slower
+			_throw_direction *= 0.99
+
+			# check if bouced
+			var collision = move_and_collide(velocity * delta)
+			if collision:
+				var normal = collision.get_normal()
+				normal.y = 0
+				normal = normal.normalized()
+				# decreese speed after bounce
+				_throw_direction = 0.7 * _throw_direction.bounce(normal)
 
 
 func _set_mask_model() -> void:

@@ -87,6 +87,7 @@ destroyer_action={
 3d_physics/layer_2="Minion"
 3d_physics/layer_3="Masks"
 3d_physics/layer_4="ClickFloor"
+3d_physics/layer_5="Buildings"
 
 [physics]
 
