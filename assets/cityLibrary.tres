@@ -2,11 +2,11 @@
 
 [ext_resource type="Texture2D" uid="uid://k6f5xxl8mufc" path="res://assets/buildings/Textures/colormap.png" id="1_guouq"]
 [ext_resource type="Texture2D" uid="uid://d2wjlp3wjahcu" path="res://assets/buildings/building_dent_colormap.png" id="3_vmfda"]
-[ext_resource type="Texture2D" uid="uid://eybxmyl7bnpl" path="res://assets/buildings/building_dent_2_colormap.png" id="3_xbxas"]
+[ext_resource type="Texture2D" uid="uid://p42ay4h7vjv1" path="res://assets/buildings/building_dent_2_colormap.png" id="3_xbxas"]
 [ext_resource type="Texture2D" uid="uid://bxx8vl86cbrnu" path="res://assets/buildings/pavement empty_colormap.png" id="4_vmfda"]
-[ext_resource type="Texture2D" uid="uid://byv6670lfchcf" path="res://assets/buildings/pavement dip_colormap.png" id="6_58suu"]
-[ext_resource type="Texture2D" uid="uid://n45lc0ehi4ve" path="res://assets/buildings/debris2_colormap.png" id="6_vmfda"]
-[ext_resource type="Texture2D" uid="uid://ds33emrm0rwnj" path="res://assets/buildings/debris_wall_colormap.png" id="6_xbxas"]
+[ext_resource type="Texture2D" uid="uid://d34yfrmnynnt7" path="res://assets/buildings/pavement dip_colormap.png" id="6_58suu"]
+[ext_resource type="Texture2D" uid="uid://c071w6yhyv7fq" path="res://assets/buildings/debris2_colormap.png" id="6_vmfda"]
+[ext_resource type="Texture2D" uid="uid://bd82t5i1c3tph" path="res://assets/buildings/debris_wall_colormap.png" id="6_xbxas"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_esef8"]
 resource_name = "colormap"
