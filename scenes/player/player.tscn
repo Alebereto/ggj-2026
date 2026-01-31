@@ -8,8 +8,6 @@
 radius = 0.244
 height = 0.754
 
-[sub_resource type="AudioStreamWAV" id="AudioStreamWAV_gmlin"]
-
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_gmlin"]
 height = 4.048
 radius = 0.41
@@ -40,9 +38,9 @@ collision_mask = 8
 visible = false
 
 [node name="Sounds" type="Node3D" parent="." unique_id=21676798]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.40273297, 0)
 
 [node name="PickupMask" type="AudioStreamPlayer3D" parent="Sounds" unique_id=968709453]
-stream = SubResource("AudioStreamWAV_gmlin")
 
 [node name="ThrowMask" type="AudioStreamPlayer3D" parent="Sounds" unique_id=42383674]
 
