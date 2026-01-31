@@ -129,7 +129,7 @@ func _set_control_mode(mode: CONTROL_MODE) -> void:
 
 ## Player picks up mask
 func recieve_mask(mask: Mask) -> void:
-	_pickup_sound.play()
+	_pickup_sound.play(0.26)
 	if not mask: return
 	match mask.type:
 		Mask.TYPE.BUILDER:

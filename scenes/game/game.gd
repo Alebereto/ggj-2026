@@ -73,7 +73,7 @@ func _game_over():
 func on_building_destroyed():
 	current_strikes += 1
 	_ui.set_strike_count(current_strikes)
-	#TODO: play sound?
+	$BuildingBreak.play()
 	if current_strikes >= MAX_STRIKES: world_ending = true
 
 func command_minion(mask_type, global_destination) -> void:

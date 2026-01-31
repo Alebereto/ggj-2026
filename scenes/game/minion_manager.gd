@@ -9,14 +9,15 @@ var rng = RandomNumberGenerator.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	create_minion(Vector3(1,0,0))
-	create_minion(Vector3(4,0,0))
+	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-var minion_timout = 15.0
-var minion_timer = 0.0
+var minion_timout = 13.0
+var minion_timer = 1000.0
+
 func _process(delta: float) -> void:
-	minion_timer += delta
+	if not Globals.during_cutscene:
+		minion_timer += delta
 	if minion_timer >= minion_timout:
 		var t_array = Globals.TILE_ARRAY
 		var buildings = t_array.get_building_coords()
