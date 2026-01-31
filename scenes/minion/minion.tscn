@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" uid="uid://bg4rajm3ktfie" path="res://scenes/minion/minion.gd" id="1_syvbi"]
 [ext_resource type="PackedScene" uid="uid://f2nmspntwlfx" path="res://assets/minion/minion_model.tscn" id="1_t6n5l"]
-[ext_resource type="PackedScene" uid="uid://cm4cd63nehuje" path="res://assets/mask/mask_model.tscn" id="3_ojsii"]
+[ext_resource type="PackedScene" uid="uid://cm4cd63nehuje" path="res://assets/mask/builder_mask.tscn" id="3_ojsii"]
+[ext_resource type="PackedScene" uid="uid://v0iy2l8qvqbd" path="res://assets/mask/destroyer_mask.tscn" id="4_i2cha"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ojsii"]
 radius = 0.228
@@ -20,10 +21,6 @@ shape = SubResource("CapsuleShape3D_ojsii")
 
 [node name="MinionModel" parent="." unique_id=1009020540 instance=ExtResource("1_t6n5l")]
 
-[node name="Mask" parent="." unique_id=1559721786 instance=ExtResource("3_ojsii")]
-transform = Transform3D(3.355, 0, 0, 0, 3.2569928, 0.80499876, 0, -0.80499876, 3.2569928, 0, 0.5383165, 0.11494282)
-visible = false
-
 [node name="Sounds" type="Node3D" parent="." unique_id=69769514]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3836214, 0)
 
@@ -36,7 +33,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3836214, 0)
 [node name="AudioStreamPlayer3D4" type="AudioStreamPlayer3D" parent="Sounds" unique_id=1010773914]
 
 [node name="PickupArea" type="Area3D" parent="." unique_id=224783206]
+collision_layer = 0
+collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PickupArea" unique_id=135269160]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.40442213, 0)
 shape = SubResource("CylinderShape3D_ojsii")
+
+[node name="MaskModel" type="Node3D" parent="." unique_id=527941449]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.578914, 0.09697795)
+visible = false
+
+[node name="BuilderMaskModel" parent="MaskModel" unique_id=1559721786 instance=ExtResource("3_ojsii")]
+transform = Transform3D(3.3, 0, 0, 0, 3.2019758, 0.7983423, 0, -0.7983423, 3.2019758, 0, 0, 0)
+visible = false
+
+[node name="DestroyerMaskModel" parent="MaskModel" unique_id=125649691 instance=ExtResource("4_i2cha")]
+transform = Transform3D(3.3, 0, 0, 0, 3.2019758, 0.7983423, 0, -0.7983423, 3.2019758, 0, 0, 0)
+visible = false

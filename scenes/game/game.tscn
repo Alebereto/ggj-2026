@@ -3,8 +3,8 @@
 [ext_resource type="Script" uid="uid://dchi7l0tgdj7m" path="res://scenes/game/game.gd" id="1_sul5r"]
 [ext_resource type="PackedScene" uid="uid://bykxo2lthnfm6" path="res://scenes/player/player.tscn" id="3_0sr1o"]
 [ext_resource type="Script" uid="uid://jsj0mqgstk8i" path="res://scenes/game/minion_manager.gd" id="4_lfrn8"]
-[ext_resource type="PackedScene" uid="uid://dn1q8rllncccr" path="res://scenes/minion/minion.tscn" id="5_5i0tg"]
 [ext_resource type="PackedScene" uid="uid://bsj4e67n4vjey" path="res://scenes/game/city.tscn" id="5_lfrn8"]
+[ext_resource type="Script" uid="uid://jokh13rr6hp7" path="res://scenes/game/mask_manager.gd" id="6_5i0tg"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_lfrn8"]
 
@@ -13,16 +13,11 @@ script = ExtResource("1_sul5r")
 
 [node name="Player" parent="." unique_id=2124622766 instance=ExtResource("3_0sr1o")]
 
-[node name="MasksRoot" type="Node3D" parent="." unique_id=1449250086]
-
 [node name="MinionManager" type="Node3D" parent="." unique_id=73815026]
 script = ExtResource("4_lfrn8")
 
-[node name="Minion2" parent="MinionManager" unique_id=1922891719 instance=ExtResource("5_5i0tg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.3365858)
-
-[node name="Minion" parent="MinionManager" unique_id=127605839 instance=ExtResource("5_5i0tg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5865848, 0, 0)
+[node name="MaskManager" type="Node3D" parent="." unique_id=2133046773]
+script = ExtResource("6_5i0tg")
 
 [node name="City" parent="." unique_id=1633328635 instance=ExtResource("5_lfrn8")]
 

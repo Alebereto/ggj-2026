@@ -50,6 +50,8 @@ stream = SubResource("AudioStreamWAV_gmlin")
 
 [node name="PickupArea" type="Area3D" parent="." unique_id=552054473]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.94179547, 0)
+collision_layer = 0
+collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PickupArea" unique_id=32931069]
 shape = SubResource("CylinderShape3D_gmlin")

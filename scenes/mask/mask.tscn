@@ -1,11 +1,27 @@
 [gd_scene format=3 uid="uid://dh886bvnkfnsm"]
 
-[ext_resource type="PackedScene" uid="uid://cm4cd63nehuje" path="res://assets/mask/mask_model.tscn" id="1_5goqw"]
+[ext_resource type="PackedScene" uid="uid://cm4cd63nehuje" path="res://assets/mask/builder_mask.tscn" id="1_5goqw"]
 [ext_resource type="Script" uid="uid://b01m3lifcr8fl" path="res://scenes/mask/mask.gd" id="1_modpb"]
+[ext_resource type="PackedScene" uid="uid://v0iy2l8qvqbd" path="res://assets/mask/destroyer_mask.tscn" id="2_0pm64"]
 
-[node name="Mask" type="RigidBody3D" unique_id=1390113374]
+[sub_resource type="BoxShape3D" id="BoxShape3D_61b51"]
+size = Vector3(0.294, 0.348, 0.11)
+
+[node name="Mask" type="CharacterBody3D" unique_id=1408937012]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+collision_layer = 4
+collision_mask = 0
 script = ExtResource("1_modpb")
 
-[node name="Model" parent="." unique_id=1559721786 instance=ExtResource("1_5goqw")]
-transform = Transform3D(2.095, 0, 0, 0, 2.095, 0, 0, 0, 2.095, 0, 0, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1064220392]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.043958366, -1.9214812e-09)
+shape = SubResource("BoxShape3D_61b51")
+
+[node name="Model" type="Node3D" parent="." unique_id=1591709962]
+
+[node name="DestroyerMaskModel" parent="Model" unique_id=125649691 instance=ExtResource("2_0pm64")]
+transform = Transform3D(2.2, 0, 0, 0, 2.2, 0, 0, 0, 2.2, 0, 0, 0)
+visible = false
+
+[node name="BuilderMaskModel" parent="Model" unique_id=1559721786 instance=ExtResource("1_5goqw")]
+transform = Transform3D(2.2, 0, 0, 0, 2.2, 0, 0, 0, 2.2, 0, 0, 0)
