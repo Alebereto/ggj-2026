@@ -26,6 +26,8 @@ func _ready() -> void:
 
 ## Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if _player.position.y <= -1 and not Globals.during_cutscene:
+		_player.position.y = 2
 	if not Globals.during_cutscene:
 		timer += delta
 	if not world_ending:
@@ -33,7 +35,7 @@ func _process(delta: float) -> void:
 	else:
 		#TODO: start shaking camera, then zoom out and watch meteor hit then close game
 		pass
-	
+
 ## Called when the game begins
 func _game_begin():
 	# Play starting cutscene
