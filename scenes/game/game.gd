@@ -20,6 +20,8 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	timer += delta
 	_ui.set_time_label(timer)
+	if _player.position.y <= -1:
+		_player.position.y = 2
 
 ## Called when the game begins
 func _game_begin():
