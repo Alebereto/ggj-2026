@@ -15,7 +15,7 @@ func drop_mask(mask_type: Mask.TYPE, pos: Vector3, vacuum: bool = false):
 	var mask: Mask = MASK_SCENE.instantiate()
 	mask.type = mask_type
 	mask.position = pos
-	mask.vacuumed = true
+	mask.vacuumed = vacuum
 
 	add_child(mask)
 
