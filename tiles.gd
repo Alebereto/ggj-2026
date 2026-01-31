@@ -5,6 +5,7 @@ enum TILETYPES {
 	GROUND,
 	BUILDING,
 	HOLE,
+	DIP,
 	DEBRIS
 }
 
@@ -39,12 +40,22 @@ class Debris extends Tile:
 		max_hp = 50
 		hp = 50
 	pass
+	
+class Dip extends Tile:
+	func _init() -> void:
+		type = TILETYPES.DIP
+		max_hp = 50
+		hp = 50
+	pass
 
 
 const gridmapIntToEnum = {
 	1: TILETYPES.GROUND,
 	0: TILETYPES.BUILDING,
-	3: TILETYPES.BUILDING
+	3: TILETYPES.BUILDING,
+	4: TILETYPES.BUILDING,
+	5: TILETYPES.DIP,
+	6: TILETYPES.GROUND
 }
 
 func tileDataToGridmapItem(tile) -> int:
@@ -53,7 +64,9 @@ func tileDataToGridmapItem(tile) -> int:
 		TILETYPES.GROUND:
 			return 1
 		TILETYPES.BUILDING:
-			if hp <= 50:
+			if hp <= 33:
+				return 4
+			elif hp <= 66:
 				return 3
 			else:
 				return 0

@@ -3,7 +3,9 @@
 [ext_resource type="Texture2D" uid="uid://k6f5xxl8mufc" path="res://assets/buildings/Textures/colormap.png" id="1_uwoha"]
 [ext_resource type="Texture2D" uid="uid://d2wjlp3wjahcu" path="res://assets/buildings/building_dent_colormap.png" id="2_n835h"]
 [ext_resource type="Texture2D" uid="uid://eybxmyl7bnpl" path="res://assets/buildings/building_dent_2_colormap.png" id="3_kv6wl"]
+[ext_resource type="PackedScene" uid="uid://bi8polq20rgre" path="res://assets/buildings/debris2.glb" id="6_nym1l"]
 [ext_resource type="PackedScene" uid="uid://deasw4e8hrf2u" path="res://assets/buildings/pavement dip.glb" id="7_2vxvk"]
+[ext_resource type="PackedScene" uid="uid://casal7i2g8jme" path="res://assets/buildings/debris_wall.glb" id="7_tw5qh"]
 [ext_resource type="Texture2D" uid="uid://bxx8vl86cbrnu" path="res://assets/buildings/pavement empty_colormap.png" id="8_kv6wl"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_esef8"]
@@ -257,6 +259,12 @@ shadow_mesh = SubResource("ArrayMesh_370yg")
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_t7v3m"]
 points = PackedVector3Array(0.5, 0.019359613, 0.5, -0.5, -1.7578963, -0.5, 0.5, -1.7388403, -0.48927784, -0.5, 0.038415637, -0.5, -0.48927784, -1.7388403, 0.5, 0.5, 0.019359613, -0.48927784, -0.48927784, 0.019359613, 0.5, 0.5, -1.7388403, 0.5)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_tw5qh"]
+size = Vector3(1, 2, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kv6wl"]
+size = Vector3(1, 3, 1)
+
 [node name="LibraryExport" type="Node3D" unique_id=1341416380]
 
 [node name="building-small" type="Node3D" parent="." unique_id=2094430140]
@@ -332,3 +340,19 @@ mesh = SubResource("ArrayMesh_scshj")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="pavement empty/pavement empty2/StaticBody3D" unique_id=1958688973]
 shape = SubResource("ConvexPolygonShape3D_t7v3m")
+
+[node name="debris2" parent="." unique_id=1087408113 instance=ExtResource("6_nym1l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5398731, 0, 0.4904623)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="debris2" unique_id=823226098]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="debris2/StaticBody3D" unique_id=1078953408]
+shape = SubResource("BoxShape3D_tw5qh")
+
+[node name="debris_wall" parent="." unique_id=1465476494 instance=ExtResource("7_tw5qh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.7845068, 0, -1.9134548)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="debris_wall" unique_id=1728044941]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="debris_wall/StaticBody3D" unique_id=1063578879]
+shape = SubResource("BoxShape3D_kv6wl")
