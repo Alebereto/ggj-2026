@@ -27,4 +27,3 @@ func command_minion(mask_type, global_destination) -> void:
 	#TODO: convert global destination pos to coordinates
 	var grid_pos = Vector2i(0,0)
 	_minion_manager.command_minion(mask_type, grid_pos)
-
