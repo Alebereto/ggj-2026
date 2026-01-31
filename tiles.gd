@@ -6,7 +6,8 @@ enum TILETYPES {
 	BUILDING,
 	HOLE,
 	DIP,
-	DEBRIS
+	DEBRIS,
+	FOUNTAIN
 }
 
 class Tile extends RefCounted:
@@ -48,11 +49,19 @@ class Dip extends Tile:
 		max_hp = 50
 		hp = 50
 	pass
+	
+class Fountain extends Tile:
+	func _init() -> void:
+		type = TILETYPES.FOUNTAIN
+		max_hp = INT_MAX
+		hp = INT_MAX
+	pass
 
 
 const gridmapIntToEnum = {
 	1: TILETYPES.GROUND,
 	0: TILETYPES.BUILDING,
+	2: TILETYPES.FOUNTAIN,
 	3: TILETYPES.BUILDING,
 	4: TILETYPES.BUILDING,
 	5: TILETYPES.DIP,
@@ -86,11 +95,7 @@ const INT_MIN := -2147483648
 
 var _gridmap = GridMap.new()
 var _tile_storage: Array = []
-var _coords = {
-	TILETYPES.GROUND: [],
-	TILETYPES.BUILDING: [],
-	TILETYPES.DEBRIS: []
-}
+
 var _min_x := INT_MAX
 var _max_x := INT_MIN
 var _min_z := INT_MAX
@@ -129,7 +134,9 @@ func create_tile_storage(grid_map: GridMap) -> void:
 				_tile_storage[pos.x][pos.y] = Building.new()
 			TILETYPES.GROUND:
 				_tile_storage[pos.x][pos.y] = Ground.new()
-		_coords[enumtype].append(pos)
+			TILETYPES.FOUNTAIN:
+				_tile_storage[pos.x][pos.y] = Fountain.new()
+
 
 func get_height():
 	return _tile_storage.size()
@@ -138,13 +145,40 @@ func get_width():
 	return _tile_storage[0].size()
 	
 func get_building_coords() -> Array:
-	return _coords[TILETYPES.BUILDING].duplicate(true)
+	var building: Array = []
+	for i in range(_tile_storage.size()):
+		for j in range(_tile_storage[i].size()):
+			if _tile_storage[i][j].type == TILETYPES.BUILDING:
+				building.append(Vector2i(i, j))
+	
+	return building
 	
 func get_debris_coords() -> Array:
-	return _coords[TILETYPES.DEBRIS].duplicate(true)
+	var debris: Array = []
+	for i in range(_tile_storage.size()):
+		for j in range(_tile_storage[i].size()):
+			if _tile_storage[i][j].type == TILETYPES.DEBRIS:
+				debris.append(Vector2i(i, j))
+	
+	return debris
 	
 func get_ground_coords() -> Array:
-	return _coords[TILETYPES.GROUND].duplicate(true)
+	var ground: Array = []
+	for i in range(_tile_storage.size()):
+		for j in range(_tile_storage[i].size()):
+			if _tile_storage[i][j].type == TILETYPES.GROUND:
+				ground.append(Vector2i(i, j))
+	
+	return ground
+	
+func get_fountain_coords() -> Array:
+	var fountain: Array = []
+	for i in range(_tile_storage.size()):
+		for j in range(_tile_storage[i].size()):
+			if _tile_storage[i][j].type == TILETYPES.FOUNTAIN:
+				fountain.append(Vector2i(i, j))
+	
+	return fountain
 
 ## gets gridmap coords, returns array coords
 func from_gridmap(cell: Vector3i) -> Vector2i:
@@ -183,8 +217,7 @@ func set_tile(coords: Vector2i, tile: Tile):
 	if not _check_bounds(coords):
 		print("Error, tile set not in 2D array %s" % [coords])
 		return
-	var old_type = _tile_storage[coords.x][coords.y].type
-	_coords[old_type].erase(coords)
+
 	_tile_storage[coords.x][coords.y] = tile
-	_coords[tile.type].append(coords)
+
 	_gridmap.set_cell_item(to_gridmap(coords), tileDataToGridmapItem(tile))

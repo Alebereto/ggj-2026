@@ -6,10 +6,15 @@ signal on_building_destroyed
 
 const METEOR_SCENE: PackedScene = preload("res://scenes/meteor/meteor.tscn")
 
+signal building_destroyed
+
 @export var asteroid_timeout:float  = 3.0
+@export var building_timeout: float = 30.0
 @export var building_weight = 5
+var building_count = 0
 var t_array = Globals.TILE_ARRAY
 var rng = RandomNumberGenerator.new()
+
 
 func _ready() -> void:
 	t_array.create_tile_storage($GridMap)
@@ -17,11 +22,17 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
 var asteroid_time = 0.0
+var building_time = 0.0
 func _process(_delta: float) -> void:
 	asteroid_time += _delta
+	building_time += _delta
 	if asteroid_time >= asteroid_timeout:
 		summon_meteor()
 		asteroid_time = 0.0
+	if building_time >= building_timeout:
+		summon_building()
+		building_time = 0.0
+		
 
 func summon_meteor():
 	var height = t_array.get_height()
@@ -44,10 +55,29 @@ func summon_meteor():
 	var meteor = METEOR_SCENE.instantiate()
 	meteor.position = pos
 	add_child(meteor)
+	
+func summon_building():
+	var fountains = t_array.get_fountain_coords()
+	if fountains.is_empty():
+		return
+	var height = t_array.get_height()
+	var width = t_array.get_width()
+	var city_center = Vector2(height/2, width/2)
+	var chosen_fountain
+	var minDistance = INF
+	for fountain in fountains:
+		var current_distance = city_center.distance_to(fountain)
+		if current_distance < minDistance:
+			minDistance = current_distance
+			chosen_fountain = fountain
+	t_array.set_tile(chosen_fountain, t_array.Building.new())
 
 func attack(pos: Vector2i, damage = 1):
-	t_array.get_tile(pos).hp -= damage
-	processTile(t_array.get_tile(pos), pos)
+	var tile = t_array.get_tile(pos)
+	tile.hp -= damage
+	if tile.hp <= 0 and tile.type == Tiles.TILETYPES.BUILDING:
+		building_destroyed.emit()
+	processTile(tile, pos)
 	pass
 
 func repair(pos: Vector2i, damage = 1):
