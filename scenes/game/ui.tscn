@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://b22sbd7ir6cvs"]
 
 [ext_resource type="Script" uid="uid://ce8xdeffqheq4" path="res://scenes/game/ui.gd" id="1_w15o4"]
-[ext_resource type="Texture2D" uid="uid://dsk8pij2ad6pb" path="res://assets/mask/happy.png" id="2_ek8ox"]
-[ext_resource type="Texture2D" uid="uid://bxcfc72wgj0gf" path="res://assets/mask/sad.png" id="3_jmhhc"]
+[ext_resource type="Texture2D" uid="uid://bvyffotaoojpn" path="res://assets/mask/happy.png" id="2_ek8ox"]
+[ext_resource type="Texture2D" uid="uid://bgppbxdtr61d8" path="res://assets/mask/sad.png" id="3_jmhhc"]
 
 [sub_resource type="SystemFont" id="SystemFont_5i0tg"]
 font_names = PackedStringArray("Serif")
@@ -18,6 +18,7 @@ shadow_color = Color(0.13725491, 0.13725491, 0.13725491, 0.5176471)
 shadow_offset = Vector2(2, 2)
 
 [node name="UI" type="MarginContainer" unique_id=1935446065]
+visibility_layer = 2
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
