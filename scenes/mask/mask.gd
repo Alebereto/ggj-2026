@@ -2,7 +2,8 @@ class_name Mask extends CharacterBody3D
 
 const ROTATE_SPEED = 6.0
 const IDLE_ROTATE_SPEED = 5.0
-const SPEED = 5.0
+const THROW_SPEED = 5.0
+const VACUUM_SPEED = 6.0
 
 const AIR_TIME = 1.2
 
@@ -50,7 +51,7 @@ func _physics_process(delta: float) -> void:
 		STATE.VACUUMED:
 			# move toward player and spin
 			var movement_direction = global_position.direction_to(Globals.player_position)
-			velocity = movement_direction * SPEED
+			velocity = movement_direction * VACUUM_SPEED
 			_model_root.rotate_z(ROTATE_SPEED * delta)
 			move_and_slide()
 		STATE.THROWN:
@@ -59,7 +60,7 @@ func _physics_process(delta: float) -> void:
 				drop()
 				return
 			if _throw_direction == Vector3.ZERO: _throw_direction = global_position.direction_to(throw_destination)
-			velocity = _throw_direction * SPEED
+			velocity = _throw_direction * THROW_SPEED
 			_model_root.rotate_z(ROTATE_SPEED * delta)
 			move_and_slide()
 	# _unpickable_time += delta
