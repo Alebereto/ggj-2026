@@ -8,12 +8,14 @@ const PLAYER_SPEED = 5.0
 const CAMERA_SPEED = 2.2
 const JUMP_VELOCITY = 4.5
 
+const THROW_HEIGHT = 0.6
+
 const ACTION_ANIMATION_LAST_TIME = 0.4
 
 enum CONTROL_MODE {
 	NONE,
-	THROW,
-	COMMAND,
+	BUILDERS,
+	DESTROYERS,
 	VACUUM
 }
 
@@ -32,6 +34,7 @@ var _current_mode: CONTROL_MODE = CONTROL_MODE.NONE
 @onready var _ray_cast: RayCast3D = $CameraRoot/Camera3D/RayCast3D
 # sounds
 @onready var _throw_sound: AudioStreamPlayer3D = $Sounds/ThrowMask
+@onready var _pickup_sound: AudioStreamPlayer3D = $Sounds/PickupMask
 
 # Player values
 @export var _num_build_masks: int = 10
@@ -69,17 +72,26 @@ func _throw_mask(mask: Mask.TYPE):
 	if _animation_player.is_playing(): _animation_player.stop()
 	_animation_player.play("attack-melee-right")
 
-	# play throw sound
-	_throw_sound.play()
+	# get source and destination positions
+	var throw_dest = _pointer.global_position
+	throw_dest.y = THROW_HEIGHT
+	var source_dest = global_position
+	source_dest.y = THROW_HEIGHT
 
 	match mask:
 		Mask.TYPE.BUILDER:
 			if _num_build_masks > 0:
-				throw_mask.emit(mask, global_position, _pointer.global_position)
+				# play throw sound
+				_throw_sound.play()
+
+				throw_mask.emit(mask, source_dest , throw_dest)
 				_num_build_masks -= 1
 		Mask.TYPE.DESTROYER:
 			if _num_destroy_masks > 0:
-				throw_mask.emit(mask, global_position, _pointer.global_position)
+				# play throw sound
+				_throw_sound.play()
+
+				throw_mask.emit(mask, source_dest , throw_dest)
 				_num_destroy_masks -= 1
 
 func _command_minion(mask: Mask.TYPE):
@@ -101,16 +113,16 @@ func _set_control_mode(mode: CONTROL_MODE) -> void:
 	match mode:
 		CONTROL_MODE.NONE:
 			_pointer.set_mode_none()
-		CONTROL_MODE.THROW:
-			_pointer.set_mode_throw()
-		CONTROL_MODE.COMMAND:
-			_pointer.set_mode_command()
+		CONTROL_MODE.BUILDERS:
+			_pointer.set_mode_builders()
+		CONTROL_MODE.DESTROYERS:
+			_pointer.set_mode_destroyers()
 		CONTROL_MODE.VACUUM:
 			_pointer.set_mode_vacuum()
 
 ## Player picks up mask
 func recieve_mask(mask: Mask) -> void:
-	#TODO: play pickup sound effect
+	_pickup_sound.play()
 	if not mask: return
 	match mask.type:
 		Mask.TYPE.BUILDER:
@@ -193,34 +205,33 @@ func _move_pointer(_delta: float) -> void:
 ## Get input for player mode
 func _get_mode() -> void:
 	if Input.is_action_just_pressed("mode_vacuum"): _set_control_mode(CONTROL_MODE.VACUUM)
-	elif Input.is_action_just_pressed("mode_command"): _set_control_mode(CONTROL_MODE.COMMAND)
-	elif Input.is_action_just_pressed("mode_throw"): _set_control_mode(CONTROL_MODE.THROW)
+	elif Input.is_action_just_pressed("mode_builders"): _set_control_mode(CONTROL_MODE.BUILDERS)
+	elif Input.is_action_just_pressed("mode_destroyers"): _set_control_mode(CONTROL_MODE.DESTROYERS)
 	elif Input.is_action_just_pressed("mode_none"): _set_control_mode(CONTROL_MODE.NONE)
 
 ## Get input for player action
 func _get_action():
-
-	if Input.is_action_just_pressed("builder_action"):
+	if Input.is_action_just_pressed("throw_mask"):
 		match _current_mode:
-			CONTROL_MODE.THROW:
+			CONTROL_MODE.BUILDERS:
 				_throw_mask(Mask.TYPE.BUILDER)
-			CONTROL_MODE.COMMAND:
-				_command_minion(Mask.TYPE.BUILDER)
-	elif Input.is_action_just_pressed("destroyer_action"):
-		match _current_mode:
-			CONTROL_MODE.THROW:
+			CONTROL_MODE.DESTROYERS:
 				_throw_mask(Mask.TYPE.DESTROYER)
-			CONTROL_MODE.COMMAND:
+	if Input.is_action_just_pressed("command_minion"):
+		match _current_mode:
+			CONTROL_MODE.BUILDERS:
+				_command_minion(Mask.TYPE.BUILDER)
+			CONTROL_MODE.DESTROYERS:
 				_command_minion(Mask.TYPE.DESTROYER)
 	# if in vacuum mode and holding click, look for minions in zone
 	if _current_mode == CONTROL_MODE.VACUUM:
 		# if currently vacuuming
-		if Input.is_action_pressed("builder_action"):
+		if Input.is_action_pressed("throw_mask"):
 			var bodies: Array = _pointer.get_objects_in_zone()
 			for body in bodies:
 				if body is Minion: body.get_sucked()
 				elif body is Mask: body.get_sucked()
-		if Input.is_action_just_released("builder_action"):
+		if Input.is_action_just_released("throw_mask"):
 			_pointer.vacuum_released()
 
 # Signals ===================

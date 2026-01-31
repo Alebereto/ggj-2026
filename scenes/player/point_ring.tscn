@@ -52,9 +52,11 @@ stream = SubResource("AudioStreamWAV_mf8xh")
 
 [node name="Arrow" type="MeshInstance3D" parent="." unique_id=825727557]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4837556, 0)
+cast_shadow = 0
 mesh = SubResource("CylinderMesh_p47bc")
 
 [node name="Ring" type="MeshInstance3D" parent="." unique_id=1117534957]
+cast_shadow = 0
 mesh = SubResource("TorusMesh_gmlin")
 
 [node name="Area3D" type="Area3D" parent="." unique_id=911851039]
