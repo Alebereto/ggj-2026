@@ -59,13 +59,17 @@ class Fountain extends Tile:
 
 
 const gridmapIntToEnum = {
-	1: TILETYPES.GROUND,
 	0: TILETYPES.BUILDING,
+	1: TILETYPES.GROUND,
 	2: TILETYPES.FOUNTAIN,
 	3: TILETYPES.BUILDING,
 	4: TILETYPES.BUILDING,
-	5: TILETYPES.DIP,
-	6: TILETYPES.GROUND
+	5: TILETYPES.DEBRIS,
+	6: TILETYPES.GROUND,
+	7: TILETYPES.DEBRIS,
+	8: TILETYPES.DEBRIS,
+	9: TILETYPES.BUILDING,
+	10: TILETYPES.DIP
 }
 
 func tileDataToGridmapItem(tile) -> int:
@@ -75,6 +79,8 @@ func tileDataToGridmapItem(tile) -> int:
 		TILETYPES.GROUND:
 			return 1
 		TILETYPES.BUILDING:
+			if hp >= 80 and excess_hp >= 10:
+				return 9
 			if hp <= 33:
 				return 4
 			elif hp <= 66:
@@ -84,10 +90,14 @@ func tileDataToGridmapItem(tile) -> int:
 		TILETYPES.DEBRIS:
 			if hp >= 60:
 				return 8
-			else:
+			elif hp >= 21:
 				return 7
+			else:
+				return 5
 		TILETYPES.DIP:
-			return 5
+			return 10
+		TILETYPES.FOUNTAIN:
+			return 2
 	return -1
 
 const INT_MAX := 2147483647
