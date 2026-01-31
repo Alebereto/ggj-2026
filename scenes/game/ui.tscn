@@ -1,0 +1,76 @@
+[gd_scene format=3 uid="uid://b22sbd7ir6cvs"]
+
+[sub_resource type="SystemFont" id="SystemFont_5i0tg"]
+font_names = PackedStringArray("Serif")
+
+[sub_resource type="LabelSettings" id="LabelSettings_bdhmt"]
+font = SubResource("SystemFont_5i0tg")
+font_size = 31
+outline_size = 2
+outline_color = Color(0.2784314, 0.2784314, 0.2784314, 0.47843137)
+shadow_size = 13
+shadow_color = Color(0.13725491, 0.13725491, 0.13725491, 0.5176471)
+shadow_offset = Vector2(2, 2)
+
+[node name="UI" type="MarginContainer" unique_id=159943945]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 50
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1742230842]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 22
+alignment = 1
+
+[node name="TimerLabel" type="Label" parent="HBoxContainer" unique_id=1394054232]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 32
+text = "00:00"
+label_settings = SubResource("LabelSettings_bdhmt")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Masks" type="HBoxContainer" parent="HBoxContainer" unique_id=54126851]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Masks" unique_id=1268669188]
+layout_mode = 2
+
+[node name="BuilderMasks" type="Label" parent="HBoxContainer/Masks" unique_id=1616648121]
+layout_mode = 2
+text = "12"
+label_settings = SubResource("LabelSettings_bdhmt")
+
+[node name="TextureRect2" type="TextureRect" parent="HBoxContainer/Masks" unique_id=1239806200]
+layout_mode = 2
+
+[node name="DestroyerMasks" type="Label" parent="HBoxContainer/Masks" unique_id=548246248]
+layout_mode = 2
+text = "12"
+label_settings = SubResource("LabelSettings_bdhmt")
+
+[node name="Strikes" type="HBoxContainer" parent="HBoxContainer" unique_id=701251607]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 9
+
+[node name="1" type="TextureRect" parent="HBoxContainer/Strikes" unique_id=2121658068]
+layout_mode = 2
+
+[node name="2" type="TextureRect" parent="HBoxContainer/Strikes" unique_id=953652841]
+layout_mode = 2
+
+[node name="3" type="TextureRect" parent="HBoxContainer/Strikes" unique_id=1499780295]
+layout_mode = 2

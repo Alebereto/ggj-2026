@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bxx8vl86cbrnu" path="res://assets/buildings/pavement empty_colormap.png" id="4_vmfda"]
 [ext_resource type="Texture2D" uid="uid://d34yfrmnynnt7" path="res://assets/buildings/pavement dip_colormap.png" id="6_58suu"]
 [ext_resource type="Texture2D" uid="uid://c071w6yhyv7fq" path="res://assets/buildings/debris2_colormap.png" id="6_vmfda"]
-[ext_resource type="Texture2D" uid="uid://d0hsyvs80dd6w" path="res://assets/buildings/debris_wall2_colormap.png" id="7_vmfda"]
+[ext_resource type="Texture2D" uid="uid://bd82t5i1c3tph" path="res://assets/buildings/debris_wall_colormap.png" id="6_xbxas"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_esef8"]
 resource_name = "colormap"
