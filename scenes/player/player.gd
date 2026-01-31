@@ -2,6 +2,7 @@ class_name Player extends CharacterBody3D
 
 # destination is global
 signal throw_mask(mask_type: Mask.TYPE, starting_pos: Vector3, destination_pos: Vector3)
+signal new_masks_count(builders: int, destroyers: int)
 signal command_minion(mask_type: Mask.TYPE, global_destination: Vector3)
 
 const PLAYER_SPEED = 5.0
@@ -45,7 +46,6 @@ var _time_since_last_command := 10000000000.0
 
 func _ready():
 	_pickup_area.body_entered.connect(_pickup_area_entered)
-	pass
 
 
 func _physics_process(delta: float) -> void:
@@ -85,6 +85,7 @@ func _throw_mask(mask: Mask.TYPE):
 				_throw_sound.play()
 
 				throw_mask.emit(mask, source_dest , throw_dest)
+				new_masks_count.emit(_num_build_masks, _num_destroy_masks)
 				_num_build_masks -= 1
 		Mask.TYPE.DESTROYER:
 			if _num_destroy_masks > 0:
@@ -92,6 +93,7 @@ func _throw_mask(mask: Mask.TYPE):
 				_throw_sound.play()
 
 				throw_mask.emit(mask, source_dest , throw_dest)
+				new_masks_count.emit(_num_build_masks, _num_destroy_masks)
 				_num_destroy_masks -= 1
 
 func _command_minion(mask: Mask.TYPE):

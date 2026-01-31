@@ -3,9 +3,6 @@ extends MarginContainer
 const BUILDING_ICON = preload("res://assets/mask/happy.png")
 const BUILDING_DESTROYED_ICON = preload("res://assets/mask/happy.png")
 
-const BUILDER_ICON = preload("res://assets/mask/happy.png")
-const DESTROYER_ICON = preload("res://assets/mask/sad.png")
-
 @onready var _timer_label = $HBoxContainer/TimerLabel
 @onready var _builders_count_label = $HBoxContainer/Masks/BuilderMasks
 @onready var _destroyers_count_label = $HBoxContainer/Masks/DestroyerMasks

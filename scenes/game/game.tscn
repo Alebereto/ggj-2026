@@ -5,22 +5,10 @@
 [ext_resource type="Script" uid="uid://jsj0mqgstk8i" path="res://scenes/game/minion_manager.gd" id="4_lfrn8"]
 [ext_resource type="PackedScene" uid="uid://bsj4e67n4vjey" path="res://scenes/game/city.tscn" id="5_lfrn8"]
 [ext_resource type="Script" uid="uid://jokh13rr6hp7" path="res://scenes/game/mask_manager.gd" id="6_5i0tg"]
-[ext_resource type="PackedScene" path="res://scenes/game/minimap.tscn" id="6_bdhmt"]
-[ext_resource type="Script" path="res://scenes/game/ui.gd" id="7_bdhmt"]
+[ext_resource type="PackedScene" uid="uid://cqi4l0orewand" path="res://scenes/game/minimap.tscn" id="6_bdhmt"]
+[ext_resource type="PackedScene" uid="uid://b22sbd7ir6cvs" path="res://scenes/game/ui.tscn" id="7_bdhmt"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_lfrn8"]
-
-[sub_resource type="SystemFont" id="SystemFont_5i0tg"]
-font_names = PackedStringArray("Serif")
-
-[sub_resource type="LabelSettings" id="LabelSettings_bdhmt"]
-font = SubResource("SystemFont_5i0tg")
-font_size = 31
-outline_size = 2
-outline_color = Color(0.2784314, 0.2784314, 0.2784314, 0.47843137)
-shadow_size = 13
-shadow_color = Color(0.13725491, 0.13725491, 0.13725491, 0.5176471)
-shadow_offset = Vector2(2, 2)
 
 [node name="Game" type="Node3D" unique_id=1843276505]
 script = ExtResource("1_sul5r")
@@ -46,69 +34,7 @@ shape = SubResource("WorldBoundaryShape3D_lfrn8")
 
 [node name="Minimap" parent="." unique_id=584057159 instance=ExtResource("6_bdhmt")]
 
-[node name="UI" type="MarginContainer" parent="." unique_id=750503915]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 30
-theme_override_constants/margin_bottom = 50
-script = ExtResource("7_bdhmt")
-
-[node name="HBoxContainer" type="HBoxContainer" parent="UI" unique_id=1838537128]
-layout_mode = 2
-size_flags_vertical = 0
-mouse_filter = 2
-theme_override_constants/separation = 22
-alignment = 1
-
-[node name="TimerLabel" type="Label" parent="UI/HBoxContainer" unique_id=85453664]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-theme_override_font_sizes/font_size = 32
-text = "00:00"
-label_settings = SubResource("LabelSettings_bdhmt")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Masks" type="HBoxContainer" parent="UI/HBoxContainer" unique_id=1318431491]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="TextureRect" type="TextureRect" parent="UI/HBoxContainer/Masks" unique_id=801075101]
-layout_mode = 2
-
-[node name="BuilderMasks" type="Label" parent="UI/HBoxContainer/Masks" unique_id=408722498]
-layout_mode = 2
-text = "12"
-label_settings = SubResource("LabelSettings_bdhmt")
-
-[node name="TextureRect2" type="TextureRect" parent="UI/HBoxContainer/Masks" unique_id=1059654563]
-layout_mode = 2
-
-[node name="DestroyerMasks" type="Label" parent="UI/HBoxContainer/Masks" unique_id=1258934103]
-layout_mode = 2
-text = "12"
-label_settings = SubResource("LabelSettings_bdhmt")
-
-[node name="Strikes" type="HBoxContainer" parent="UI/HBoxContainer" unique_id=2139045228]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 9
-
-[node name="1" type="TextureRect" parent="UI/HBoxContainer/Strikes" unique_id=133080602]
-layout_mode = 2
-
-[node name="2" type="TextureRect" parent="UI/HBoxContainer/Strikes" unique_id=1870088196]
-layout_mode = 2
-
-[node name="3" type="TextureRect" parent="UI/HBoxContainer/Strikes" unique_id=1248212901]
-layout_mode = 2
+[node name="UI" parent="." unique_id=1935446065 instance=ExtResource("7_bdhmt")]
 
 [node name="CutsceneCamera" type="Camera3D" parent="." unique_id=1887885925]
 transform = Transform3D(0.6915635, -0.31812587, 0.6484874, 0, 0.8977894, 0.44042498, -0.72231567, -0.30458182, 0.6208784, 21.343952, 25.660973, 32.827934)

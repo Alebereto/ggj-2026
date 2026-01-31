@@ -29,6 +29,7 @@ func _game_begin():
 func _connect_signals():
 	_player.command_minion.connect(command_minion)
 	_player.throw_mask.connect(_mask_manager.throw_mask)
+	_player.new_masks_count.connect(_ui.set_masks_count)
 	_minion_manager.drop_mask.connect(_mask_manager.drop_mask)
 
 ## called when the game has ended
