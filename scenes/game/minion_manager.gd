@@ -5,6 +5,7 @@ const MINION_SCENE: PackedScene = preload("res://scenes/minion/minion.tscn")
 
 signal drop_mask(mask_type: Mask.TYPE, global_pos: Vector3, vacuum: bool)
 
+var rng = RandomNumberGenerator.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -12,8 +13,20 @@ func _ready() -> void:
 	create_minion(Vector3(4,0,0))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
+var minion_timout = 15.0
+var minion_timer = 0.0
 func _process(delta: float) -> void:
-	pass
+	minion_timer += delta
+	if minion_timer >= minion_timout:
+		var t_array = Globals.TILE_ARRAY
+		var buildings = t_array.get_building_coords()
+		for building in buildings:
+			var spawn_point = building + Vector2i(rng.randi_range(-1, 2), rng.randi_range(-1, 2))
+			if t_array.get_tile(spawn_point).type != t_array.TILETYPES.GROUND:
+				continue
+			var world_pos = t_array.to_world(spawn_point)
+			create_minion(world_pos)
+		minion_timer = 0.0
 
 
 func command_minion(mask: Mask.TYPE, grid_destination: Vector2i):
