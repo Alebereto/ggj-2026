@@ -54,7 +54,7 @@ var _move_target_velocity: Vector2 = Vector2(0,0)
 var _move_velocity: Vector2 = Vector2(0,0)
 
 # how much time until the minion dies :(
-var _time_to_death = 13.0
+var _time_to_death = 15000.0 # TODO: random 100 - 200
 # time corpse remains
 var _corpse_time = 3.0
 
