@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://cm4cd63nehuje"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eqn4c"]
-albedo_color = Color(0.23687571, 0.38857654, 0.12887591, 1)
+resource_local_to_scene = true
+albedo_color = Color(0.9098039, 1, 0.12941177, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_6jqfa"]
 material = SubResource("StandardMaterial3D_eqn4c")
@@ -21,7 +22,7 @@ outer_radius = 0.018
 rings = 7
 ring_segments = 12
 
-[node name="MaskModel" type="MeshInstance3D" unique_id=125649691]
+[node name="BuilderMaskModel" type="MeshInstance3D" unique_id=125649691]
 mesh = SubResource("BoxMesh_6jqfa")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1528080292]

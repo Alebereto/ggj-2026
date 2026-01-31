@@ -1,18 +1,29 @@
 extends Node3D
 
-signal drop_mask()
-signal suck_mask()
+const MINION_SCENE: PackedScene = preload("res://scenes/minion/minion.tscn")
+
+
+signal drop_mask(mask_type: Mask.TYPE, global_pos: Vector3, vacuum: bool)
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
-
+	create_minion(Vector3(1,0,0))
+	create_minion(Vector3(4,0,0))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
 
+
 func command_minion(mask: Mask.TYPE, grid_destination: Vector2i):
 	pass
 
+func create_minion(pos: Vector3):
+	var minion: Minion = MINION_SCENE.instantiate()
+	minion.dropped_mask.connect(_drop_mask)
+	minion.position = pos
+	add_child(minion)
+
+func _drop_mask(mask_type: Mask.TYPE, global_pos: Vector3, vacuum: bool):
+	drop_mask.emit(mask_type, global_pos, vacuum)

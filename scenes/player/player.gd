@@ -1,7 +1,7 @@
 class_name Player extends CharacterBody3D
 
 # destination is global
-signal throw_mask(mask_type: Mask.TYPE, starting_global_pos: Vector3, destination_global_pos: Vector3)
+signal throw_mask(mask_type: Mask.TYPE, starting_pos: Vector3, destination_pos: Vector3)
 signal command_minion(mask_type: Mask.TYPE, global_destination: Vector3)
 
 const PLAYER_SPEED = 5.0
@@ -41,13 +41,14 @@ func _physics_process(delta: float) -> void:
 
 	_move_camera(delta)
 	_move_player(delta)
+	Globals.player_position = global_position
 	_move_pointer(delta)
 	_get_mode()
 	_get_action()
 
 
 func _throw_mask(mask: Mask.TYPE):
-	#TODO: play throwing animation with sound
+	#TODO: play throwing animation with sound and rotate character
 	match mask:
 		Mask.TYPE.BUILDER:
 			if _num_build_masks > 0:
@@ -79,13 +80,12 @@ func _set_control_mode(mode: CONTROL_MODE) -> void:
 func recieve_mask(mask: Mask) -> void:
 	#TODO: play pickup sound effect
 	if not mask: return
-	mask.pickable = false
 	match mask.type:
 		Mask.TYPE.BUILDER:
 			_num_build_masks += 1
 		Mask.TYPE.DESTROYER:
 			_num_destroy_masks += 1
-	mask.queue_free()
+	mask.self_destruct()
 
 
 ## ====== Inputs =============
@@ -182,11 +182,10 @@ func _get_action():
 		var bodies: Array = _pointer.get_objects_in_zone()
 		for body in bodies:
 			if body is Minion: body.get_sucked()
-			elif body is Mask: body.get_sucked(_pickup_area)
+			elif body is Mask: body.get_sucked()
 
 # Signals ===================
 
 func _pickup_area_entered(body) -> void:
 	if body is Mask:
 		if body.can_player_pickup(): recieve_mask(body)
-
