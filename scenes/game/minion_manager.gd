@@ -31,7 +31,7 @@ func command_minion(mask: Mask.TYPE, grid_destination: Vector2i):
 		print(" no followers ")
 		return
 	
-	closest_minion.die()
+	closest_minion.do_task(grid_destination)
 	
 		
 		
