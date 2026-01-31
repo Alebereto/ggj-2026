@@ -1,6 +1,9 @@
 extends Node3D
 class_name TileManager
 
+## emits when a building gets destroyed
+signal on_building_destroyed
+
 const METEOR_SCENE: PackedScene = preload("res://scenes/meteor/meteor.tscn")
 
 @export var asteroid_timeout:float  = 3.0
