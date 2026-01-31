@@ -6,6 +6,7 @@ signal on_building_destroyed
 
 const METEOR_SCENE: PackedScene = preload("res://scenes/meteor/meteor.tscn")
 
+@onready var mask_manager_ref = $"../MaskManager"
 signal building_destroyed
 
 @export var asteroid_timeout:float  = 3.0
@@ -103,6 +104,12 @@ func processTile(tile: Tiles.Tile, pos : Vector2i):
 			
 			
 		if tile.type == Tiles.TILETYPES.DEBRIS:
+			var mask_type = Mask.TYPE.BUILDER
+			if rng.randi_range(0,2) == 0:
+				mask_type= Mask.TYPE.DESTROYER
+
+			if rng.randi_range(0,4) == 0:
+				mask_manager_ref.drop_mask(mask_type, t_array.to_world(pos))
 			t_array.set_tile(pos, Tiles.Ground.new())
 			return
 		

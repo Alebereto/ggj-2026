@@ -21,6 +21,9 @@ func _process(delta: float) -> void:
 	if minion_timer >= minion_timout:
 		var t_array = Globals.TILE_ARRAY
 		var buildings = t_array.get_building_coords()
+		
+		if get_child_count() > buildings.size() * 3:
+			return
 		for building in buildings:
 			var spawn_point = building + Vector2i(rng.randi_range(-1, 2), rng.randi_range(-1, 2))
 			if t_array.get_tile(spawn_point).type != t_array.TILETYPES.GROUND:

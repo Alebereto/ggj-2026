@@ -58,7 +58,7 @@ texture = ExtResource("2_ek8ox")
 
 [node name="BuilderMasks" type="Label" parent="HBoxContainer/Masks" unique_id=903178499]
 layout_mode = 2
-text = "5"
+text = "2"
 label_settings = SubResource("LabelSettings_bdhmt")
 
 [node name="TextureRect2" type="TextureRect" parent="HBoxContainer/Masks" unique_id=836646551]
@@ -67,7 +67,7 @@ texture = ExtResource("3_jmhhc")
 
 [node name="DestroyerMasks" type="Label" parent="HBoxContainer/Masks" unique_id=1406356774]
 layout_mode = 2
-text = "5"
+text = "2"
 label_settings = SubResource("LabelSettings_bdhmt")
 
 [node name="Strikes" type="HBoxContainer" parent="HBoxContainer" unique_id=1245713611]

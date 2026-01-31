@@ -70,7 +70,7 @@ func reset_move_params():
 	_move_velocity = Vector2(0,0)
 
 # how much time until the minion dies :(
-var _time_to_death = 15000.0 # TODO: random 100 - 200
+var _time_to_death = 60.0 # TODO: random 100 - 200
 # time corpse remains
 var _corpse_time = 3.0
 
@@ -81,7 +81,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if _alive:
-		_time_to_death -= delta
+		_time_to_death -= 0.5 * delta
 		if _time_to_death <= 0: die()
 		
 		# Movement
@@ -97,6 +97,7 @@ func _physics_process(delta: float) -> void:
 				_move_to(delta, _current_task_3d)
 				attempt_start_working()
 			STATE.WORKING:
+				_time_to_death -= 0.8 * delta
 				reset_move_params()
 				velocity = Vector3(0,0,0)
 				working_loop(delta)

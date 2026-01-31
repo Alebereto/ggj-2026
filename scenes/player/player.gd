@@ -38,8 +38,8 @@ var _current_mode: CONTROL_MODE = CONTROL_MODE.NONE
 @onready var _pickup_sound: AudioStreamPlayer3D = $Sounds/PickupMask
 
 # Player values
-var _num_build_masks: int = 5
-var _num_destroy_masks: int = 5
+var _num_build_masks: int = 2
+var _num_destroy_masks: int = 2
 func _set_build_masks(count: int) -> void:
 	_num_build_masks = count
 	new_masks_count.emit(_num_build_masks, _num_destroy_masks)
