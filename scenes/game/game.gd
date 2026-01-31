@@ -64,6 +64,7 @@ func _game_over():
 	_ui.hide()
 	#TODO: switch music
 	$Music.stop()
+	_player._set_control_mode(Player.CONTROL_MODE.NONE)
 	_cutscene_player.play("game_end")
 
 ## signal calls ===========================

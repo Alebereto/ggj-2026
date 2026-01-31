@@ -75,10 +75,7 @@ func summon_building():
 func attack(pos: Vector2i, damage = 1):
 	var tile = t_array.get_tile(pos)
 	tile.hp -= damage
-	if tile.hp <= 0 and tile.type == Tiles.TILETYPES.BUILDING:
-		on_building_destroyed.emit()
 	processTile(tile, pos)
-	pass
 
 func repair(pos: Vector2i, damage = 1):
 	var max_hp = t_array.get_tile(pos).max_hp
@@ -88,7 +85,6 @@ func repair(pos: Vector2i, damage = 1):
 		tile.excess_hp += tile.hp-max_hp
 		tile.hp = max_hp
 	processTile(tile, pos)
-	pass
 
 func processTile(tile: Tiles.Tile, pos : Vector2i):
 	$GridMap.set_cell_item(t_array.to_gridmap(pos), t_array.tileDataToGridmapItem(tile))
@@ -97,6 +93,7 @@ func processTile(tile: Tiles.Tile, pos : Vector2i):
 			t_array.set_tile(pos, Tiles.Hole.new())
 			return
 		if tile.type == Tiles.TILETYPES.BUILDING or tile.type == Tiles.TILETYPES.DEBRIS:
+			if tile.type == Tiles.TILETYPES.BUILDING: on_building_destroyed.emit()
 			t_array.set_tile(pos, Tiles.Ground.new())
 			return
 		
