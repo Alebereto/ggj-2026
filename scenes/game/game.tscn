@@ -5,6 +5,8 @@
 [ext_resource type="Script" uid="uid://jsj0mqgstk8i" path="res://scenes/game/minion_manager.gd" id="4_lfrn8"]
 [ext_resource type="PackedScene" uid="uid://bsj4e67n4vjey" path="res://scenes/game/city.tscn" id="5_lfrn8"]
 [ext_resource type="Script" uid="uid://jokh13rr6hp7" path="res://scenes/game/mask_manager.gd" id="6_5i0tg"]
+[ext_resource type="PackedScene" uid="uid://cqi4l0orewand" path="res://scenes/game/minimap.tscn" id="6_bdhmt"]
+[ext_resource type="PackedScene" uid="uid://b22sbd7ir6cvs" path="res://scenes/game/ui.tscn" id="7_bdhmt"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_lfrn8"]
 
@@ -21,7 +23,6 @@ script = ExtResource("6_5i0tg")
 
 [node name="City" parent="." unique_id=1633328635 instance=ExtResource("5_lfrn8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.12194216, 0)
-building_timeout = 5.0
 
 [node name="ClickFloor" type="StaticBody3D" parent="City" unique_id=856651387]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.026091218, 0)
@@ -31,16 +32,9 @@ collision_mask = 0
 [node name="CollisionShape3D" type="CollisionShape3D" parent="City/ClickFloor" unique_id=170761451]
 shape = SubResource("WorldBoundaryShape3D_lfrn8")
 
-[node name="UI" type="Control" parent="." unique_id=839681772]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Minimap" parent="." unique_id=584057159 instance=ExtResource("6_bdhmt")]
 
-[node name="TimerLabel" type="Label" parent="UI" unique_id=85453664]
-layout_mode = 0
-offset_left = 40.0
-offset_top = 33.0
-offset_right = 80.0
-offset_bottom = 78.0
-theme_override_font_sizes/font_size = 32
+[node name="UI" parent="." unique_id=1935446065 instance=ExtResource("7_bdhmt")]
+
+[node name="CutsceneCamera" type="Camera3D" parent="." unique_id=1887885925]
+transform = Transform3D(0.6915635, -0.31812587, 0.6484874, 0, 0.8977894, 0.44042498, -0.72231567, -0.30458182, 0.6208784, 21.343952, 25.660973, 32.827934)
