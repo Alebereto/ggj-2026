@@ -7,7 +7,7 @@ signal command_minion(mask_type: Mask.TYPE, global_destination: Vector3)
 
 const PLAYER_SPEED = 5.0
 const CAMERA_SPEED = 2.2
-const JUMP_VELOCITY = 4.5
+const JUMP_VELOCITY = 0.0
 
 const THROW_HEIGHT = 0.6
 
