@@ -36,12 +36,18 @@ func command_minion(mask: Mask.TYPE, grid_destination: Vector2i):
 	pass
 
 func minion_attack(coords: Vector2i, damage):
+	$"../City".attack(coords, damage)
+	pass
+func minion_repair(coords: Vector2i, damage):
+	$"../City".repair(coords, damage)
 	pass
 
 func create_minion(pos: Vector3):
 	var minion: Minion = MINION_SCENE.instantiate()
 	minion.dropped_mask.connect(_drop_mask)
 	minion.attack.connect(minion_attack)
+	minion.repair.connect(minion_repair)
+
 	minion.position = pos
 	add_child(minion)
 

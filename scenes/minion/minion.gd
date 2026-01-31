@@ -5,6 +5,8 @@ var rng = RandomNumberGenerator.new()
 
 signal dropped_mask(mask_type: Mask.TYPE, global_pos: Vector3, vacuum: bool)
 signal attack(coords: Vector2i, damage)
+signal repair(coords: Vector2i, damage)
+
 
 
 var _current_state: STATE = STATE.FREE
@@ -107,9 +109,18 @@ func working_loop(delta : float):
 	_work_timer -= delta
 	if _work_timer <= 0:
 		do_work()
+		_work_timer = working_cooldown
 
 func do_work():
-	attack.emit(_current_task_2d, working_damage)
+	if _current_mask == Mask.TYPE.BUILDER:
+		repair.emit(_current_task_2d, working_damage)
+		_animation_player.play("interact-left")
+	elif _current_mask == Mask.TYPE.DESTROYER:
+		attack.emit(_current_task_2d, working_damage)
+		_animation_player.play("attack-melee-right")
+	
+	
+	
 
 
 ## if minion is fast enough, play walk animaiton
