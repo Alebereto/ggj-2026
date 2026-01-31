@@ -14,10 +14,18 @@ func get_state() -> STATE:
 
 var _alive: bool = true
 
+
+@onready var _pickup_area: Area3D = $PickupArea
+
+@onready var _animation_player: AnimationPlayer = $MinionModel/AnimationPlayer
+
+#Models
 @onready var _mask_model: Node3D = $MaskModel
 @onready var _builder_mask_model = $MaskModel/BuilderMaskModel
 @onready var _destroyer_mask_model = $MaskModel/DestroyerMaskModel
-@onready var _pickup_area: Area3D = $PickupArea
+
+# Sounds
+@onready var _death_sound: AudioStreamPlayer3D = $Sounds/Death
 
 enum STATE {
 	FREE,
@@ -42,35 +50,53 @@ var _move_timer: float = 0.0
 var _move_target_velocity: Vector2 = Vector2(0,0)
 var _move_velocity: Vector2 = Vector2(0,0)
 
+# how much time until the minion dies :(
+var _time_to_death = 13.0
+# time corpse remains
+var _corpse_time = 3.0
+
 func _ready() -> void:
 	_pickup_area.body_entered.connect(_pickup_area_entered)
 	_unset_mask()
 
 func _physics_process(delta: float) -> void:
-	if not _alive: return
-	match _current_state:
-		STATE.FREE:
-			_move_randomly(delta)
-		STATE.UNEMPLOYED:
-			_move_randomly(delta)
-		STATE.FOLLOWING:
-			_move_randomly_to(delta, Globals.player_position)
-		STATE.TRAVELING:
-			_move_to(delta, Vector3(0,0,0))
-			
+	if _alive:
+		_time_to_death -= delta
+		if _time_to_death <= 0: die()
+
+		if not _alive: return
+		match _current_state:
+			STATE.FREE:
+				_move_randomly(delta)
+			STATE.UNEMPLOYED:
+				_move_randomly(delta)
+			STATE.FOLLOWING:
+				_move_randomly_to(delta, Globals.player_position)
+			STATE.TRAVELING:
+				_move_to(delta, Vector3(0,0,0))
+		_walk_animation()
+	else:
+		_corpse_time -= delta
+		#TODO: a second before deletion call poof
+		if _corpse_time <= 0:
+			queue_free()
+
+## if minion is fast enough, play walk animaiton
+func _walk_animation() -> void:
+	if velocity.length() > 0.5:
+		_animation_player.play("walk")
 
 func _move_to(delta : float, global_pos: Vector3, speed = 2):
 	var radius_slow_sqrd = 2.0
 	var dir = global_pos - global_position
 	var close_lerp = clampf(dir.length_squared(),0, radius_slow_sqrd) / radius_slow_sqrd
-	var move_impulse = delta * dir.normalized() * speed * close_lerp
+	var move_impulse = dir.normalized() * speed * close_lerp
 	move_impulse.y = 0
 	if move_impulse:
 		var angle = atan2(move_impulse.x, move_impulse.z)
 		rotation.y = angle
-	position += move_impulse
+	velocity = move_impulse
 	move_and_slide()
-	pass
 
 func _move_randomly_to(delta:float, global_pos: Vector3):
 	var speed = follow_speed
@@ -97,7 +123,7 @@ func _move_randomly_to(delta:float, global_pos: Vector3):
 	var speed_factor = (1 - (_move_velocity.length() / speed))
 	speed_factor = speed_factor * speed_factor
 	_move_velocity = lerp(_move_velocity, _move_target_velocity, speed_factor * follow_lerp_strength)
-	position += delta * Vector3(_move_velocity.x, 0, _move_velocity.y)
+	velocity = Vector3(_move_velocity.x, 0, _move_velocity.y)
 	rotation.y = atan2(_move_velocity.x, _move_velocity.y)
 	move_and_slide()
 	
@@ -120,23 +146,21 @@ func _move_randomly(delta: float) -> void:
 	
 	_move_velocity = lerp(_move_velocity, _move_target_velocity, free_move_lerp_strength * delta)
 	
-	position.x += _move_velocity.x * delta * free_move_speed
-	position.z += _move_velocity.y * delta * free_move_speed
+	velocity.x = _move_velocity.x * free_move_speed
+	velocity.z = _move_velocity.y * free_move_speed
 	move_and_slide()
 
 
 # MASK LOGIC
 
-## drop minion mask
-## gets called when minion dies
-func _drop_mask():
-	#TODO: create mask and make it float
-	pass
-
 
 func die() -> void:
 	_alive = false
-	dropped_mask.emit(_current_mask, global_position, false)
+	if _current_state != STATE.FREE:
+		dropped_mask.emit(_current_mask, global_position, false)
+	_unset_mask()
+	_death_sound.play()
+	_animation_player.play("die")
 
 ## sets minion mask type and shows its model
 func _set_mask(mask: Mask.TYPE) -> void:
