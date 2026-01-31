@@ -12,6 +12,7 @@ enum TILETYPES {
 class Tile extends RefCounted:
 	var hp: float
 	var max_hp: float
+	var excess_hp: float = 0.0
 	var type: TILETYPES
 
 class Building extends Tile:
@@ -37,8 +38,8 @@ class Hole extends Tile:
 class Debris extends Tile:
 	func _init() -> void:
 		type = TILETYPES.DEBRIS
-		max_hp = 50
-		hp = 50
+		max_hp = 100
+		hp = 20
 	pass
 	
 class Dip extends Tile:
@@ -60,6 +61,7 @@ const gridmapIntToEnum = {
 
 func tileDataToGridmapItem(tile) -> int:
 	var hp = tile.hp
+	var excess_hp = tile.excess_hp
 	match tile.type:
 		TILETYPES.GROUND:
 			return 1
@@ -71,7 +73,12 @@ func tileDataToGridmapItem(tile) -> int:
 			else:
 				return 0
 		TILETYPES.DEBRIS:
-			return 4
+			if hp >= 60:
+				return 8
+			else:
+				return 7
+		TILETYPES.DIP:
+			return 5
 	return -1
 
 const INT_MAX := 2147483647
@@ -79,7 +86,11 @@ const INT_MIN := -2147483648
 
 var _gridmap = GridMap.new()
 var _tile_storage: Array = []
-var _buildings_coords: Array = []
+var _coords = {
+	TILETYPES.GROUND: [],
+	TILETYPES.BUILDING: [],
+	TILETYPES.DEBRIS: []
+}
 var _min_x := INT_MAX
 var _max_x := INT_MIN
 var _min_z := INT_MAX
@@ -116,9 +127,9 @@ func create_tile_storage(grid_map: GridMap) -> void:
 		match enumtype:
 			TILETYPES.BUILDING:
 				_tile_storage[pos.x][pos.y] = Building.new()
-				_buildings_coords.append(pos)
 			TILETYPES.GROUND:
 				_tile_storage[pos.x][pos.y] = Ground.new()
+		_coords[enumtype].append(pos)
 
 func get_height():
 	return _tile_storage.size()
@@ -127,7 +138,13 @@ func get_width():
 	return _tile_storage[0].size()
 	
 func get_building_coords() -> Array:
-	return _buildings_coords.duplicate(true)
+	return _coords[TILETYPES.BUILDING].duplicate(true)
+	
+func get_debris_coords() -> Array:
+	return _coords[TILETYPES.DEBRIS].duplicate(true)
+	
+func get_ground_coords() -> Array:
+	return _coords[TILETYPES.GROUND].duplicate(true)
 
 func from_gridmap(cell: Vector3i) -> Vector2i:
 	return Vector2i(cell.x - _min_x, cell.z - _min_z)
@@ -162,5 +179,8 @@ func set_tile(coords: Vector2i, tile: Tile):
 	if not _check_bounds(coords):
 		print("Error, tile set not in 2D array %s" % [coords])
 		return
+	var old_type = _tile_storage[coords.x][coords.y].type
+	_coords[old_type].erase(coords)
 	_tile_storage[coords.x][coords.y] = tile
+	_coords[tile.type].append(coords)
 	_gridmap.set_cell_item(to_gridmap(coords), tileDataToGridmapItem(tile))
