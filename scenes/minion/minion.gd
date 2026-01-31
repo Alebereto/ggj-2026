@@ -166,7 +166,6 @@ func recieve_mask(mask: Mask):
 
 ## Gets called when the minion gets vacuumed by the player
 func get_sucked() -> void:
-	_current_state = STATE.FOLLOWING
 	if not _alive: return
 	if _current_state == STATE.FREE:
 		#TODO: make minion react to wind
