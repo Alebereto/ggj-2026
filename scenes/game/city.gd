@@ -11,8 +11,6 @@ var rng = RandomNumberGenerator.new()
 func _ready() -> void:
 	t_array.create_tile_storage($GridMap)
 	t_array.set_tile(Vector2i(6, 7), Tiles.Building.new())
-	print(t_array._tile_storage.size())
-	print(t_array._tile_storage[0].size())
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
 var time = 0.0
