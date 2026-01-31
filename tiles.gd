@@ -6,7 +6,8 @@ enum TILETYPES {
 	BUILDING,
 	HOLE,
 	DIP,
-	DEBRIS
+	DEBRIS,
+	FOUNTAIN
 }
 
 class Tile extends RefCounted:
@@ -48,11 +49,19 @@ class Dip extends Tile:
 		max_hp = 50
 		hp = 50
 	pass
+	
+class Fountain extends Tile:
+	func _init() -> void:
+		type = TILETYPES.FOUNTAIN
+		max_hp = INT_MAX
+		hp = INT_MAX
+	pass
 
 
 const gridmapIntToEnum = {
 	1: TILETYPES.GROUND,
 	0: TILETYPES.BUILDING,
+	2: TILETYPES.FOUNTAIN,
 	3: TILETYPES.BUILDING,
 	4: TILETYPES.BUILDING,
 	5: TILETYPES.DIP,
@@ -89,7 +98,8 @@ var _tile_storage: Array = []
 var _coords = {
 	TILETYPES.GROUND: [],
 	TILETYPES.BUILDING: [],
-	TILETYPES.DEBRIS: []
+	TILETYPES.DEBRIS: [],
+	TILETYPES.FOUNTAIN: []
 }
 var _min_x := INT_MAX
 var _max_x := INT_MIN
@@ -129,6 +139,8 @@ func create_tile_storage(grid_map: GridMap) -> void:
 				_tile_storage[pos.x][pos.y] = Building.new()
 			TILETYPES.GROUND:
 				_tile_storage[pos.x][pos.y] = Ground.new()
+			TILETYPES.FOUNTAIN:
+				_tile_storage[pos.x][pos.y] = Fountain.new()
 		_coords[enumtype].append(pos)
 
 func get_height():
@@ -145,6 +157,9 @@ func get_debris_coords() -> Array:
 	
 func get_ground_coords() -> Array:
 	return _coords[TILETYPES.GROUND].duplicate(true)
+	
+func get_fountain_coords() -> Array:
+	return _coords[TILETYPES.FOUNTAIN].duplicate(true)
 
 ## gets gridmap coords, returns array coords
 func from_gridmap(cell: Vector3i) -> Vector2i:
@@ -188,4 +203,3 @@ func set_tile(coords: Vector2i, tile: Tile):
 	_tile_storage[coords.x][coords.y] = tile
 	_coords[tile.type].append(coords)
 	_gridmap.set_cell_item(to_gridmap(coords), tileDataToGridmapItem(tile))
-

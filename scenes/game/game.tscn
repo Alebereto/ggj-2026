@@ -21,7 +21,7 @@ script = ExtResource("6_5i0tg")
 
 [node name="City" parent="." unique_id=1633328635 instance=ExtResource("5_lfrn8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.12194216, 0)
-asteroid_timeout = 3.0
+building_timeout = 5.0
 
 [node name="ClickFloor" type="StaticBody3D" parent="City" unique_id=856651387]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.026091218, 0)
