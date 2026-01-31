@@ -9,8 +9,14 @@ const MAX_STRIKES = 3
 @onready var _mask_manager = $MaskManager
 @onready var _ui = $UI
 
+@onready var _cutscene_player: AnimationPlayer = $Cutscene/AnimationPlayer
+
 var timer = 0.0
 var current_strikes: int = 0
+
+const START_CUTSCENE_END = 4.0
+var _during_cutscene: bool = true
+var _start_cutscene_time: float = 0.0
 
 var world_ending: bool = false
 
@@ -21,17 +27,25 @@ func _ready() -> void:
 
 ## Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	timer += delta
+	if not _during_cutscene:
+		timer += delta
 	if not world_ending:
 		_ui.set_time_label(timer)
 	else:
 		#TODO: start shaking camera, then zoom out and watch meteor hit then close game
 		pass
-
+	
 ## Called when the game begins
 func _game_begin():
-	#TODO: starting animation fade in and shit
-	pass
+	# Play starting cutscene
+	_during_cutscene = true
+	_ui.hide()
+	_cutscene_player.play("starting_cutscene")
+
+func _cutscene_start_end():
+	_during_cutscene = false
+	$Cutscene/CutsceneCamera.current = false
+	_ui.show()
 
 func _connect_signals():
 	_player.command_minion.connect(command_minion)
@@ -43,7 +57,6 @@ func _connect_signals():
 ## called when the game has ended
 func _game_over():
 	world_ending = true
-
 
 ## signal calls ===========================
 
@@ -57,3 +70,7 @@ func on_building_destroyed():
 func command_minion(mask_type, global_destination) -> void:
 	var grid_pos = Globals.TILE_ARRAY.from_world(global_destination)
 	_minion_manager.command_minion(mask_type, grid_pos)
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if anim_name == "starting_cutscene":
+		_cutscene_start_end()
