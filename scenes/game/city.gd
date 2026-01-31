@@ -76,7 +76,7 @@ func attack(pos: Vector2i, damage = 1):
 	var tile = t_array.get_tile(pos)
 	tile.hp -= damage
 	if tile.hp <= 0 and tile.type == Tiles.TILETYPES.BUILDING:
-		building_destroyed.emit()
+		on_building_destroyed.emit()
 	processTile(tile, pos)
 	pass
 

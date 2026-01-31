@@ -10,7 +10,7 @@ const BUILDING_DESTROYED_ICON = preload("res://assets/mask/broken_building.png")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	_set_strike_count(0)
+	set_strike_count(0)
 
 func set_time_label(time_elapsed) -> void:
 	var minutes = int(time_elapsed/60)
@@ -22,10 +22,10 @@ func set_masks_count(builders: int, destroyers: int) -> void:
 	_builders_count_label.text = "%s" % builders
 	_destroyers_count_label.text = "%s" % destroyers
 
-func _set_strike_count(count: int) -> void:
+func set_strike_count(count: int) -> void:
 	for child in _strikes_root.get_children():
 		child.texture = BUILDING_ICON
-	if count == 1: _strikes_root.get_child(0).texture = BUILDING_DESTROYED_ICON
-	if count == 2: _strikes_root.get_child(1).texture = BUILDING_DESTROYED_ICON
+	if count >= 1: _strikes_root.get_child(0).texture = BUILDING_DESTROYED_ICON
+	if count >= 2: _strikes_root.get_child(1).texture = BUILDING_DESTROYED_ICON
 	if count >= 3: _strikes_root.get_child(2).texture = BUILDING_DESTROYED_ICON
 		

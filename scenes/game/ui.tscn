@@ -75,11 +75,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 9
 
-[node name="1" type="TextureRect" parent="HBoxContainer/Strikes" unique_id=1980814136]
+[node name="first" type="TextureRect" parent="HBoxContainer/Strikes" unique_id=1980814136]
 layout_mode = 2
 
-[node name="2" type="TextureRect" parent="HBoxContainer/Strikes" unique_id=1978422215]
+[node name="second" type="TextureRect" parent="HBoxContainer/Strikes" unique_id=1978422215]
 layout_mode = 2
 
-[node name="3" type="TextureRect" parent="HBoxContainer/Strikes" unique_id=883979510]
+[node name="third" type="TextureRect" parent="HBoxContainer/Strikes" unique_id=883979510]
 layout_mode = 2
