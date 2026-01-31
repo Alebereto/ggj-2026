@@ -15,12 +15,12 @@ func _ready() -> void:
 	print(t_array._tile_storage[0].size())
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
-var time = 0.0
+var asteroid_time = 0.0
 func _process(_delta: float) -> void:
-	time += _delta
-	if time >= asteroid_timeout:
+	asteroid_time += _delta
+	if asteroid_time >= asteroid_timeout:
 		summon_meteor()
-		time = 0
+		asteroid_time = 0.0
 
 func summon_meteor():
 	var height = t_array.get_height()

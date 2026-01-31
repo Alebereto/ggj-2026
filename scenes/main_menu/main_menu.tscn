@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://xtvlfhubhcij"]
+
+[node name="Control" type="Control" unique_id=259223672]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="." unique_id=589461343]
+layout_mode = 0
+offset_left = 469.0
+offset_top = 73.0
+offset_right = 719.0
+offset_bottom = 118.0
+theme_override_font_sizes/font_size = 32
+text = "Damage Control"
+
+[node name="Button" type="Button" parent="." unique_id=2987181]
+layout_mode = 0
+offset_left = 542.0
+offset_top = 278.0
+offset_right = 638.0
+offset_bottom = 309.0
+text = "Start Game"
