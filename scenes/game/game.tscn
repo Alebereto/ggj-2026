@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bykxo2lthnfm6" path="res://scenes/player/player.tscn" id="3_0sr1o"]
 [ext_resource type="Script" uid="uid://jsj0mqgstk8i" path="res://scenes/game/minion_manager.gd" id="4_lfrn8"]
 [ext_resource type="PackedScene" uid="uid://bsj4e67n4vjey" path="res://scenes/game/city.tscn" id="5_lfrn8"]
-[ext_resource type="Script" uid="uid://jokh13rr6hp7" path="res://scenes/game/mask_manager.gd" id="6_5i0tg"]
+[ext_resource type="Script" path="res://scenes/game/mask_manager.gd" id="6_5i0tg"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_lfrn8"]
 
@@ -30,3 +30,17 @@ collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="City/ClickFloor" unique_id=170761451]
 shape = SubResource("WorldBoundaryShape3D_lfrn8")
+
+[node name="UI" type="Control" parent="." unique_id=839681772]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TimerLabel" type="Label" parent="UI" unique_id=85453664]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 33.0
+offset_right = 80.0
+offset_bottom = 78.0
+theme_override_font_sizes/font_size = 32
