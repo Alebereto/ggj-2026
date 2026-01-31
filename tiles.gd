@@ -32,7 +32,7 @@ class Ground extends Tile:
 class Hole extends Tile:
 	func _init() -> void:
 		type = TILETYPES.HOLE
-		max_hp = 0
+		max_hp = 50
 		hp = 0
 	pass
 
@@ -46,7 +46,7 @@ class Debris extends Tile:
 class Dip extends Tile:
 	func _init() -> void:
 		type = TILETYPES.DIP
-		max_hp = 60
+		max_hp = 80
 		hp = 60
 	pass
 	
@@ -154,6 +154,11 @@ func create_tile_storage(grid_map: GridMap) -> void:
 				_tile_storage[pos.x][pos.y] = Ground.new()
 			TILETYPES.FOUNTAIN:
 				_tile_storage[pos.x][pos.y] = Fountain.new()
+			TILETYPES.DEBRIS:
+				_tile_storage[pos.x][pos.y] = Debris.new()
+			TILETYPES.DIP:
+				_tile_storage[pos.x][pos.y] = Dip.new()
+			
 
 
 func get_height():

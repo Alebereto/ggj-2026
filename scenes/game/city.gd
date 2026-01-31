@@ -87,7 +87,7 @@ func repair(pos: Vector2i, damage = 1):
 	if tile.hp > max_hp:
 		tile.excess_hp += tile.hp-max_hp
 		tile.hp = max_hp
-	processTile(tile, pos)
+	processTileRepair(tile, pos)
 
 func processTile(tile: Tiles.Tile, pos : Vector2i):
 	$GridMap.set_cell_item(t_array.to_gridmap(pos), t_array.tileDataToGridmapItem(tile))
@@ -131,3 +131,17 @@ func processExcess(tile: Tiles.Tile, pos : Vector2i):
 				t_array.set_tile(new_pos, Tiles.Debris.new())
 	
 	tile.excess_hp = 0
+
+func processTileRepair(tile: Tiles.Tile, pos : Vector2i):
+	$GridMap.set_cell_item(t_array.to_gridmap(pos), t_array.tileDataToGridmapItem(tile))
+	if tile.hp > tile.max_hp:
+
+		if tile.type == Tiles.TILETYPES.DIP:
+			t_array.set_tile(pos, Tiles.Ground.new())
+			return
+			
+		if tile.type == Tiles.TILETYPES.HOLE:
+			t_array.set_tile(pos, Tiles.Dip.new())
+			return
+		
+	pass
