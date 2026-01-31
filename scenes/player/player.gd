@@ -8,6 +8,8 @@ const PLAYER_SPEED = 5.0
 const CAMERA_SPEED = 2.2
 const JUMP_VELOCITY = 4.5
 
+const THROW_HEIGHT = 0.6
+
 const ACTION_ANIMATION_LAST_TIME = 0.4
 
 enum CONTROL_MODE {
@@ -69,17 +71,26 @@ func _throw_mask(mask: Mask.TYPE):
 	if _animation_player.is_playing(): _animation_player.stop()
 	_animation_player.play("attack-melee-right")
 
-	# play throw sound
-	_throw_sound.play()
+	# get source and destination positions
+	var throw_dest = _pointer.global_position
+	throw_dest.y = THROW_HEIGHT
+	var source_dest = global_position
+	source_dest.y = THROW_HEIGHT
 
 	match mask:
 		Mask.TYPE.BUILDER:
 			if _num_build_masks > 0:
-				throw_mask.emit(mask, global_position, _pointer.global_position)
+				# play throw sound
+				_throw_sound.play()
+
+				throw_mask.emit(mask, source_dest , throw_dest)
 				_num_build_masks -= 1
 		Mask.TYPE.DESTROYER:
 			if _num_destroy_masks > 0:
-				throw_mask.emit(mask, global_position, _pointer.global_position)
+				# play throw sound
+				_throw_sound.play()
+
+				throw_mask.emit(mask, source_dest , throw_dest)
 				_num_destroy_masks -= 1
 
 func _command_minion(mask: Mask.TYPE):

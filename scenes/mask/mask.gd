@@ -47,12 +47,16 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	match current_state:
 		STATE.DROPPED:
-			pass
+			if not is_on_floor():
+				velocity += get_gravity() * delta
+			velocity.x = move_toward(velocity.x, 0, THROW_SPEED)
+			velocity.z = move_toward(velocity.z, 0, THROW_SPEED)
+			move_and_slide()
 		STATE.VACUUMED:
 			# move toward player and spin
 			var movement_direction = global_position.direction_to(Globals.player_position)
 			velocity = movement_direction * VACUUM_SPEED
-			_model_root.rotate_z(ROTATE_SPEED * delta)
+			_model_root.rotate_y(ROTATE_SPEED * delta)
 			move_and_slide()
 		STATE.THROWN:
 			_thrown_time += delta
@@ -61,7 +65,7 @@ func _physics_process(delta: float) -> void:
 				return
 			if _throw_direction == Vector3.ZERO: _throw_direction = global_position.direction_to(throw_destination)
 			velocity = _throw_direction * THROW_SPEED
-			_model_root.rotate_z(ROTATE_SPEED * delta)
+			_model_root.rotate_y(ROTATE_SPEED * delta)
 			move_and_slide()
 	# _unpickable_time += delta
 	# if _unpickable_time >= GRACE_PERIOD: print("YIPEE")
@@ -78,7 +82,6 @@ func _set_mask_model() -> void:
 
 
 func drop() -> void:
-	#TODO: set height?
 	current_state = STATE.DROPPED
 
 ## gets called when being vacuumed
