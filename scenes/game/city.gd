@@ -9,9 +9,10 @@ const METEOR_SCENE: PackedScene = preload("res://scenes/meteor/meteor.tscn")
 @onready var mask_manager_ref = $"../MaskManager"
 signal building_destroyed
 
-@export var asteroid_timeout:float  = 3.0
+@export var asteroid_timeout:float  = 1.5
 @export var building_timeout: float = 30.0
-@export var building_weight = 5
+@export var building_weight = 15
+var b_odds = 0.1
 var building_count = 0
 var t_array = Globals.TILE_ARRAY
 var rng = RandomNumberGenerator.new()
@@ -19,7 +20,6 @@ var rng = RandomNumberGenerator.new()
 
 func _ready() -> void:
 	t_array.create_tile_storage($GridMap)
-	t_array.set_tile(Vector2i(6, 7), Tiles.Building.new())
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
 var asteroid_time = 0.0
@@ -37,21 +37,14 @@ func _process(_delta: float) -> void:
 		
 
 func summon_meteor():
-	var height = t_array.get_height()
-	var width = t_array.get_width()
 	var buildings = t_array.get_building_coords()
-	var x_weights = []
-	x_weights.resize(height)
-	x_weights.fill(1)
-	var y_weights = []
-	y_weights.resize(width)
-	y_weights.fill(1)
-	for building in buildings:
-		x_weights[building.x] = building_weight
-		y_weights[building.y] = building_weight
-	x_weights = PackedFloat32Array(x_weights)
-	y_weights = PackedFloat32Array(y_weights)
-	var arr_pos = Vector2i(rng.rand_weighted(x_weights), rng.rand_weighted(y_weights))
+	if buildings.is_empty():
+		return
+	var b_rand = buildings[rng.randi_range(0, buildings.size()-1)]
+
+	var arr_pos = Vector2i(rng.randi_range(0, t_array.get_width()-1), rng.randi_range(0, t_array.get_height()-1))
+	if rng.randf() < b_odds:
+		arr_pos = b_rand
 	var pos = t_array.to_world(arr_pos)	
 	pos.y = 5
 	var meteor = METEOR_SCENE.instantiate()
