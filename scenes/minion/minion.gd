@@ -50,8 +50,11 @@ enum STATE {
 @export var angle_random = 25
 @export var follow_lerp_strength = 0.4
 
-@export var working_cooldown = 1.1
-@export var working_damage = 3
+@export var working_damage_cooldown = 1.5
+@export var working_repair_cooldown = 1.1
+@export var working_damage = 5
+@export var working_repair_damage = 4
+
 
 var _work_timer = 0.0
 
@@ -60,6 +63,11 @@ var _follow_angle_offset: float = 0.0
 var _move_timer: float = 0.0
 var _move_target_velocity: Vector2 = Vector2(0,0)
 var _move_velocity: Vector2 = Vector2(0,0)
+
+func reset_move_params():
+	_move_timer = 0.0
+	_move_target_velocity = Vector2(0,0)
+	_move_velocity = Vector2(0,0)
 
 # how much time until the minion dies :(
 var _time_to_death = 15000.0 # TODO: random 100 - 200
@@ -89,6 +97,7 @@ func _physics_process(delta: float) -> void:
 				_move_to(delta, _current_task_3d)
 				attempt_start_working()
 			STATE.WORKING:
+				reset_move_params()
 				velocity = Vector3(0,0,0)
 				working_loop(delta)
 				pass
@@ -109,11 +118,13 @@ func working_loop(delta : float):
 	_work_timer -= delta
 	if _work_timer <= 0:
 		do_work()
-		_work_timer = working_cooldown
-
+		if _current_mask == Mask.TYPE.BUILDER:
+			_work_timer = working_repair_cooldown
+		elif _current_mask == Mask.TYPE.DESTROYER:
+			_work_timer = working_damage_cooldown
 func do_work():
 	if _current_mask == Mask.TYPE.BUILDER:
-		repair.emit(_current_task_2d, working_damage)
+		repair.emit(_current_task_2d, working_repair_damage)
 		_animation_player.play("interact-left")
 	elif _current_mask == Mask.TYPE.DESTROYER:
 		attack.emit(_current_task_2d, working_damage)
