@@ -5,11 +5,11 @@ const ROTATE_SPEED = 3.1
 
 const RING_WIDTH = 0.15
 
-const THROW_COLOR: Color = Color.RED
-const THROW_RADUIS: float = 0.2
+const BUILDERS_COLOR: Color = Color.YELLOW
+const BUILDERS_RADUIS: float = 0.2
 
-const COMMAND_COLOR: Color = Color.YELLOW
-const COMMAND_RADIUS: float = 0.2
+const DESTROYERS_COLOR: Color = Color.RED
+const DESTROYERS_RADIUS: float = 0.2
 
 const VACUUM_COLOR: Color = Color.BLUE
 const VACUUM_RADIUS: float = 1.0
@@ -43,17 +43,17 @@ func set_mode_none() -> void:
 	hide()
 
 
-func set_mode_throw() -> void:
+func set_mode_builders() -> void:
 	vacuum_released()
 	show()
-	_ring.mesh.material.albedo_color = THROW_COLOR
-	_set_ring_radius(THROW_RADUIS)
+	_ring.mesh.material.albedo_color = BUILDERS_COLOR
+	_set_ring_radius(BUILDERS_RADUIS)
 
-func set_mode_command() -> void:
+func set_mode_destroyers() -> void:
 	vacuum_released()
 	show()
-	_ring.mesh.material.albedo_color = COMMAND_COLOR
-	_set_ring_radius(COMMAND_RADIUS)
+	_ring.mesh.material.albedo_color = DESTROYERS_COLOR
+	_set_ring_radius(DESTROYERS_RADIUS)
 
 func set_mode_vacuum() -> void:
 	show()
