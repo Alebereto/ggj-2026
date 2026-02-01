@@ -14,9 +14,6 @@ func _process(delta: float) -> void:
 
 func _integrate_forces(state: PhysicsDirectBodyState3D):
 	var t_array = Globals.TILE_ARRAY
-	var buildings = t_array.get_building_coords()
-	var ground = t_array.get_ground_coords()
-	var debris = t_array.get_debris_coords()
 	# Loop through all current collision contacts
 	for i in state.get_contact_count():
 		var collider = state.get_contact_collider_object(i)
@@ -26,12 +23,13 @@ func _integrate_forces(state: PhysicsDirectBodyState3D):
 			var contact_pos = state.get_contact_collider_position(i)
 			
 			var map_coords = t_array.from_world(contact_pos)
-			if map_coords in buildings:
+			var tile = t_array.get_tile(map_coords)
+			if tile.type == Tiles.TILETYPES.BUILDING:
 				city.attack(map_coords, 20)
-			elif map_coords in ground:
+			elif tile.type == Tiles.TILETYPES.GROUND:
 				t_array.set_tile(map_coords, t_array.Debris.new())
-			elif map_coords in debris:
-				city.repair(map_coords, 40)
+			elif tile.type == Tiles.TILETYPES.DEBRIS:
+				city.repair(map_coords, 30)
 			
 			queue_free()
 			return
