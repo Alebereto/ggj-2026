@@ -74,6 +74,10 @@ var _time_to_death = 60.0 # TODO: random 100 - 200
 # time corpse remains
 var _corpse_time = 3.0
 
+var external_velocity: Vector3 = Vector3(0,0,0)
+func push_away(direction: Vector3, delta: float) -> void:
+	var push_strength = 100.0
+	external_velocity = direction * push_strength * delta
 
 func _ready() -> void:
 	_pickup_area.body_entered.connect(_pickup_area_entered)
@@ -102,6 +106,9 @@ func _physics_process(delta: float) -> void:
 				velocity = Vector3(0,0,0)
 				working_loop(delta)
 				pass
+		velocity += external_velocity
+		external_velocity = Vector3(0,0,0)
+		move_and_slide()
 		_walk_animation()
 	else:
 		_corpse_time -= delta
@@ -157,7 +164,6 @@ func _move_to(delta : float, global_pos: Vector3, speed = 2):
 		var angle = atan2(move_impulse.x, move_impulse.z)
 		rotation.y = angle
 	velocity = move_impulse
-	move_and_slide()
 
 func _move_randomly_to(delta:float, global_pos: Vector3):
 	var speed = follow_speed
@@ -187,7 +193,6 @@ func _move_randomly_to(delta:float, global_pos: Vector3):
 	_move_velocity = lerp(_move_velocity, _move_target_velocity, speed_factor * follow_lerp_strength)
 	velocity = Vector3(_move_velocity.x, 0, _move_velocity.y)
 	rotation.y = atan2(_move_velocity.x, _move_velocity.y)
-	move_and_slide()
 	
 func _move_randomly(delta: float) -> void:
 	var move_time_min = 0.31
@@ -210,7 +215,6 @@ func _move_randomly(delta: float) -> void:
 	
 	velocity.x = _move_velocity.x * free_move_speed
 	velocity.z = _move_velocity.y * free_move_speed
-	move_and_slide()
 
 
 # MASK LOGIC

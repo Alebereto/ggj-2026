@@ -63,11 +63,22 @@ func _physics_process(delta: float) -> void:
 		global_position.y = 10
 	_move_camera(delta)
 	_move_player(delta)
+	_push_minions(delta)
 	Globals.player_position = global_position
 	_move_pointer(delta)
 	_get_mode()
 	_get_action()
 
+func _push_minions(delta :float):
+	for i in range(get_slide_collision_count()):
+		var collision = get_slide_collision(i)
+		if collision.get_collider() is Minion:
+			var minion = collision.get_collider() as Minion
+			var direction = collision.get_collider().global_position - global_position
+			direction.y = 0
+			direction = direction.normalized()
+			minion.push_away(direction, delta)
+		
 
 func _throw_mask(mask: Mask.TYPE):
 	_time_since_last_throw = 0.0
