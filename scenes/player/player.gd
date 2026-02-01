@@ -59,7 +59,8 @@ func _physics_process(delta: float) -> void:
 	# update timers
 	_time_since_last_throw += delta
 	_time_since_last_command += delta
-
+	if global_position.y < -4:
+		global_position.y = 10
 	_move_camera(delta)
 	_move_player(delta)
 	Globals.player_position = global_position

@@ -543,8 +543,11 @@ data = {
 [sub_resource type="ImageTexture" id="ImageTexture_0nec2"]
 image = SubResource("Image_4sivn")
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_t7v3m"]
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ng02i"]
 points = PackedVector3Array(0.5, 0.019359613, 0.5, -0.5, -1.7578963, -0.5, 0.5, -1.7388403, -0.48927784, -0.5, 0.038415637, -0.5, -0.48927784, -1.7388403, 0.5, 0.5, 0.019359613, -0.48927784, -0.48927784, 0.019359613, 0.5, 0.5, -1.7388403, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2vxvk"]
+size = Vector3(0.90423584, 0.85546875, 0.4416809)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l6fmq"]
 resource_name = "colormap"
@@ -594,6 +597,9 @@ data = {
 
 [sub_resource type="ImageTexture" id="ImageTexture_3u0tt"]
 image = SubResource("Image_ck5km")
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_t7v3m"]
+points = PackedVector3Array(0.5, 0.019359613, 0.5, -0.5, -1.7578963, -0.5, 0.5, -1.7388403, -0.48927784, -0.5, 0.038415637, -0.5, -0.48927784, -1.7388403, 0.5, 0.5, 0.019359613, -0.48927784, -0.48927784, 0.019359613, 0.5, 0.5, -1.7388403, 0.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dbf0q"]
 resource_name = "colormap"
@@ -796,7 +802,7 @@ item/5/name = "pavement"
 item/5/mesh = SubResource("ArrayMesh_c1yfx")
 item/5/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 item/5/mesh_cast_shadow = 1
-item/5/shapes = [SubResource("ConvexPolygonShape3D_t7v3m"), Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8951817, 0)]
+item/5/shapes = [SubResource("ConvexPolygonShape3D_ng02i"), Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.012958467, 0), SubResource("BoxShape3D_2vxvk"), Transform3D(0.85790354, 0, -0.51381075, 0, 1, 0, 0.51381075, 0, 0.85790354, 0.0030567087, -0.072265625, 0.07673836)]
 item/5/navigation_mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 item/5/navigation_layers = 1
 item/5/preview = SubResource("ImageTexture_0nec2")

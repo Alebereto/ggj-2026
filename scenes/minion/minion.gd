@@ -175,10 +175,11 @@ func _move_randomly_to(delta:float, global_pos: Vector3):
 	if _follow_waiting:
 		_move_target_velocity = Vector2(0,0)
 	else:
-		var dir = global_pos - global_position
+		var dir = (global_pos - global_position)
+		dir -= 0.8 * dir.normalized()
 		dir.y = 0
 		dir.rotated(Vector3(0,1,0), _follow_angle_offset)
-		dir = dir.normalized() * speed
+		dir = dir.normalized() * speed * clampf(dir.length_squared(), 0, 1)
 		_move_target_velocity = Vector2(dir.x, dir.z)
 		
 	var speed_factor = (1 - (_move_velocity.length() / speed))

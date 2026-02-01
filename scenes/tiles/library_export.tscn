@@ -422,6 +422,12 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_bb7ld")
 
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ng02i"]
+points = PackedVector3Array(0.5, 0.019359613, 0.5, -0.5, -1.7578963, -0.5, 0.5, -1.7388403, -0.48927784, -0.5, 0.038415637, -0.5, -0.48927784, -1.7388403, 0.5, 0.5, 0.019359613, -0.48927784, -0.48927784, 0.019359613, 0.5, 0.5, -1.7388403, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2vxvk"]
+size = Vector3(0.90423584, 0.85546875, 0.4416809)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wddx4"]
 resource_name = "colormap"
 cull_mode = 2
@@ -708,8 +714,12 @@ mesh = SubResource("ArrayMesh_62rcq")
 [node name="StaticBody3D" type="StaticBody3D" parent="debris_0/pavement" unique_id=1944878899]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="debris_0/pavement/StaticBody3D" unique_id=455119594]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8951817, 0)
-shape = SubResource("ConvexPolygonShape3D_t7v3m")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.012958467, 0)
+shape = SubResource("ConvexPolygonShape3D_ng02i")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="debris_0/pavement/StaticBody3D" unique_id=1272471898]
+transform = Transform3D(0.85790354, 0, -0.51381075, 0, 1, 0, 0.51381075, 0, 0.85790354, 0.0030567087, -0.072265625, 0.07673836)
+shape = SubResource("BoxShape3D_2vxvk")
 
 [node name="pavement dip2" type="Node3D" parent="." unique_id=2096412575]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.9998198)
