@@ -236,6 +236,7 @@ func get_tile(coords: Vector2i) -> Tile:
 	])
 	return Tiles.Hole.new()
 	
+var tile_rotations = [0,10,16,22]
 func set_tile(coords: Vector2i, tile: Tile):
 	if not _check_bounds(coords):
 		print("Error, tile set not in 2D array %s" % [coords])
@@ -243,4 +244,4 @@ func set_tile(coords: Vector2i, tile: Tile):
 
 	_tile_storage[coords.x][coords.y] = tile
 
-	_gridmap.set_cell_item(to_gridmap(coords), tileDataToGridmapItem(tile))
+	_gridmap.set_cell_item(to_gridmap(coords), tileDataToGridmapItem(tile), tile_rotations[randi() % tile_rotations.size()])

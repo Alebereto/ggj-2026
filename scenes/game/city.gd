@@ -24,7 +24,15 @@ func _ready() -> void:
 
 var asteroid_time = 0.0
 var building_time = 0.0
+# var time_global = 0.0
+# var ornt = 0
 func _process(_delta: float) -> void:
+	# time_global += _delta
+	# if time_global >= 1.0:
+	# 	time_global = 0.0
+	# 	for cell in t_array._gridmap.get_used_cells():
+	# 		t_array._gridmap.set_cell_item(cell, t_array._gridmap.get_cell_item(cell), ornt)
+	# 	ornt += 1
 	asteroid_time += _delta
 	building_time += _delta
 	if asteroid_time >= asteroid_timeout:
