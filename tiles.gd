@@ -4,8 +4,8 @@ class_name Tiles
 enum TILETYPES {
 	GROUND,
 	BUILDING,
+	PIT,
 	HOLE,
-	DIP,
 	DEBRIS,
 	FOUNTAIN
 }
@@ -16,10 +16,10 @@ static func getEnumName(tiletype: TILETYPES) -> String:
 			return "GROUND"
 		TILETYPES.BUILDING:
 			return "BUILDING"
+		TILETYPES.PIT:
+			return "PIT"
 		TILETYPES.HOLE:
 			return "HOLE"
-		TILETYPES.DIP:
-			return "DIP"
 		TILETYPES.DEBRIS:
 			return "DEBRIS"
 		TILETYPES.FOUNTAIN:
@@ -53,7 +53,7 @@ class Tile extends RefCounted:
 	## Static tile type metadata: use this when you only have the class (registries).
 	static func tiletype_static() -> TILETYPES:
 		push_error("Tiles.Tile.tiletype_static() must be overridden by derived class.")
-		return TILETYPES.HOLE
+		return TILETYPES.PIT
 
 	## Run checks to see if the tile should be changed after being damaged.
 	## For now, if the tile's own type is returned, no changes should be made.
@@ -73,7 +73,7 @@ class Building extends Tile:
 
 	func next_tile_damage() -> TILETYPES:
 		if hp <= 0:
-			return TILETYPES.DIP
+			return TILETYPES.HOLE
 		return TILETYPES.BUILDING
 
 	func get_gridmap_index() -> int:
@@ -112,20 +112,19 @@ class Ground extends Tile:
 	static func tiletype_static() -> TILETYPES:			return TILETYPES.GROUND
 
 
-class Hole extends Tile:
+class Pit extends Tile:
 	func _init() -> void:
 		_max_hp = 50
 		hp = 0
 	
 	func next_tile_repair() -> TILETYPES:
 		if hp >= _max_hp:
-			return TILETYPES.DIP
-		return TILETYPES.HOLE
+			return TILETYPES.HOLE
+		return TILETYPES.PIT
 
 	func get_gridmap_index() -> int:					return -1
 	static func get_possible_indices() -> Array[int]:	return [-1]
-	static func tiletype_static() -> TILETYPES:			return TILETYPES.HOLE
-
+	static func tiletype_static() -> TILETYPES:			return TILETYPES.PIT
 
 class Debris extends Tile:
 	func _init() -> void:
@@ -152,7 +151,7 @@ class Debris extends Tile:
 		return TILETYPES.DEBRIS
 
 
-class Dip extends Tile:
+class Hole extends Tile:
 	func _init() -> void:
 		_max_hp = 80
 		hp = 60
@@ -160,16 +159,16 @@ class Dip extends Tile:
 	func next_tile_repair() -> TILETYPES:
 		if hp >= _max_hp:
 			return TILETYPES.GROUND
-		return TILETYPES.DIP	
+		return TILETYPES.HOLE	
 	
 	func next_tile_damage() -> TILETYPES:
 		if hp <= 0:
-			return TILETYPES.HOLE
-		return TILETYPES.DIP
+			return TILETYPES.PIT
+		return TILETYPES.HOLE	
 
 	func get_gridmap_index() -> int:					return 10
 	static func get_possible_indices() -> Array[int]:	return [10]
-	static func tiletype_static() -> TILETYPES:			return TILETYPES.DIP
+	static func tiletype_static() -> TILETYPES:			return TILETYPES.HOLE
 
 
 class Fountain extends Tile:
@@ -182,7 +181,7 @@ class Fountain extends Tile:
 	static func tiletype_static() -> TILETYPES:			return TILETYPES.FOUNTAIN
 
 
-const TileClasses := [Fountain, Dip, Debris, Ground, Building, Hole]
+const TileClasses := [Fountain, Hole, Debris, Ground, Building, Pit]
 
 static var _static_index_to_class: Dictionary = {}
 static var _static_enum_to_class: Dictionary = {}
@@ -240,7 +239,7 @@ static func enumToClass(tiletype: TILETYPES) -> GDScript:
 	#7: TILETYPES.DEBRIS,
 	#8: TILETYPES.DEBRIS,
 	#9: TILETYPES.BUILDING,
-	#10: TILETYPES.DIP,
+	#10: TILETYPES.HOLE,
 	#11: TILETYPES.BUILDING,
 	#12: TILETYPES.BUILDING
 #}
@@ -280,12 +279,12 @@ func create_tile_storage(grid_map: GridMap) -> void:
 	for i in range(_max_x - _min_x + 1):
 		_tile_storage.append([])
 		for j in range(_max_z - _min_z + 1):
-			_tile_storage[i].append(Hole.new())
+			_tile_storage[i].append(Pit.new())
 
 	for cell in cells:
 		var pos = from_gridmap(cell)
 		var type = grid_map.get_cell_item(cell)
-		var enumtype = getGridmapIndexClassDictionary().get(type, TILETYPES.HOLE)
+		var enumtype = getGridmapIndexClassDictionary().get(type, TILETYPES.PIT)
 		match enumtype:
 			TILETYPES.BUILDING:
 				_tile_storage[pos.x][pos.y] = Building.new()
@@ -295,8 +294,8 @@ func create_tile_storage(grid_map: GridMap) -> void:
 				_tile_storage[pos.x][pos.y] = Fountain.new()
 			TILETYPES.DEBRIS:
 				_tile_storage[pos.x][pos.y] = Debris.new()
-			TILETYPES.DIP:
-				_tile_storage[pos.x][pos.y] = Dip.new()
+			TILETYPES.HOLE:
+				_tile_storage[pos.x][pos.y] = Hole.new()
 			
 
 
@@ -373,7 +372,7 @@ func get_tile(coords: Vector2i) -> Tile:
 	print("Error, tile not in 2D array %s" % [
 		coords
 	])
-	return Tiles.Hole.new()
+	return Tiles.Pit.new()
 
 const tile_rotations = [0,10,16,22]
 static func random_rotation() -> int:
