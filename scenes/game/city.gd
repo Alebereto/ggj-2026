@@ -78,46 +78,33 @@ func summon_building():
 func attack(pos: Vector2i, damage = 1):
 	var tile = t_array.get_tile(pos)
 	tile.hp -= damage
-	processExcess(tile, pos)
-	processTile(tile, pos)
+	attackSpecialCases(tile, pos)
+	processTile(tile, pos, tile.next_tile_damage())
+	tile.excess_hp = 0.5 * tile.excess_hp
 
 func repair(pos: Vector2i, damage = 1):
-	var max_hp = t_array.get_tile(pos).max_hp
+	var max_hp = t_array.get_tile(pos)._max_hp
 	var tile = t_array.get_tile(pos)
 	tile.hp += damage
 	if tile.hp > max_hp:
 		tile.excess_hp += tile.hp-max_hp
 		tile.hp = max_hp
-	processTileRepair(tile, pos)
-
-func processTile(tile: Tiles.Tile, pos : Vector2i):
+	processTile(tile, pos, tile.next_tile_repair())
+	
+func processTile(tile: Tiles.Tile, pos : Vector2i, new_type : Tiles.TILETYPES) -> bool:
+	# var new_type = tile.next_tile_damage()
+	if new_type == tile.get_tiletype():
+		return false
+	t_array.set_tile(pos, Tiles.enumToClass(new_type).new())
 	$GridMap.set_cell_item(t_array.to_gridmap(pos), tile.get_gridmap_index())
-	if tile.hp < 0:
-		if tile.get_tiletype() == Tiles.TILETYPES.GROUND:
-			t_array.set_tile(pos, Tiles.Dip.new())
-			return
-		if tile.get_tiletype() == Tiles.TILETYPES.DIP:
-			t_array.set_tile(pos, Tiles.Hole.new())
-			return
-			
-		if tile.get_tiletype() == Tiles.TILETYPES.BUILDING:
-			on_building_destroyed.emit()
-			t_array.set_tile(pos, Tiles.Dip.new())
-			
-			
-		if tile.get_tiletype() == Tiles.TILETYPES.DEBRIS:
-			var mask_type = Mask.TYPE.BUILDER
-			if rng.randi_range(0,2) == 0:
-				mask_type= Mask.TYPE.DESTROYER
+	return true
 
-			if rng.randi_range(0,3) == 0:
-				mask_manager_ref.drop_mask(mask_type, t_array.to_world(pos))
-			t_array.set_tile(pos, Tiles.Ground.new())
-			return
+## 
+func attackSpecialCases(tile: Tiles.Tile, pos : Vector2i):
+	
+	if tile.get_tiletype() == Tiles.TILETYPES.BUILDING and tile.hp <= 0:
+		emit_signal("on_building_destroyed", pos)
 		
-	pass
-
-func processExcess(tile: Tiles.Tile, pos : Vector2i):
 	if tile.get_tiletype() == Tiles.TILETYPES.BUILDING and tile.excess_hp >= 30:
 		# debris
 		for i in range(int(tile.excess_hp / 9)):
@@ -130,23 +117,12 @@ func processExcess(tile: Tiles.Tile, pos : Vector2i):
 			var new_tile = t_array.get_tile(new_pos)
 			if new_tile.get_tiletype() == Tiles.TILETYPES.GROUND:
 				t_array.set_tile(new_pos, Tiles.Debris.new())
-	
-	tile.excess_hp = 0.5 * tile.excess_hp
 
-func processTileRepair(tile: Tiles.Tile, pos : Vector2i):
-	$GridMap.set_cell_item(t_array.to_gridmap(pos), tile.get_gridmap_index())
-	
-	if tile.hp >= tile.max_hp:
+	if tile.get_tiletype() == Tiles.TILETYPES.DEBRIS:
+		if tile.hp <= 0:
+			var mask_type = Mask.TYPE.BUILDER
+			if rng.randi_range(0,2) == 0:
+				mask_type= Mask.TYPE.DESTROYER
 
-		if tile.get_tiletype() == Tiles.TILETYPES.DIP:
-			t_array.set_tile(pos, Tiles.Ground.new())
-			return
-			
-		if tile.get_tiletype() == Tiles.TILETYPES.HOLE:
-			t_array.set_tile(pos, Tiles.Dip.new())
-			return
-			
-	if tile.get_tiletype() == Tiles.TILETYPES.GROUND and tile.excess_hp > 50:
-			t_array.set_tile(pos, Tiles.Debris.new())
-		
-	pass
+			if rng.randi_range(0,3) == 0:
+				mask_manager_ref.drop_mask(mask_type, t_array.to_world(pos))

@@ -12,7 +12,7 @@ enum TILETYPES {
 
 class Tile extends RefCounted:
 	var hp: float
-	var max_hp: float
+	var _max_hp: float
 	var excess_hp: float = 0.0
 
 	## Gets the index in the Mesh Library the GridMap uses. This ties the Tile data storage class
@@ -48,11 +48,48 @@ class Tile extends RefCounted:
 		return get_tiletype()
 
 
+# 	if tile.hp >= tile.max_hp:
+
+# 		if tile.get_tiletype() == Tiles.TILETYPES.DIP:
+# 			t_array.set_tile(pos, Tiles.Ground.new())
+# 			return
+			
+# 		if tile.get_tiletype() == Tiles.TILETYPES.HOLE:
+# 			t_array.set_tile(pos, Tiles.Dip.new())
+# 			return
+			
+# 	if tile.get_tiletype() == Tiles.TILETYPES.GROUND and tile.excess_hp > 50:
+# 			t_array.set_tile(pos, Tiles.Debris.new())
+		
+
+# if tile.hp < 0:
+# 		if tile.get_tiletype() == Tiles.TILETYPES.GROUND:
+# 			t_array.set_tile(pos, Tiles.Dip.new())
+# 			return
+# 		if tile.get_tiletype() == Tiles.TILETYPES.DIP:
+# 			t_array.set_tile(pos, Tiles.Hole.new())
+# 			return
+			
+# 		if tile.get_tiletype() == Tiles.TILETYPES.BUILDING:
+# 			on_building_destroyed.emit()
+# 			t_array.set_tile(pos, Tiles.Dip.new())
+			
+			
+# 		if tile.get_tiletype() == Tiles.TILETYPES.DEBRIS:
+# 			
+# 			t_array.set_tile(pos, Tiles.Ground.new())
+# 			return
+
 # Tiles
 class Building extends Tile:
 	func _init() -> void:
-		max_hp = 100
+		_max_hp = 100
 		hp = 100
+
+	func next_tile_damage() -> TILETYPES:
+		if hp <= 0:
+			return TILETYPES.HOLE
+		return TILETYPES.BUILDING
 
 	func get_gridmap_index() -> int:
 		if hp >= 80 and excess_hp >= 60:
@@ -77,32 +114,43 @@ class Building extends Tile:
 
 class Ground extends Tile:
 	func _init() -> void:
-		max_hp = 30
+		_max_hp = 30
 		hp = 30
 
-	func get_gridmap_index() -> int:
-		return 1
-
-	static func get_possible_indices() -> Array[int]:
-		return [1]
-
-	static func tiletype_static() -> TILETYPES:
+	func next_tile_repair() -> TILETYPES:
+		if excess_hp >= 50:
+			return TILETYPES.DEBRIS
 		return TILETYPES.GROUND
+
+	func get_gridmap_index() -> int:					return 1
+	static func get_possible_indices() -> Array[int]:	return [1]
+	static func tiletype_static() -> TILETYPES:			return TILETYPES.GROUND
 
 
 class Hole extends Tile:
 	func _init() -> void:
-		max_hp = 50
+		_max_hp = 50
 		hp = 0
-
-	static func tiletype_static() -> TILETYPES:
+	
+	func next_tile_repair() -> TILETYPES:
+		if hp >= _max_hp:
+			return TILETYPES.DIP
 		return TILETYPES.HOLE
+
+	func get_gridmap_index() -> int:					return -1
+	static func get_possible_indices() -> Array[int]:	return [-1]
+	static func tiletype_static() -> TILETYPES:			return TILETYPES.HOLE
 
 
 class Debris extends Tile:
 	func _init() -> void:
-		max_hp = 100
+		_max_hp = 100
 		hp = 20
+
+	func next_tile_damage() -> TILETYPES:
+		if hp <= 0:
+			return TILETYPES.GROUND
+		return TILETYPES.DEBRIS
 
 	func get_gridmap_index() -> int:
 		if hp >= 60:
@@ -121,42 +169,42 @@ class Debris extends Tile:
 
 class Dip extends Tile:
 	func _init() -> void:
-		max_hp = 80
+		_max_hp = 80
 		hp = 60
 
-	func get_gridmap_index() -> int:
-		return 10
-
-	static func get_possible_indices() -> Array[int]:
-		return [10]
-
-	static func tiletype_static() -> TILETYPES:
+	func next_tile_repair() -> TILETYPES:
+		if hp >= _max_hp:
+			return TILETYPES.GROUND
+		return TILETYPES.HOLE	
+	
+	func next_tile_damage() -> TILETYPES:
+		if hp <= 0:
+			return TILETYPES.HOLE
 		return TILETYPES.DIP
+
+	func get_gridmap_index() -> int:					return 10
+	static func get_possible_indices() -> Array[int]:	return [10]
+	static func tiletype_static() -> TILETYPES:			return TILETYPES.DIP
 
 
 class Fountain extends Tile:
 	func _init() -> void:
-		max_hp = INT_MAX
+		_max_hp = INT_MAX
 		hp = INT_MAX
 
-	func get_gridmap_index() -> int:
-		return 2
-
-	static func get_possible_indices() -> Array[int]:
-		return [2]
-
-	static func tiletype_static() -> TILETYPES:
-		return TILETYPES.FOUNTAIN
+	func get_gridmap_index() -> int:					return 2
+	static func get_possible_indices() -> Array[int]:	return [2]
+	static func tiletype_static() -> TILETYPES:			return TILETYPES.FOUNTAIN
 
 
 const TileClasses := [Fountain, Dip, Debris, Ground, Building, Hole]
 
-var _static_index_to_class: Dictionary = {}
-var _static_enum_to_class: Dictionary = {}
-var _static_built := false
+static var _static_index_to_class: Dictionary = {}
+static var _static_enum_to_class: Dictionary = {}
+static var _static_built := false
 
 
-func _build_static_maps() -> void:
+static func _build_static_maps() -> void:
 	if _static_built:
 		return
 
@@ -177,18 +225,19 @@ func _build_static_maps() -> void:
 ## Key: MeshLibrary index
 ## Value: TILETYPES enum
 ## EG: 0 -> TILETYPES.BUILDING
-func getGridmapIndexClassDictionary() -> Dictionary:
+static func getGridmapIndexClassDictionary() -> Dictionary:
 	_build_static_maps()
 	return _static_index_to_class
 
-
-func getEnumToClassDictionary() -> Dictionary:
+## Key: tiletype enum
+## Value: Tile class
+static func getEnumToClassDictionary() -> Dictionary:
 	_build_static_maps()
 	return _static_enum_to_class
 
 
 ## Get the Tile Class that corresponds to an enum
-func getEnumClass(tiletype: TILETYPES) -> GDScript:
+static func enumToClass(tiletype: TILETYPES) -> GDScript:
 	_build_static_maps()
 	return _static_enum_to_class[tiletype]
 
