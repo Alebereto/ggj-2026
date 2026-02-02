@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://gxqd46aat8l3"
-path.s3tc="res://.godot/imported/bl4.png-9f5715cb746f123488b92440ea710e67.s3tc.ctex"
+path.s3tc="res://.godot/imported/bl4.png-501311a589fe548bc31769aa1927e426.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/buildings/blender/renders/bl4.png"
-dest_files=["res://.godot/imported/bl4.png-9f5715cb746f123488b92440ea710e67.s3tc.ctex"]
+source_file="res://blender/renders/bl4.png"
+dest_files=["res://.godot/imported/bl4.png-501311a589fe548bc31769aa1927e426.s3tc.ctex"]
 
 [params]
 

@@ -26,7 +26,7 @@ func _process(delta: float) -> void:
 			return
 		for building in buildings:
 			var spawn_point = building + Vector2i(rng.randi_range(-1, 2), rng.randi_range(-1, 2))
-			if t_array.get_tile(spawn_point).type != t_array.TILETYPES.GROUND:
+			if t_array.get_tile(spawn_point).get_tiletype() != Tiles.TILETYPES.GROUND:
 				continue
 			var world_pos = t_array.to_world(spawn_point)
 			create_minion(world_pos)
@@ -35,7 +35,7 @@ func _process(delta: float) -> void:
 
 func command_minion(mask: Mask.TYPE, grid_destination: Vector2i):
 	var target_tile = Globals.TILE_ARRAY.get_tile(grid_destination)
-	if target_tile.type == Tiles.TILETYPES.GROUND:
+	if target_tile.get_tiletype() == Tiles.TILETYPES.GROUND:
 		return
 	var closest_minion = null
 	var closest_distance = INF

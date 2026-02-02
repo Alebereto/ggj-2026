@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dhpowat4xtv1n"
-path.s3tc="res://.godot/imported/colormap.png-bcb3b8ef87cb7c0229b5743b6e276f9c.s3tc.ctex"
+uid="uid://7nwr27pxkexk"
+path.s3tc="res://.godot/imported/building_remains_colormap.png-571b600c833c26be4f3f0a92702f7f3a.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "1429505ce450d08886d21eb1d5dcc76f"
+}
 
 [deps]
 
-source_file="res://blender/textures/colormap.png"
-dest_files=["res://.godot/imported/colormap.png-bcb3b8ef87cb7c0229b5743b6e276f9c.s3tc.ctex"]
+source_file="res://assets/buildings/building_remains_colormap.png"
+dest_files=["res://.godot/imported/building_remains_colormap.png-571b600c833c26be4f3f0a92702f7f3a.s3tc.ctex"]
 
 [params]
 
