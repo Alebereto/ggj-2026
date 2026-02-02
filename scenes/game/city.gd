@@ -8,6 +8,7 @@ const METEOR_SCENE: PackedScene = preload("res://scenes/meteor/meteor.tscn")
 
 @onready var mask_manager_ref = $"../MaskManager"
 
+@export var asteroid_spawn_height = 10.0
 @export var asteroid_timeout:float  = 1.5
 @export var building_timeout: float = 45.0
 @export var building_weight = 15
@@ -53,7 +54,7 @@ func summon_meteor():
 	if rng.randf() < b_odds:
 		arr_pos = b_rand
 	var pos = t_array.to_world(arr_pos)	
-	pos.y = 5
+	pos.y = asteroid_spawn_height
 	var meteor = METEOR_SCENE.instantiate()
 	meteor.position = pos
 	add_child(meteor)
