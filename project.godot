@@ -23,6 +23,10 @@ Globals="*uid://ddwpy6jui1il5"
 
 window/stretch/mode="viewport"
 
+[filesystem]
+
+import/blender/enabled=false
+
 [input]
 
 move_forward={
