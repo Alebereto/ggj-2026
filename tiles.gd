@@ -15,98 +15,169 @@ class Tile extends RefCounted:
 	var max_hp: float
 	var excess_hp: float = 0.0
 	var type: TILETYPES
+	
+	## Gets the index in the Mesh Library the GridMap uses. This ties the Tile data storage class
+	## To it's visual representation in the tileset.
+	## This index may change according to the tiles parameters, such as it's [code]hp[\code]
+	func get_gridmap_index() -> int:
+		return -1
+	
+	## Returns all the possible Mesh Library indices this tile could have.
+	## See [code]get_gridmap_index()[\code] for more information.
+	static func get_possible_indices() -> Array[int]:
+		return [-1]
+	
+	## Run checks to see if the tile should be changed after being damaged.
+	## For now, if the tiles own type is returned, no changes should be made.
+	func next_tile_damage() -> TILETYPES:
+		return type
+		
+	## Run checks to see if the tile should be changed after being repaired.
+	## For now, if the tiles own type is returned, no changes should be made.
+	func next_tile_repair() -> TILETYPES:
+		return type
+	
+	## Returns the enum matching this class.
+	static func get_tile_enum() -> TILETYPES:		
+		push_error("Function 'get_tile_enum()' must be overridden by derived class.") 
+		return TILETYPES.HOLE
+	
 
+# Tiles
 class Building extends Tile:
 	func _init() -> void:
 		type = TILETYPES.BUILDING
 		max_hp = 100
 		hp = 100
+		
+	func get_gridmap_index() -> int:
+		if hp >= 80 and excess_hp >= 60:
+			return 12
+		elif hp >= 80 and excess_hp >= 30:
+			return 11
+		elif hp >= 80 and excess_hp >= 10:
+			return 9
+		elif hp <= 33:
+			return 4
+		elif hp <= 66:
+			return 3
+		else:
+			return 0
+			
+	static func get_possible_indices() -> Array[int]:
+		return [12,11,9,4,3,0]
+	
+	static func get_tile_enum() -> TILETYPES:			return TILETYPES.BUILDING
 
 class Ground extends Tile:
 	func _init() -> void:
 		type = TILETYPES.GROUND
 		max_hp = 30
 		hp = 30
-	pass
+	
+	func get_gridmap_index() -> int:					return 1
+	static func get_possible_indices() -> Array[int]:	return [1]
+	static func get_tile_enum() -> TILETYPES:			return TILETYPES.GROUND
 
 class Hole extends Tile:
 	func _init() -> void:
-		type = TILETYPES.HOLE
 		max_hp = 50
 		hp = 0
-	pass
+	
+	static func get_tile_enum() -> TILETYPES:			return TILETYPES.HOLE
 
 class Debris extends Tile:
 	func _init() -> void:
-		type = TILETYPES.DEBRIS
 		max_hp = 100
 		hp = 20
-	pass
+	
+	func get_gridmap_index() -> int:
+		if hp >= 60:
+			return 8
+		elif hp >= 21:
+			return 7
+		else:
+			return 5
+	static func get_possible_indices() -> Array[int]:
+		return [8,7,5]
+	static func get_tile_enum() -> TILETYPES:			return TILETYPES.DEBRIS
 	
 class Dip extends Tile:
 	func _init() -> void:
-		type = TILETYPES.DIP
 		max_hp = 80
 		hp = 60
+		
+	func get_gridmap_index() -> int:					return 10
+	static func get_possible_indices() -> Array[int]:	return [10]
+	static func get_tile_enum() -> TILETYPES:			return TILETYPES.DIP
 	pass
 	
 class Fountain extends Tile:
 	func _init() -> void:
-		type = TILETYPES.FOUNTAIN
 		max_hp = INT_MAX
 		hp = INT_MAX
-	pass
+		
+	func get_gridmap_index() -> int:					return 2
+	static func get_possible_indices() -> Array[int]:	return [2]
+	static func get_tile_enum() -> TILETYPES:			return TILETYPES.FOUNTAIN
+
+const TileClasses := [Fountain, Dip, Debris, Ground, Building, Hole] # ,Hole
+
+var _static_index_to_class = null
+## Helper functions to iterate all the tileclasses
+## Key: MeshLibrary index
+## Value: tiletypes enum
+## EG: [code] 0-> TILETYPES.BUILDING[\code]
+func getGridmapIndexClassDictionary() -> Dictionary:
+	# Read Cache
+	if _static_index_to_class:
+		return _static_index_to_class
+	# Generating
+	var a = {}
+	for tileClass in TileClasses:
+		for i in tileClass.get_possible_indices():
+			a[i] = tileClass.get_tile_enum()
+	# Caching
+	_static_index_to_class = a
+	return a
+	
+var _static_enum_to_class = null
+func getEnumToClassDictionary() -> Dictionary:
+	# Read Cache
+	if _static_enum_to_class:
+		return _static_enum_to_class
+	# Generating
+	var a = {}
+	for tileClass in TileClasses:
+		a[tileClass.get_tile_enum()] = tileClass
+	# Caching
+	_static_enum_to_class = a
+	return a
+
+## Get the Tile Class that corresponds to an enum
+func getEnumClass(tiletype: TILETYPES) -> GDScript:
+	return getEnumToClassDictionary()[tiletype]
 
 
-const gridmapIntToEnum = {
-	0: TILETYPES.BUILDING,
-	1: TILETYPES.GROUND,
-	2: TILETYPES.FOUNTAIN,
-	3: TILETYPES.BUILDING,
-	4: TILETYPES.BUILDING,
-	5: TILETYPES.DEBRIS,
-	6: TILETYPES.GROUND,
-	7: TILETYPES.DEBRIS,
-	8: TILETYPES.DEBRIS,
-	9: TILETYPES.BUILDING,
-	10: TILETYPES.DIP,
-	11: TILETYPES.BUILDING,
-	12: TILETYPES.BUILDING
-}
+	
+#
+#const gridmapIntToEnum = {
+	#0: TILETYPES.BUILDING,
+	#1: TILETYPES.GROUND,
+	#2: TILETYPES.FOUNTAIN,
+	#3: TILETYPES.BUILDING,
+	#4: TILETYPES.BUILDING,
+	#5: TILETYPES.DEBRIS,
+	#6: TILETYPES.GROUND,
+	#7: TILETYPES.DEBRIS,
+	#8: TILETYPES.DEBRIS,
+	#9: TILETYPES.BUILDING,
+	#10: TILETYPES.DIP,
+	#11: TILETYPES.BUILDING,
+	#12: TILETYPES.BUILDING
+#}
 
-func tileDataToGridmapItem(tile) -> int:
-	var hp = tile.hp
-	var excess_hp = tile.excess_hp
-	match tile.type:
-		TILETYPES.GROUND:
-			return 1
-		TILETYPES.BUILDING:
-			
-			
-			if hp >= 80 and excess_hp >= 60:
-				return 12
-			if hp >= 80 and excess_hp >= 30:
-				return 11
-			if hp >= 80 and excess_hp >= 10:
-				return 9
-			if hp <= 33:
-				return 4
-			elif hp <= 66:
-				return 3
-			else:
-				return 0
-		TILETYPES.DEBRIS:
-			if hp >= 60:
-				return 8
-			elif hp >= 21:
-				return 7
-			else:
-				return 5
-		TILETYPES.DIP:
-			return 10
-		TILETYPES.FOUNTAIN:
-			return 2
-	return -1
+## 2D ARRAY:
 
 const INT_MAX := 2147483647
 const INT_MIN := -2147483648
@@ -146,7 +217,7 @@ func create_tile_storage(grid_map: GridMap) -> void:
 	for cell in cells:
 		var pos = from_gridmap(cell)
 		var type = grid_map.get_cell_item(cell)
-		var enumtype = gridmapIntToEnum.get(type, TILETYPES.HOLE)
+		var enumtype = getGridmapIndexClassDictionary().get(type, TILETYPES.HOLE)
 		match enumtype:
 			TILETYPES.BUILDING:
 				_tile_storage[pos.x][pos.y] = Building.new()
@@ -244,4 +315,4 @@ func set_tile(coords: Vector2i, tile: Tile):
 
 	_tile_storage[coords.x][coords.y] = tile
 
-	_gridmap.set_cell_item(to_gridmap(coords), tileDataToGridmapItem(tile), tile_rotations[randi() % tile_rotations.size()])
+	_gridmap.set_cell_item(to_gridmap(coords), tile.get_gridmap_index(), tile_rotations[randi() % tile_rotations.size()])
