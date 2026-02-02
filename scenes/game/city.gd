@@ -63,9 +63,9 @@ func summon_building():
 	var fountains = t_array.get_fountain_coords()
 	if fountains.is_empty():
 		return
-	var height = t_array.get_height()
-	var width = t_array.get_width()
-	var city_center = Vector2(height/2, width/2)
+	var height : int = t_array.get_height()
+	var width : int = t_array.get_width()
+	var city_center = Vector2i(height/2, width/2)
 	var chosen_fountain
 	var minDistance = INF
 	for fountain in fountains:
@@ -118,7 +118,7 @@ func processTile(tile: Tiles.Tile, pos : Vector2i):
 	pass
 
 func processExcess(tile: Tiles.Tile, pos : Vector2i):
-	if tile.class.get_tiletype() == Tiles.TILETYPES.BUILDING and tile.excess_hp >= 30:
+	if tile.get_tiletype() == Tiles.TILETYPES.BUILDING and tile.excess_hp >= 30:
 		# debris
 		for i in range(int(tile.excess_hp / 9)):
 			# spawn debris around

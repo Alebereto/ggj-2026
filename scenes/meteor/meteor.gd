@@ -7,11 +7,6 @@ func _ready() -> void:
 	pass # Replace with function body.
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-
 func _integrate_forces(state: PhysicsDirectBodyState3D):
 	var t_array = Globals.TILE_ARRAY
 	# Loop through all current collision contacts
@@ -24,11 +19,11 @@ func _integrate_forces(state: PhysicsDirectBodyState3D):
 			
 			var map_coords = t_array.from_world(contact_pos)
 			var tile = t_array.get_tile(map_coords)
-			if tile.type == Tiles.TILETYPES.BUILDING:
+			if tile.get_tiletype() == Tiles.TILETYPES.BUILDING:
 				city.attack(map_coords, 20)
-			elif tile.type == Tiles.TILETYPES.GROUND:
+			elif tile.get_tiletype() == Tiles.TILETYPES.GROUND:
 				t_array.set_tile(map_coords, t_array.Debris.new())
-			elif tile.type == Tiles.TILETYPES.DEBRIS:
+			elif tile.get_tiletype() == Tiles.TILETYPES.DEBRIS:
 				city.repair(map_coords, 30)
 			
 			queue_free()
