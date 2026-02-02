@@ -10,9 +10,27 @@ enum TILETYPES {
 	FOUNTAIN
 }
 
+static func getEnumName(tiletype: TILETYPES) -> String:
+	match tiletype:
+		TILETYPES.GROUND:
+			return "GROUND"
+		TILETYPES.BUILDING:
+			return "BUILDING"
+		TILETYPES.HOLE:
+			return "HOLE"
+		TILETYPES.DIP:
+			return "DIP"
+		TILETYPES.DEBRIS:
+			return "DEBRIS"
+		TILETYPES.FOUNTAIN:
+			return "FOUNTAIN"
+		_:
+			return "UNKNOWN"
+			
+
 class Tile extends RefCounted:
 	var hp: float
-	var _max_hp: float
+	var _max_hp: float = 0.0
 	var excess_hp: float = 0.0
 
 	## Gets the index in the Mesh Library the GridMap uses. This ties the Tile data storage class
@@ -47,39 +65,6 @@ class Tile extends RefCounted:
 	func next_tile_repair() -> TILETYPES:
 		return get_tiletype()
 
-
-# 	if tile.hp >= tile.max_hp:
-
-# 		if tile.get_tiletype() == Tiles.TILETYPES.DIP:
-# 			t_array.set_tile(pos, Tiles.Ground.new())
-# 			return
-			
-# 		if tile.get_tiletype() == Tiles.TILETYPES.HOLE:
-# 			t_array.set_tile(pos, Tiles.Dip.new())
-# 			return
-			
-# 	if tile.get_tiletype() == Tiles.TILETYPES.GROUND and tile.excess_hp > 50:
-# 			t_array.set_tile(pos, Tiles.Debris.new())
-		
-
-# if tile.hp < 0:
-# 		if tile.get_tiletype() == Tiles.TILETYPES.GROUND:
-# 			t_array.set_tile(pos, Tiles.Dip.new())
-# 			return
-# 		if tile.get_tiletype() == Tiles.TILETYPES.DIP:
-# 			t_array.set_tile(pos, Tiles.Hole.new())
-# 			return
-			
-# 		if tile.get_tiletype() == Tiles.TILETYPES.BUILDING:
-# 			on_building_destroyed.emit()
-# 			t_array.set_tile(pos, Tiles.Dip.new())
-			
-			
-# 		if tile.get_tiletype() == Tiles.TILETYPES.DEBRIS:
-# 			
-# 			t_array.set_tile(pos, Tiles.Ground.new())
-# 			return
-
 # Tiles
 class Building extends Tile:
 	func _init() -> void:
@@ -88,7 +73,7 @@ class Building extends Tile:
 
 	func next_tile_damage() -> TILETYPES:
 		if hp <= 0:
-			return TILETYPES.HOLE
+			return TILETYPES.DIP
 		return TILETYPES.BUILDING
 
 	func get_gridmap_index() -> int:
@@ -175,7 +160,7 @@ class Dip extends Tile:
 	func next_tile_repair() -> TILETYPES:
 		if hp >= _max_hp:
 			return TILETYPES.GROUND
-		return TILETYPES.HOLE	
+		return TILETYPES.DIP	
 	
 	func next_tile_damage() -> TILETYPES:
 		if hp <= 0:
@@ -389,8 +374,11 @@ func get_tile(coords: Vector2i) -> Tile:
 		coords
 	])
 	return Tiles.Hole.new()
-	
-var tile_rotations = [0,10,16,22]
+
+const tile_rotations = [0,10,16,22]
+static func random_rotation() -> int:
+	return tile_rotations[randi() % tile_rotations.size()]
+
 func set_tile(coords: Vector2i, tile: Tile):
 	if not _check_bounds(coords):
 		print("Error, tile set not in 2D array %s" % [coords])
@@ -398,4 +386,4 @@ func set_tile(coords: Vector2i, tile: Tile):
 
 	_tile_storage[coords.x][coords.y] = tile
 
-	_gridmap.set_cell_item(to_gridmap(coords), tile.get_gridmap_index(), tile_rotations[randi() % tile_rotations.size()])
+	_gridmap.set_cell_item(to_gridmap(coords), tile.get_gridmap_index(), random_rotation())

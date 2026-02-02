@@ -7,7 +7,6 @@ signal on_building_destroyed
 const METEOR_SCENE: PackedScene = preload("res://scenes/meteor/meteor.tscn")
 
 @onready var mask_manager_ref = $"../MaskManager"
-signal building_destroyed
 
 @export var asteroid_timeout:float  = 1.5
 @export var building_timeout: float = 45.0
@@ -91,19 +90,24 @@ func repair(pos: Vector2i, damage = 1):
 		tile.hp = max_hp
 	processTile(tile, pos, tile.next_tile_repair())
 	
-func processTile(tile: Tiles.Tile, pos : Vector2i, new_type : Tiles.TILETYPES) -> bool:
+	
+func processTile(tile: Tiles.Tile, pos : Vector2i, new_type : Tiles.TILETYPES):
 	# var new_type = tile.next_tile_damage()
-	if new_type == tile.get_tiletype():
-		return false
-	t_array.set_tile(pos, Tiles.enumToClass(new_type).new())
-	$GridMap.set_cell_item(t_array.to_gridmap(pos), tile.get_gridmap_index())
-	return true
+	var new_tile := tile
+	var tile_rotation = $GridMap.get_cell_item_orientation(t_array.to_gridmap(pos))
+	if new_type != tile.get_tiletype():
+		new_tile =  Tiles.enumToClass(new_type).new()
+		t_array.set_tile(pos, new_tile)
+		tile_rotation = Tiles.random_rotation()
+		
+	# Update visuals if it was changed OR NOT (for )
+	$GridMap.set_cell_item(t_array.to_gridmap(pos), new_tile.get_gridmap_index(), tile_rotation)
+
 
 ## 
 func attackSpecialCases(tile: Tiles.Tile, pos : Vector2i):
-	
 	if tile.get_tiletype() == Tiles.TILETYPES.BUILDING and tile.hp <= 0:
-		emit_signal("on_building_destroyed", pos)
+		on_building_destroyed.emit()
 		
 	if tile.get_tiletype() == Tiles.TILETYPES.BUILDING and tile.excess_hp >= 30:
 		# debris
