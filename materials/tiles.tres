@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bxy22gotrw0i7"]
+
+[ext_resource type="Texture2D" uid="uid://d34yfrmnynnt7" path="res://assets/buildings/pavement dip_colormap.png" id="1_5oqcc"]
+
+[resource]
+resource_name = "colormap"
+cull_mode = 2
+albedo_texture = ExtResource("1_5oqcc")

@@ -2,3 +2,4 @@
 .godot/
 /android/
 .vscode/*
+*.blend[0-9]*

@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://chknrqjqiqnfx"]
+
+[ext_resource type="Shader" uid="uid://by25en46pyid8" path="res://materials/tiles.gdshader" id="1_fe62n"]
+
+[resource]
+resource_name = "colormap"
+render_priority = 0
+shader = ExtResource("1_fe62n")
