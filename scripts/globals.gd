@@ -1,8 +1,5 @@
 extends Node
 
-
-# @onready var TILE_ARRAY: World = %World
-
 var player_position = Vector3.ZERO
 
 var during_cutscene: bool = true

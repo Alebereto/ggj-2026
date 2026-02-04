@@ -1,8 +1,0 @@
-[gd_scene format=3 uid="uid://cqi4l0orewand"]
-
-[ext_resource type="Script" uid="uid://cqqudqgyb87bu" path="res://scenes/level/minimap.gd" id="1_vryai"]
-
-[node name="Minimap" type="SubViewport" unique_id=584057159]
-script = ExtResource("1_vryai")
-
-[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1924237188]
