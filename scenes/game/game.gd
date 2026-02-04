@@ -1,4 +1,4 @@
-extends Node3D
+extends Node
 
 # after MAX_STRIKES buildings destroyed, game over
 const MAX_STRIKES = 3
@@ -8,6 +8,9 @@ const MAX_STRIKES = 3
 @export var _minion_manager : MinionManager = null
 @export var _mask_manager : MaskManager = null
 @export var _ui : UI = null
+@export var _cutscene_camera : Camera3D = null
+@export var _music : AudioStreamPlayer = null
+
 
 @export var _cutscene_player: AnimationPlayer = null
 
@@ -47,7 +50,7 @@ func _game_begin():
 
 func _cutscene_start_end():
 	Globals.during_cutscene = false
-	$Cutscene/CutsceneCamera.current = false
+	_cutscene_camera.current = false
 	_ui.show()
 
 func _connect_signals():
@@ -60,10 +63,10 @@ func _connect_signals():
 ## called when the game has ended
 func _game_over():
 	Globals.during_cutscene = true
-	$Cutscene/CutsceneCamera.current = true
+	_cutscene_camera.current = true
 	_ui.hide()
 	#TODO: switch music
-	$Music.stop()
+	_music.stop()
 	_player._set_control_mode(Player.CONTROL_MODE.NONE)
 	_cutscene_player.play("game_end")
 
