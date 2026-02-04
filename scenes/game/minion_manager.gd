@@ -1,6 +1,6 @@
 extends Node3D
 
-const MINION_SCENE: PackedScene = preload("res://scenes/minion/minion.tscn")
+const MINION_SCENE: PackedScene = preload(Globals.SCENE_UIDS["minion"])
 
 
 signal drop_mask(mask_type: Mask.TYPE, global_pos: Vector3, vacuum: bool)

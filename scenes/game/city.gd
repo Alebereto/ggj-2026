@@ -4,7 +4,7 @@ class_name TileManager
 ## emits when a building gets destroyed
 signal on_building_destroyed
 
-const METEOR_SCENE: PackedScene = preload("res://scenes/meteor/meteor.tscn")
+const METEOR_SCENE: PackedScene = preload(Globals.SCENE_UIDS["meteor"])
 
 @export var gridmap_ref : GridMap = null
 @export var mask_manager_ref : MaskManager = null

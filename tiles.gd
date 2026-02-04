@@ -35,7 +35,7 @@ class Tile extends RefCounted:
 
 	## Gets the index in the Mesh Library the GridMap uses. This ties the Tile data storage class
 	## To it's visual representation in the tileset.
-	## This index may change according to the tiles parameters, such as it's [code]hp[\code]
+	## This index may change according to the tiles parameters, such as it's [code]hp[/code]
 	func get_gridmap_index() -> int:
 		return -1
 	

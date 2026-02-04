@@ -160,7 +160,7 @@ func _move_camera(delta: float) -> void:
 	if Input.is_action_pressed("camera_rotate_left"): camera_direction -= 1
 	_camera_root.rotate_y(CAMERA_SPEED * delta * camera_direction)
 
-## move player
+## move player with [constant PLAYER_SPEED] speed, in the direction of the camera, based on player input
 func _move_player(delta: float) -> void:
 	# Get movement vector
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back")

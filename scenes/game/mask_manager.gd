@@ -1,7 +1,7 @@
 extends Node3D
 class_name MaskManager
 
-const MASK_SCENE: PackedScene = preload("res://scenes/mask/mask.tscn")
+const MASK_SCENE: PackedScene = preload(Globals.SCENE_UIDS["mask"])
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -9,7 +9,7 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 
 func drop_mask(mask_type: Mask.TYPE, pos: Vector3, vacuum: bool = false):
