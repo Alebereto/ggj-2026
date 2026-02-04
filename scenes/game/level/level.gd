@@ -15,11 +15,13 @@ const METEOR_SCENE: PackedScene = preload(Globals.SCENE_UIDS["meteor"])
 @export_category("Level Settings")
 @export var asteroid_spawn_height = 10.0
 @export var building_weight = 15
+@export_range(0,1) var _debris_mask_probability = 0.33
+@export_range(0,1) var _builder_mask_probability = 0.5
 
 var b_odds = 0.12
 var building_count = 0
 
-var rng = RandomNumberGenerator.new()
+var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 
 func _ready() -> void:
@@ -45,12 +47,12 @@ func summon_meteor():
 	var arr_pos = Vector2i(rng.randi_range(0, grid.get_width()-1), rng.randi_range(0, grid.get_height()-1))
 	if rng.randf() < b_odds:
 		arr_pos = b_rand
-	var pos = grid.to_world(arr_pos)	
+	var pos = grid.to_world(arr_pos)
 	pos.y = asteroid_spawn_height
 	var meteor = METEOR_SCENE.instantiate()
 	meteor.position = pos
 	add_child(meteor)
-	
+
 func summon_building():
 	var fountains = grid.get_fountain_coords()
 	if fountains.is_empty():
@@ -82,8 +84,7 @@ func repair(pos: Vector2i, damage = 1):
 		tile.excess_hp += tile.hp-max_hp
 		tile.hp = max_hp
 	processTile(tile, pos, tile.next_tile_repair())
-	
-	
+
 func processTile(tile: Tiles.Tile, pos : Vector2i, new_type : Tiles.TILETYPES):
 	if new_type != tile.get_tiletype():
 		var new_tile =  Tiles.enumToClass(new_type).new()
@@ -93,7 +94,7 @@ func processTile(tile: Tiles.Tile, pos : Vector2i, new_type : Tiles.TILETYPES):
 		grid.update_tile_visuals(pos)
 
 
-## 
+## handles special cases for attacking a tile
 func attackSpecialCases(tile: Tiles.Tile, pos : Vector2i):
 	if tile.get_tiletype() == Tiles.TILETYPES.BUILDING and tile.hp <= 0:
 		on_building_destroyed.emit()
@@ -113,9 +114,14 @@ func attackSpecialCases(tile: Tiles.Tile, pos : Vector2i):
 
 	if tile.get_tiletype() == Tiles.TILETYPES.DEBRIS:
 		if tile.hp <= 0:
-			var mask_type = Mask.TYPE.BUILDER
-			if rng.randi_range(0,2) == 0:
-				mask_type= Mask.TYPE.DESTROYER
-
-			if rng.randi_range(0,3) == 0:
+			# spawn mask with set probability
+			var p = rng.randf()
+			if p <= _debris_mask_probability:
+				# choose mask type
+				var mask_type = Mask.TYPE.BUILDER
+				p = rng.randf()
+				if p <= _builder_mask_probability:
+					mask_type= Mask.TYPE.DESTROYER
+				# spawn mask
 				mask_manager.drop_mask(mask_type, grid.to_world(pos))
+
