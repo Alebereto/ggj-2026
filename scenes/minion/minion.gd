@@ -7,6 +7,8 @@ signal dropped_mask(mask_type: Mask.TYPE, global_pos: Vector3, vacuum: bool)
 signal attack(coords: Vector2i, damage)
 signal repair(coords: Vector2i, damage)
 
+var world: World = null
+
 
 
 var _current_state: STATE = STATE.FREE
@@ -21,17 +23,19 @@ func get_state() -> STATE:
 var _alive: bool = true
 
 
-@onready var _pickup_area: Area3D = $PickupArea
+@export_category("Nodes")
+@export var _pickup_area: Area3D = null
 
+# TODO: Find better solution
 @onready var _animation_player: AnimationPlayer = $MinionModel/AnimationPlayer
 
 #Models
-@onready var _mask_model: Node3D = $MaskModel
-@onready var _builder_mask_model = $MaskModel/BuilderMaskModel
-@onready var _destroyer_mask_model = $MaskModel/DestroyerMaskModel
+@export var _mask_model: Node3D = null
+@export var _builder_mask_model: MeshInstance3D = null
+@export var _destroyer_mask_model: MeshInstance3D = null
 
 # Sounds
-@onready var _death_sound: AudioStreamPlayer3D = $Sounds/Death
+@export var _death_sound: AudioStreamPlayer3D = null
 
 enum STATE {
 	FREE,
@@ -41,6 +45,7 @@ enum STATE {
 	UNEMPLOYED
 }
 
+@export_category("Movement Parameters")
 @export var free_move_chance = 0.5
 @export var free_move_speed = 0.8
 @export var free_move_lerp_strength = 0.05 * 60
@@ -154,7 +159,7 @@ func _walk_animation() -> void:
 	if velocity.length() > 0.5:
 		_animation_player.play("walk")
 
-func _move_to(delta : float, global_pos: Vector3, speed = 2):
+func _move_to(_delta : float, global_pos: Vector3, speed = 2):
 	var radius_slow_sqrd = 2.0
 	var dir = global_pos - global_position
 	var close_lerp = clampf(dir.length_squared(),0, radius_slow_sqrd) / radius_slow_sqrd
@@ -246,7 +251,7 @@ func _set_mask(mask: Mask.TYPE) -> void:
 func do_task(vec : Vector2i):
 	_current_state = STATE.TRAVELING
 	_current_task_2d = vec
-	_current_task_3d = Globals.TILE_ARRAY.to_world(vec)
+	_current_task_3d = world.to_world(vec) # TODO: pass city to minion
 
 ## unset mask from minion
 func _unset_mask() -> void:

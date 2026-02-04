@@ -1,15 +1,18 @@
-extends Node3D
+extends Node
 
 # after MAX_STRIKES buildings destroyed, game over
 const MAX_STRIKES = 3
 
-@onready var _player: Player = $Player
-@onready var _city = $City
-@onready var _minion_manager = $MinionManager
-@onready var _mask_manager = $MaskManager
-@onready var _ui = $UI
+@export var _player: Player = null
+@export var _city : City = null
+@export var _minion_manager : MinionManager = null
+@export var _mask_manager : MaskManager = null
+@export var _ui : UI = null
+@export var _cutscene_camera : Camera3D = null
+@export var _music : AudioStreamPlayer = null
 
-@onready var _cutscene_player: AnimationPlayer = $Cutscene/AnimationPlayer
+
+@export var _cutscene_player: AnimationPlayer = null
 
 var timer = 0.0
 var current_strikes: int = 0
@@ -47,7 +50,7 @@ func _game_begin():
 
 func _cutscene_start_end():
 	Globals.during_cutscene = false
-	$Cutscene/CutsceneCamera.current = false
+	_cutscene_camera.current = false
 	_ui.show()
 
 func _connect_signals():
@@ -60,10 +63,10 @@ func _connect_signals():
 ## called when the game has ended
 func _game_over():
 	Globals.during_cutscene = true
-	$Cutscene/CutsceneCamera.current = true
+	_cutscene_camera.current = true
 	_ui.hide()
 	#TODO: switch music
-	$Music.stop()
+	_music.stop()
 	_player._set_control_mode(Player.CONTROL_MODE.NONE)
 	_cutscene_player.play("game_end")
 
@@ -77,7 +80,7 @@ func on_building_destroyed():
 	if current_strikes >= MAX_STRIKES: world_ending = true
 
 func command_minion(mask_type, global_destination) -> void:
-	var grid_pos = Globals.TILE_ARRAY.from_world(global_destination)
+	var grid_pos = _city.world.from_world(global_destination)
 	_minion_manager.command_minion(mask_type, grid_pos)
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:

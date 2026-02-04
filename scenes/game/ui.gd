@@ -1,4 +1,5 @@
 extends MarginContainer
+class_name UI
 
 const BUILDING_ICON = preload("res://assets/mask/normal_building.png")
 const BUILDING_DESTROYED_ICON = preload("res://assets/mask/broken_building.png")
