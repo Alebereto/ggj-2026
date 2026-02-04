@@ -2,6 +2,8 @@ extends Node3D
 
 const MINION_SCENE: PackedScene = preload(Globals.SCENE_UIDS["minion"])
 
+@export var city : City = null
+@onready var _world = city.world
 
 signal drop_mask(mask_type: Mask.TYPE, global_pos: Vector3, vacuum: bool)
 
@@ -19,22 +21,21 @@ func _process(delta: float) -> void:
 	if not Globals.during_cutscene:
 		minion_timer += delta
 	if minion_timer >= minion_timout:
-		var t_array = Globals.TILE_ARRAY
-		var buildings = t_array.get_building_coords()
+		var buildings = _world.get_building_coords()
 		
 		if get_child_count() > buildings.size() * 3:
 			return
 		for building in buildings:
 			var spawn_point = building + Vector2i(rng.randi_range(-1, 2), rng.randi_range(-1, 2))
-			if t_array.get_tile(spawn_point).get_tiletype() != Tiles.TILETYPES.GROUND:
+			if _world.get_tile(spawn_point).get_tiletype() != Tiles.TILETYPES.GROUND:
 				continue
-			var world_pos = t_array.to_world(spawn_point)
+			var world_pos = _world.to_world(spawn_point)
 			create_minion(world_pos)
 		minion_timer = 0.0
 
 
 func command_minion(mask: Mask.TYPE, grid_destination: Vector2i):
-	var target_tile = Globals.TILE_ARRAY.get_tile(grid_destination)
+	var target_tile = _world.get_tile(grid_destination)
 	if target_tile.get_tiletype() == Tiles.TILETYPES.GROUND:
 		return
 	var closest_minion = null

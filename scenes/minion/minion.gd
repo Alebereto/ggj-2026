@@ -249,7 +249,7 @@ func _set_mask(mask: Mask.TYPE) -> void:
 func do_task(vec : Vector2i):
 	_current_state = STATE.TRAVELING
 	_current_task_2d = vec
-	_current_task_3d = Globals.TILE_ARRAY.to_world(vec)
+	_current_task_3d = %World.to_world(vec) # TODO: pass city to minion
 
 ## unset mask from minion
 func _unset_mask() -> void:

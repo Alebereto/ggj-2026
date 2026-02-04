@@ -1,7 +1,7 @@
 extends Node
 
 
-var TILE_ARRAY := Tiles.new()
+# @onready var TILE_ARRAY: World = %World
 
 var player_position = Vector3.ZERO
 

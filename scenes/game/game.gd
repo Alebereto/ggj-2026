@@ -77,7 +77,7 @@ func on_building_destroyed():
 	if current_strikes >= MAX_STRIKES: world_ending = true
 
 func command_minion(mask_type, global_destination) -> void:
-	var grid_pos = Globals.TILE_ARRAY.from_world(global_destination)
+	var grid_pos = _city.world.from_world(global_destination)
 	_minion_manager.command_minion(mask_type, grid_pos)
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:

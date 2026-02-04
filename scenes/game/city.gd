@@ -1,14 +1,14 @@
 extends Node3D
-class_name TileManager
+class_name City
 
 ## emits when a building gets destroyed
 signal on_building_destroyed
 
 const METEOR_SCENE: PackedScene = preload(Globals.SCENE_UIDS["meteor"])
 
-@export var gridmap_ref : GridMap = null
+@export var world : World = null
+
 @export var mask_manager_ref : MaskManager = null
-var t_array : Tiles = Globals.TILE_ARRAY
 
 @export var asteroid_spawn_height = 10.0
 @export var asteroid_timeout:float  = 1.5
@@ -20,7 +20,7 @@ var rng = RandomNumberGenerator.new()
 
 
 func _ready() -> void:
-	t_array.create_tile_storage(gridmap_ref)
+	world.create_tile_storage()
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
 var asteroid_time = 0.0
@@ -31,8 +31,8 @@ func _process(_delta: float) -> void:
 	# time_global += _delta
 	# if time_global >= 1.0:
 	# 	time_global = 0.0
-	# 	for cell in t_array._gridmap.get_used_cells():
-	# 		t_array._gridmap.set_cell_item(cell, t_array._gridmap.get_cell_item(cell), ornt)
+	# 	for cell in world._gridmap.get_used_cells():
+	# 		world._gridmap.set_cell_item(cell, world._gridmap.get_cell_item(cell), ornt)
 	# 	ornt += 1
 	asteroid_time += _delta
 	building_time += _delta
@@ -46,26 +46,26 @@ func _process(_delta: float) -> void:
 		
 
 func summon_meteor():
-	var buildings = t_array.get_building_coords()
+	var buildings = world.get_building_coords()
 	if buildings.is_empty():
 		return
 	var b_rand = buildings[rng.randi_range(0, buildings.size()-1)]
 
-	var arr_pos = Vector2i(rng.randi_range(0, t_array.get_width()-1), rng.randi_range(0, t_array.get_height()-1))
+	var arr_pos = Vector2i(rng.randi_range(0, world.get_width()-1), rng.randi_range(0, world.get_height()-1))
 	if rng.randf() < b_odds:
 		arr_pos = b_rand
-	var pos = t_array.to_world(arr_pos)	
+	var pos = world.to_world(arr_pos)	
 	pos.y = asteroid_spawn_height
 	var meteor = METEOR_SCENE.instantiate()
 	meteor.position = pos
 	add_child(meteor)
 	
 func summon_building():
-	var fountains = t_array.get_fountain_coords()
+	var fountains = world.get_fountain_coords()
 	if fountains.is_empty():
 		return
-	var height : int = t_array.get_height()
-	var width : int = t_array.get_width()
+	var height : int = world.get_height()
+	var width : int = world.get_width()
 	var city_center = Vector2i(int(height/2.0), int(width/2.0))
 	var chosen_fountain
 	var minDistance = INF
@@ -74,18 +74,18 @@ func summon_building():
 		if current_distance < minDistance:
 			minDistance = current_distance
 			chosen_fountain = fountain
-	t_array.set_tile(chosen_fountain, t_array.Building.new())
+	world.set_tile(chosen_fountain, Tiles.Building.new())
 
 func attack(pos: Vector2i, damage = 1):
-	var tile = t_array.get_tile(pos)
+	var tile = world.get_tile(pos)
 	tile.hp -= damage
 	attackSpecialCases(tile, pos)
 	processTile(tile, pos, tile.next_tile_damage())
 	tile.excess_hp = 0.5 * tile.excess_hp
 
 func repair(pos: Vector2i, damage = 1):
-	var max_hp = t_array.get_tile(pos)._max_hp
-	var tile = t_array.get_tile(pos)
+	var max_hp = world.get_tile(pos)._max_hp
+	var tile = world.get_tile(pos)
 	tile.hp += damage
 	if tile.hp > max_hp:
 		tile.excess_hp += tile.hp-max_hp
@@ -96,10 +96,10 @@ func repair(pos: Vector2i, damage = 1):
 func processTile(tile: Tiles.Tile, pos : Vector2i, new_type : Tiles.TILETYPES):
 	if new_type != tile.get_tiletype():
 		var new_tile =  Tiles.enumToClass(new_type).new()
-		t_array.set_tile(pos, new_tile)
+		world.set_tile(pos, new_tile)
 	else:
 		# In case damage changed the visuals
-		t_array.update_tile_visuals(pos)
+		world.update_tile_visuals(pos)
 
 
 ## 
@@ -116,9 +116,9 @@ func attackSpecialCases(tile: Tiles.Tile, pos : Vector2i):
 			if a == 0 and b == 0:
 				continue
 			var new_pos = pos + Vector2i(a, b)
-			var new_tile = t_array.get_tile(new_pos)
+			var new_tile = world.get_tile(new_pos)
 			if new_tile.get_tiletype() == Tiles.TILETYPES.GROUND:
-				t_array.set_tile(new_pos, Tiles.Debris.new())
+				world.set_tile(new_pos, Tiles.Debris.new())
 
 	if tile.get_tiletype() == Tiles.TILETYPES.DEBRIS:
 		if tile.hp <= 0:
@@ -127,4 +127,4 @@ func attackSpecialCases(tile: Tiles.Tile, pos : Vector2i):
 				mask_type= Mask.TYPE.DESTROYER
 
 			if rng.randi_range(0,3) == 0:
-				mask_manager_ref.drop_mask(mask_type, t_array.to_world(pos))
+				mask_manager_ref.drop_mask(mask_type, world.to_world(pos))
