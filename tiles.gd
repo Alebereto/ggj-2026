@@ -108,7 +108,7 @@ class Ground extends Tile:
 		return TILETYPES.GROUND
 
 	func get_gridmap_index() -> int:					return 1
-	static func get_possible_indices() -> Array[int]:	return [1]
+	static func get_possible_indices() -> Array[int]:	return [1, 6]
 	static func tiletype_static() -> TILETYPES:			return TILETYPES.GROUND
 
 
