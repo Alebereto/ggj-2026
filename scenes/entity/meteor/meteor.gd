@@ -1,7 +1,7 @@
 extends RigidBody3D
 
-@onready var city : City = get_parent()
-@onready var _world = city.world
+@onready var level : Level = get_parent()
+@onready var _world = level.grid
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -20,11 +20,11 @@ func _integrate_forces(state: PhysicsDirectBodyState3D):
 			var map_coords = _world.from_world(contact_pos)
 			var tile = _world.get_tile(map_coords)
 			if tile.get_tiletype() == Tiles.TILETYPES.BUILDING:
-				city.attack(map_coords, 20)
+				level.attack(map_coords, 20)
 			elif tile.get_tiletype() == Tiles.TILETYPES.GROUND:
 				_world.set_tile(map_coords, Tiles.Debris.new())
 			elif tile.get_tiletype() == Tiles.TILETYPES.DEBRIS:
-				city.repair(map_coords, 30)
+				level.repair(map_coords, 30)
 			
 			queue_free()
 			return

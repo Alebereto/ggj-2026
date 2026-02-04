@@ -2,8 +2,8 @@ extends Node3D
 class_name MinionManager
 const MINION_SCENE: PackedScene = preload(Globals.SCENE_UIDS["minion"])
 
-@export var city : City = null
-@onready var _world = city.world
+@export var level : Level = null
+@onready var _world = level.grid
 
 signal drop_mask(mask_type: Mask.TYPE, global_pos: Vector3, vacuum: bool)
 
@@ -34,7 +34,8 @@ func _process(delta: float) -> void:
 		minion_timer = 0.0
 
 
-func command_minion(mask: Mask.TYPE, grid_destination: Vector2i):
+func command_minion(mask: Mask.TYPE, global_destination: Vector3):
+	var grid_destination: Vector2i = level.grid.from_world(global_destination)
 	var target_tile = _world.get_tile(grid_destination)
 	if target_tile.get_tiletype() == Tiles.TILETYPES.GROUND:
 		return
@@ -57,10 +58,10 @@ func command_minion(mask: Mask.TYPE, grid_destination: Vector2i):
 	pass
 
 func minion_attack(coords: Vector2i, damage):
-	city.attack(coords, damage)
+	level.attack(coords, damage)
 	pass
 func minion_repair(coords: Vector2i, damage):
-	city.repair(coords, damage)
+	level.repair(coords, damage)
 	pass
 
 func create_minion(pos: Vector3):

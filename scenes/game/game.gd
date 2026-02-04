@@ -3,24 +3,33 @@ extends Node
 # after MAX_STRIKES buildings destroyed, game over
 const MAX_STRIKES = 3
 
-@export var _player: Player = null
-@export var _city : City = null
-@export var _minion_manager : MinionManager = null
-@export var _mask_manager : MaskManager = null
+@export_category("Nodes")
+@export var _level: Level = null
 @export var _ui : UI = null
 @export var _cutscene_camera : Camera3D = null
 @export var _music : AudioStreamPlayer = null
-
-
 @export var _cutscene_player: AnimationPlayer = null
 
+@export_category("Game Settings")
+@export var asteroid_timeout:float  = 1.5
+@export var building_timeout: float = 45.0
+var asteroid_time = 0.0
+var building_time = 0.0
+
+@onready var _player: Player = _level.player
+
+## game time elapsed
 var timer = 0.0
 var current_strikes: int = 0
 
-const START_CUTSCENE_END = 3.0
-var _start_cutscene_time: float = 0.0
+## time after game over when game over cutscene plays
+const WORLD_END_TIME = 3.0
+var _world_end_timer: float = 0.0
 
 var world_ending: bool = false
+
+
+var rng = RandomNumberGenerator.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -30,17 +39,35 @@ func _ready() -> void:
 ## Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if world_ending:
-		_start_cutscene_time += delta
-		if _start_cutscene_time > START_CUTSCENE_END: _game_over()
+		_world_end_timer += delta
+		if _world_end_timer > WORLD_END_TIME: _game_over()
 		return
 	if not Globals.during_cutscene:
 		timer += delta
 	if not world_ending:
 		_ui.set_time_label(timer)
-	else:
-		#TODO: start shaking camera, then zoom out and watch meteor hit then close game
-		pass
-	
+
+	# time_global += _delta
+	# if time_global >= 1.0:
+	# 	time_global = 0.0
+	# 	for cell in world._gridmap.get_used_cells():
+	# 		world._gridmap.set_cell_item(cell, world._gridmap.get_cell_item(cell), ornt)
+	# 	ornt += 1
+	asteroid_time += delta
+	building_time += delta
+	if asteroid_time >= asteroid_timeout:
+		for i in range(rng.randi_range(2,6)):
+			_level.summon_meteor()
+		asteroid_time = 0.0
+	if building_time >= building_timeout:
+		_level.summon_building()
+		building_time = 0.0
+
+func _connect_signals():
+	_player.new_masks_count.connect(_ui.set_masks_count)
+	_level.on_building_destroyed.connect(on_building_destroyed)
+	_cutscene_player.animation_finished.connect(_on_animation_player_animation_finished)
+
 ## Called when the game begins
 func _game_begin():
 	# Play starting cutscene
@@ -52,13 +79,6 @@ func _cutscene_start_end():
 	Globals.during_cutscene = false
 	_cutscene_camera.current = false
 	_ui.show()
-
-func _connect_signals():
-	_player.command_minion.connect(command_minion)
-	_player.throw_mask.connect(_mask_manager.throw_mask)
-	_player.new_masks_count.connect(_ui.set_masks_count)
-	_minion_manager.drop_mask.connect(_mask_manager.drop_mask)
-	_city.on_building_destroyed.connect(on_building_destroyed)
 
 ## called when the game has ended
 func _game_over():
@@ -78,10 +98,6 @@ func on_building_destroyed():
 	_ui.set_strike_count(current_strikes)
 	$BuildingBreak.play()
 	if current_strikes >= MAX_STRIKES: world_ending = true
-
-func command_minion(mask_type, global_destination) -> void:
-	var grid_pos = _city.world.from_world(global_destination)
-	_minion_manager.command_minion(mask_type, grid_pos)
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "starting_cutscene":
