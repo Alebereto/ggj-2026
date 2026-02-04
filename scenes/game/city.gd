@@ -6,7 +6,9 @@ signal on_building_destroyed
 
 const METEOR_SCENE: PackedScene = preload("res://scenes/meteor/meteor.tscn")
 
-@onready var mask_manager_ref = $"../MaskManager"
+@export var gridmap_ref : GridMap = null
+@export var mask_manager_ref : MaskManager = null
+var t_array : Tiles = Globals.TILE_ARRAY
 
 @export var asteroid_spawn_height = 10.0
 @export var asteroid_timeout:float  = 1.5
@@ -14,12 +16,11 @@ const METEOR_SCENE: PackedScene = preload("res://scenes/meteor/meteor.tscn")
 @export var building_weight = 15
 var b_odds = 0.12
 var building_count = 0
-var t_array = Globals.TILE_ARRAY
 var rng = RandomNumberGenerator.new()
 
 
 func _ready() -> void:
-	t_array.create_tile_storage($GridMap)
+	t_array.create_tile_storage(gridmap_ref)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
 var asteroid_time = 0.0
@@ -65,7 +66,7 @@ func summon_building():
 		return
 	var height : int = t_array.get_height()
 	var width : int = t_array.get_width()
-	var city_center = Vector2i(height/2, width/2)
+	var city_center = Vector2i(int(height/2.0), int(width/2.0))
 	var chosen_fountain
 	var minDistance = INF
 	for fountain in fountains:
@@ -93,16 +94,12 @@ func repair(pos: Vector2i, damage = 1):
 	
 	
 func processTile(tile: Tiles.Tile, pos : Vector2i, new_type : Tiles.TILETYPES):
-	# var new_type = tile.next_tile_damage()
-	var new_tile := tile
-	var tile_rotation = $GridMap.get_cell_item_orientation(t_array.to_gridmap(pos))
 	if new_type != tile.get_tiletype():
-		new_tile =  Tiles.enumToClass(new_type).new()
+		var new_tile =  Tiles.enumToClass(new_type).new()
 		t_array.set_tile(pos, new_tile)
-		tile_rotation = Tiles.random_rotation()
-		
-	# Update visuals if it was changed OR NOT (for )
-	$GridMap.set_cell_item(t_array.to_gridmap(pos), new_tile.get_gridmap_index(), tile_rotation)
+	else:
+		# In case damage changed the visuals
+		t_array.update_tile_visuals(pos)
 
 
 ## 

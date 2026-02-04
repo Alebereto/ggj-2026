@@ -1,4 +1,5 @@
 extends Node3D
+class_name MaskManager
 
 const MASK_SCENE: PackedScene = preload("res://scenes/mask/mask.tscn")
 

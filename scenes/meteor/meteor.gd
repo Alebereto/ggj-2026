@@ -22,7 +22,7 @@ func _integrate_forces(state: PhysicsDirectBodyState3D):
 			if tile.get_tiletype() == Tiles.TILETYPES.BUILDING:
 				city.attack(map_coords, 20)
 			elif tile.get_tiletype() == Tiles.TILETYPES.GROUND:
-				t_array.set_tile(map_coords, t_array.Debris.new())
+				t_array.set_tile(map_coords, Tiles.Debris.new())
 			elif tile.get_tiletype() == Tiles.TILETYPES.DEBRIS:
 				city.repair(map_coords, 30)
 			

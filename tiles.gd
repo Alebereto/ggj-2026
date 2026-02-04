@@ -249,7 +249,7 @@ static func enumToClass(tiletype: TILETYPES) -> GDScript:
 const INT_MAX := 2147483647
 const INT_MIN := -2147483648
 
-var _gridmap = GridMap.new()
+var _gridmap: GridMap = null
 var _tile_storage: Array = []
 
 var _min_x := INT_MAX
@@ -386,3 +386,13 @@ func set_tile(coords: Vector2i, tile: Tile):
 	_tile_storage[coords.x][coords.y] = tile
 
 	_gridmap.set_cell_item(to_gridmap(coords), tile.get_gridmap_index(), random_rotation())
+
+func update_tile_visuals(coords: Vector2i):
+	if not _check_bounds(coords):
+		print("Error, tile update not in 2D array %s" % [coords])
+		return
+
+	
+	var new_tile := get_tile(coords)
+	var tile_rotation = _gridmap.get_cell_item_orientation(to_gridmap(coords))
+	_gridmap.set_cell_item(to_gridmap(coords), new_tile.get_gridmap_index(), tile_rotation)
