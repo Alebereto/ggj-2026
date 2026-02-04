@@ -3,13 +3,13 @@ extends Node3D
 # after MAX_STRIKES buildings destroyed, game over
 const MAX_STRIKES = 3
 
-@onready var _player: Player = $Player
-@onready var _city = $City
-@onready var _minion_manager = $MinionManager
-@onready var _mask_manager = $MaskManager
-@onready var _ui = $UI
+@export var _player: Player = null
+@export var _city : City = null
+@export var _minion_manager : MinionManager = null
+@export var _mask_manager : MaskManager = null
+@export var _ui : UI = null
 
-@onready var _cutscene_player: AnimationPlayer = $Cutscene/AnimationPlayer
+@export var _cutscene_player: AnimationPlayer = null
 
 var timer = 0.0
 var current_strikes: int = 0
