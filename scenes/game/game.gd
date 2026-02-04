@@ -16,6 +16,9 @@ const MAX_STRIKES = 3
 var asteroid_time = 0.0
 var building_time = 0.0
 
+var minion_timout = 13.0
+var minion_timer = 1000.0
+
 @onready var _player: Player = _level.player
 
 ## game time elapsed
@@ -44,6 +47,9 @@ func _process(delta: float) -> void:
 		return
 	if not Globals.during_cutscene:
 		timer += delta
+		minion_timer += delta
+		asteroid_time += delta
+		building_time += delta
 	if not world_ending:
 		_ui.set_time_label(timer)
 
@@ -53,15 +59,31 @@ func _process(delta: float) -> void:
 	# 	for cell in world._gridmap.get_used_cells():
 	# 		world._gridmap.set_cell_item(cell, world._gridmap.get_cell_item(cell), ornt)
 	# 	ornt += 1
-	asteroid_time += delta
-	building_time += delta
+	
+	# asteroid spawn
 	if asteroid_time >= asteroid_timeout:
 		for i in range(rng.randi_range(2,6)):
 			_level.summon_meteor()
 		asteroid_time = 0.0
+	# building spawn
 	if building_time >= building_timeout:
 		_level.summon_building()
 		building_time = 0.0
+	# minion spawn
+	if minion_timer >= minion_timout:
+		#TODO: move minion spawn logic to level
+		var grid: Grid = _level.grid
+		var buildings = grid.get_building_coords()
+		
+		if _level.minion_manager.get_child_count() > buildings.size() * 3:
+			return
+		for building in buildings:
+			var spawn_point = building + Vector2i(rng.randi_range(-1, 2), rng.randi_range(-1, 2))
+			if grid.get_tile(spawn_point).get_tiletype() != Tiles.TILETYPES.GROUND:
+				continue
+			var grid_pos = grid.to_world(spawn_point)
+			_level.minion_manager.create_minion(grid_pos)
+		minion_timer = 0.0
 
 func _connect_signals():
 	_player.new_masks_count.connect(_ui.set_masks_count)
