@@ -7,6 +7,8 @@ signal dropped_mask(mask_type: Mask.TYPE, global_pos: Vector3, vacuum: bool)
 signal attack(coords: Vector2i, damage)
 signal repair(coords: Vector2i, damage)
 
+var world: World = null
+
 
 
 var _current_state: STATE = STATE.FREE
@@ -249,7 +251,7 @@ func _set_mask(mask: Mask.TYPE) -> void:
 func do_task(vec : Vector2i):
 	_current_state = STATE.TRAVELING
 	_current_task_2d = vec
-	_current_task_3d = %World.to_world(vec) # TODO: pass city to minion
+	_current_task_3d = world.to_world(vec) # TODO: pass city to minion
 
 ## unset mask from minion
 func _unset_mask() -> void:

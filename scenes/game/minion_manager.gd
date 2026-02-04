@@ -69,6 +69,7 @@ func create_minion(pos: Vector3):
 	minion.attack.connect(minion_attack)
 	minion.repair.connect(minion_repair)
 
+	minion.world = _world
 	minion.position = pos
 	add_child(minion)
 
