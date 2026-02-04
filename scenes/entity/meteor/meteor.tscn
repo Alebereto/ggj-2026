@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://x7qtbsv67m5x"]
+
+[ext_resource type="Script" uid="uid://bub7ovgmncqe7" path="res://scenes/entity/meteor/meteor.gd" id="1_5jmab"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_5jmab"]
+radius = 0.48127925
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2r85p"]
+albedo_color = Color(0.3681322, 0.1955918, 0.05923084, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_5jmab"]
+material = SubResource("StandardMaterial3D_2r85p")
+radius = 0.415
+height = 0.82
+radial_segments = 7
+rings = 3
+
+[node name="Meteor" type="RigidBody3D" unique_id=1412286863]
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_5jmab")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=899882040]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 0, 0)
+shape = SubResource("SphereShape3D_5jmab")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=632642650]
+mesh = SubResource("SphereMesh_5jmab")

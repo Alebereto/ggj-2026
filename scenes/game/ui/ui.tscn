@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://b22sbd7ir6cvs"]
+
+[ext_resource type="Script" uid="uid://ce8xdeffqheq4" path="res://scenes/game/ui/ui.gd" id="1_w15o4"]
+[ext_resource type="Texture2D" uid="uid://bvyffotaoojpn" path="res://assets/mask/happy.png" id="2_ek8ox"]
+[ext_resource type="Texture2D" uid="uid://bgppbxdtr61d8" path="res://assets/mask/sad.png" id="3_jmhhc"]
+
+[sub_resource type="SystemFont" id="SystemFont_5i0tg"]
+font_names = PackedStringArray("Serif")
+subpixel_positioning = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_bdhmt"]
+font = SubResource("SystemFont_5i0tg")
+font_size = 31
+outline_size = 2
+outline_color = Color(0.2784314, 0.2784314, 0.2784314, 0.47843137)
+shadow_size = 13
+shadow_color = Color(0.13725491, 0.13725491, 0.13725491, 0.5176471)
+shadow_offset = Vector2(2, 2)
+
+[node name="UI" type="MarginContainer" unique_id=1935446065]
+visibility_layer = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 50
+script = ExtResource("1_w15o4")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=782298614]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 22
+alignment = 1
+
+[node name="TimerLabel" type="Label" parent="HBoxContainer" unique_id=815560899]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 32
+text = "00:00:00"
+label_settings = SubResource("LabelSettings_bdhmt")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Masks" type="HBoxContainer" parent="HBoxContainer" unique_id=1850804747]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Masks" unique_id=588449312]
+layout_mode = 2
+texture = ExtResource("2_ek8ox")
+
+[node name="BuilderMasks" type="Label" parent="HBoxContainer/Masks" unique_id=903178499]
+layout_mode = 2
+text = "3"
+label_settings = SubResource("LabelSettings_bdhmt")
+
+[node name="TextureRect2" type="TextureRect" parent="HBoxContainer/Masks" unique_id=836646551]
+layout_mode = 2
+texture = ExtResource("3_jmhhc")
+
+[node name="DestroyerMasks" type="Label" parent="HBoxContainer/Masks" unique_id=1406356774]
+layout_mode = 2
+text = "3"
+label_settings = SubResource("LabelSettings_bdhmt")
+
+[node name="Strikes" type="HBoxContainer" parent="HBoxContainer" unique_id=1245713611]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 9
+
+[node name="first" type="TextureRect" parent="HBoxContainer/Strikes" unique_id=1980814136]
+layout_mode = 2
+
+[node name="second" type="TextureRect" parent="HBoxContainer/Strikes" unique_id=1978422215]
+layout_mode = 2
+
+[node name="third" type="TextureRect" parent="HBoxContainer/Strikes" unique_id=883979510]
+layout_mode = 2
