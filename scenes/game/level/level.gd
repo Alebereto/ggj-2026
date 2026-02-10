@@ -124,4 +124,3 @@ func attackSpecialCases(tile: Tiles.Tile, pos : Vector2i):
 					mask_type= Mask.TYPE.DESTROYER
 				# spawn mask
 				mask_manager.drop_mask(mask_type, grid.to_world(pos))
-

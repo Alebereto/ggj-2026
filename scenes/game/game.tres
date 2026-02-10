@@ -1,0 +1,9 @@
+[gd_resource type="VisualShader" format=3 uid="uid://cq21mggr4gcnu"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_kj0al"]
+input_name = "time"
+
+[resource]
+nodes/vertex/3/node = SubResource("VisualShaderNodeInput_kj0al")
+nodes/vertex/3/position = Vector2(-340, 180)
+nodes/vertex/connections = PackedInt32Array(3, 0, 0, 7)
