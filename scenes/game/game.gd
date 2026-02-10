@@ -38,6 +38,7 @@ var rng = RandomNumberGenerator.new()
 func _ready() -> void:
 	_connect_signals()
 	_game_begin()
+	_init_shaders()
 
 ## Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -126,3 +127,6 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		_cutscene_start_end()
 	if anim_name == "game_end":
 		get_tree().quit()
+
+func _init_shaders():
+	RenderingServer.global_shader_parameter_set("apply_screen_shader", true)

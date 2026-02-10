@@ -1,27 +1,25 @@
 shader_type spatial;
 render_mode unshaded, skip_vertex_transform;
-varying float depth;
+render_mode depth_test_disabled;
+
 uniform sampler2D screen_tex : hint_screen_texture, filter_nearest;
 uniform sampler2D depth_tex : hint_depth_texture, filter_nearest;
 
+global uniform bool apply_screen_shader;
 uniform float pixel_size : hint_range(1, 300, 0.5) = 1.0;
-#define FULLSCREEN
-#ifdef FULLSCREEN
-render_mode depth_test_disabled;
-#endif
+
+
 
 
 void vertex() {
-	// Called for every vertex the material is visible on.
-#ifdef FULLSCREEN
-	POSITION = vec4(VERTEX.xy,1.0,1.0);
-   	//VERTEX = (INV_PROJECTION_MATRIX * vec4(VERTEX.xy,1.0,1.0)).xyz;
-#else
-    VERTEX = (MODELVIEW_MATRIX * vec4(VERTEX, 1.0)).xyz;
-    NORMAL = normalize((MODELVIEW_MATRIX * vec4(NORMAL, 0.0)).xyz);
-    BINORMAL = normalize((MODELVIEW_MATRIX * vec4(BINORMAL, 0.0)).xyz);
-    TANGENT = normalize((MODELVIEW_MATRIX * vec4(TANGENT, 0.0)).xyz);
-#endif
+	if(apply_screen_shader){
+	   	VERTEX = (INV_PROJECTION_MATRIX * vec4(VERTEX.xy,1.0,1.0)).xyz;
+	} else{
+	    VERTEX = (MODELVIEW_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	    NORMAL = normalize((MODELVIEW_MATRIX * vec4(NORMAL, 0.0)).xyz);
+	    BINORMAL = normalize((MODELVIEW_MATRIX * vec4(BINORMAL, 0.0)).xyz);
+	    TANGENT = normalize((MODELVIEW_MATRIX * vec4(TANGENT, 0.0)).xyz);
+	}
 }
 void fragment() {
 	mat2 screen_ratio = mat2(vec2(VIEWPORT_SIZE.x/VIEWPORT_SIZE.y,0.0),vec2(0.0,1.0));
